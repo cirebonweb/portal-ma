@@ -90,7 +90,7 @@
 
     <!-- .sidebar -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <a href="<?= url_to('/') ?>" class="brand-link"><img src="<?= base_url('upload/logo/') . setting('App.logoPutih') ?>" height="58"></a>
+      <a href="<?= url_to('/') ?>" class="brand-link"><img src="<?= base_url('upload/logo/') . (setting('App.logoPutih') ?: 'crb-logo-putih.png') ?>" height="58"></a>
 
       <div class="sidebar">
         <nav class="mt-2">
