@@ -68,23 +68,18 @@
       </svg>
     </div>
 
-    <!-- auth_group -->
-    <?php $auth_group = (auth()->user()->inGroup('klien')) ? 'klien' : 'admin'; ?>
-
     <!-- .navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link list" data-widget="pushmenu" href="#" role="button"><i class="bi bi-arrows-collapse-vertical"></i></a></li>
-        <li class="nav-item d-none d-sm-inline-block"><a href="<?= url_to($auth_group) ?>" class="nav-link">Home</a></li>
-        <!-- auth_group -->
-        <?= $this->include('layout/navbar_umum') ?>
+        <li class="nav-item d-none d-sm-inline-block"><a href="<?= url_to('/') ?>" class="nav-link">Home</a></li>
       </ul>
 
       <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)">Hai, <?= auth()->user()->username ?> <i class="bi bi-caret-down ml-1"></i></a>
+          <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)">Hai, <?= auth()->user()->username ?? 'User' ?> <i class="bi bi-caret-down ml-1"></i></a>
           <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-            <a href="<?= url_to('profil') ?>" class="dropdown-item"><i class="bi bi-person mr-3"></i> Profil</a>
+            <a href="<?= url_to('/') ?>" class="dropdown-item"><i class="bi bi-person mr-3"></i> Profil</a>
             <div class="dropdown-divider"></div>
             <a href="<?= url_to('logout') ?>" class="dropdown-item"><i class="bi bi-box-arrow-right mr-3"></i>Logout</a>
           </div>
@@ -95,7 +90,7 @@
 
     <!-- .sidebar -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
-      <a href="<?= url_to($auth_group) ?>" class="brand-link"><img src="<?= base_url('upload/logo/') . setting('App.logoPutih') ?>" height="58"></a>
+      <a href="<?= url_to('/') ?>" class="brand-link"><img src="<?= base_url('upload/logo/') . setting('App.logoPutih') ?>" height="58"></a>
 
       <div class="sidebar">
         <nav class="mt-2">
@@ -103,7 +98,7 @@
 
             <!-- Dashboard -->
             <li class="nav-item">
-              <a href="<?= url_to($auth_group) ?>" class="nav-link<?= (current_url() == base_url($auth_group)) ? ' active' : '' ?>">
+              <a href="<?= url_to('/') ?>" class="nav-link<?= (current_url() == base_url('/')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-speedometer"></i>
                 <p>Dashboard</p>
               </a>
@@ -111,14 +106,11 @@
 
             <!-- Profil -->
             <li class="nav-item">
-              <a href="<?= url_to('profil') ?>" class="nav-link<?= (current_url() == base_url('profil')) ? ' active' : '' ?>">
+              <a href="<?= url_to('/') ?>" class="nav-link<?= (current_url() == base_url('profil')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-person-vcard"></i>
                 <p>Profil</p>
               </a>
             </li>
-
-            <!-- auth_group -->
-            <?= $this->include('layout/sidebar_umum') ?>
 
           </ul>
         </nav>
@@ -137,7 +129,7 @@
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
 
-                <li class="breadcrumb-item"><a href="<?= route_to($auth_group) ?>">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= route_to('/') ?>">Home</a></li>
                 <li class="breadcrumb-item active"><?= ($navigasi ? $navigasi . '→ &nbsp;' : '') ?><?= ($navTitle ?? $pageTitle) ?></li>
               </ol>
             </div>
