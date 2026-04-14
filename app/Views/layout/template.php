@@ -112,6 +112,8 @@
               </a>
             </li>
 
+            <?= $this->include('layout/sidebar_umum'); ?>
+
           </ul>
         </nav>
       </div>

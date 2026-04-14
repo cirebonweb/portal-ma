@@ -1,0 +1,73 @@
+<?= $this->extend('layout/template') ?>
+
+<?= $this->section('css') ?>
+<?= $this->include('plugin/tabel_css') ?>
+<?= $this->endSection() ?>
+
+<?= $this->section('konten') ?>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row justify-content-md-center">
+            <div class="col-md-12 col-lg-9">
+                <div class="card">
+                    <div class="card-body">
+                        <table id="tabelData" class="table table-bordered table-hover dataTable dtr-inline">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama Level</th>
+                                    <th class="desktop">Tgl. Buat</th>
+                                    <th class="desktop">Tgl. Rubah</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div> <!-- .card-body -->
+                </div> <!-- .card -->
+            </div> <!-- .col-md-12 col-lg-9 -->
+        </div> <!-- .row -->
+    </div> <!-- .container-fluid -->
+</section>
+
+<div id="modalDiv" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary d-flex justify-content-center">
+                <h5 class="modal-title"></h5>
+            </div>
+
+            <form id="formData" class="pl-3 pr-3" data-cek="true">
+                <div class="modal-body">
+                    <input type="hidden" id="id" name="id">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="my-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="bi bi-circle-fill"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control upper" id="nama" name="nama" placeholder="Nama Level Harga" required>
+                                </div>
+                            </div>
+                        </div> <!-- .col-12 -->
+                    </div> <!-- .row -->
+                </div> <!-- .modal-body -->
+
+                <div class="modal-footer">
+                    <button type="submit" id="btnSubmit" class="btn btn-primary mr-1 float-right">Simpan</button>
+                    <button type="button" id="btnClose" class="btn btn-danger float-right" data-dismiss="modal">Batal</button>
+                </div>
+            </form>
+
+        </div> <!-- .modal-content -->
+    </div> <!-- .modal-dialog -->
+</div> <!-- .modalDiv -->
+<?= $this->endSection() ?>
+
+<?= $this->section('js') ?>
+<?= $this->include('plugin/validasi_js') ?>
+<script src="<?= base_url('plugin/datatables/datatables.min.js') ?>" defer></script>
+<script src="<?= base_url('vendor/js/helper_form.min.js') ?>" defer></script>
+<script src="<?= base_url('vendor/js/helper_format.min.js') ?>" defer></script>
+<script src="<?= base_url('page/level_harga.min.js') ?>" defer></script>
+<?= $this->endSection() ?>
