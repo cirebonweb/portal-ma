@@ -48,4 +48,21 @@ abstract class BaseController extends Controller
         $this->validation = service('validation');
         $this->db = \Config\Database::connect();
     }
+
+    protected function ajax()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->json(false, 'Akses dilarang', null, 403);
+        }
+        return null;
+    }
+
+    protected function json($success, $messages = null, $data = null, $code = 200)
+    {
+        return $this->response->setStatusCode($code)->setJSON([
+            'success'  => $success,
+            'messages' => $messages,
+            'data'     => $data
+        ]);
+    }
 }
