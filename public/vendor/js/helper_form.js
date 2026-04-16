@@ -190,11 +190,19 @@ const CirebonwebForm = {
                 Beranda.refreshCsrf();
                 // Swal.fire('Sukses', response.messages, 'success');
             } else {
-                if (response.messages && typeof response.messages === 'object') {
-                    Swal.fire('Peringatan', response.messages, 'warning');
+                let pesan = '';
+
+                if (typeof response.messages === 'object') {
+                    pesan = Object.values(response.messages).join('<br>');
                 } else {
-                    Swal.fire('Gagal', response.messages || 'Pesan kesalahan tidak dikenali.', 'error');
+                    pesan = response.messages || 'Pesan kesalahan tidak dikenali.';
                 }
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    html: pesan
+                });
             }
         })
 
