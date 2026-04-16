@@ -29,9 +29,16 @@ class LevelHargaModel extends Model
 
     // Validation
     protected $validationRules      = [
-        'id' => ['label' => 'ID', 'rules' => 'permit_empty|numeric'],
-        'nama' => ['label' => 'Nama Level Harga', 'rules' => 'required|max_length[10]|is_unique[level_harga.nama,id,{id}]'],
+        'id' => [
+            'label' => 'ID',
+            'rules' => 'permit_empty|numeric'
+        ],
+        'nama' => [
+            'label' => 'Nama Level Harga',
+            'rules' => 'required|max_length[10]|is_unique[level_harga.nama,id,{id}]'
+        ],
     ];
+
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -48,11 +55,11 @@ class LevelHargaModel extends Model
     protected $afterDelete    = [];
 
     /**
-	 * Query dasar untuk server-side dataTabel.
-	 * @var \CodeIgniter\Database\BaseConnection $db
-	 */
-	public function tabel()
-	{
-		return $this->db->table('level_harga')->select('*');
-	}
+     * Query dasar untuk server-side dataTabel.
+     * @var \CodeIgniter\Database\BaseConnection $db
+     */
+    public function tabel()
+    {
+        return $this->db->table('level_harga')->select('*');
+    }
 }

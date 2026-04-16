@@ -93,7 +93,7 @@ function simpan(id) {
     // Form Validasi
     $formData.validate($.extend(CirebonwebForm.FormValidasi(), {
         rules: {
-            nama: { required: true, minlength: 3, maxlength: 30 }
+            nama: { required: true, minlength: 3, maxlength: 10 }
         },
         submitHandler: function () {
             if (!formCek.isChanged()) return false;

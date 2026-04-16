@@ -51,82 +51,77 @@ class LevelHarga extends BaseController
 
     public function getId()
     {
+        if ($res = $this->ajax()) return $res;
+
         $id = $this->request->getPost('id');
 
-        if ($id && is_numeric($id)) {
-            $data = $this->levelHargaModel->find($id);
-            if ($data) {
-                return $this->response->setJSON(['success' => true, 'data' => $data]);
-            }
+        if (!$id || !is_numeric($id)) {
+            return $this->json(false, 'ID tidak valid', null, 400);
         }
 
-        return $this->response->setStatusCode(404)->setJSON([
-            'success' => false,
-            'messages' => 'Data tidak ditemukan'
-        ]);
+        $data = $this->levelHargaModel->find($id);
+
+        if (!$data) {
+            return $this->json(false, 'Data tidak ditemukan', null, 404);
+        }
+
+        return $this->json(true, null, $data);
     }
 
     public function simpan()
     {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON(['message' => 'Akses dilarang']);
-        }
+        if ($res = $this->ajax()) return $res;
 
         $data = [
             'id'   => $this->request->getPost('id'),
             'nama' => $this->request->getPost('nama')
         ];
 
+        // Bersihkan input kosong jadi null
+        foreach ($data as $key => $value) {
+            if ($value === '') {
+                $data[$key] = null;
+            }
+        }
+
         try {
-            if ($this->levelHargaModel->save($data) === false) {
-                return $this->response->setJSON([
-                    'success'  => false,
-                    'messages' => $this->levelHargaModel->errors()
-                ]);
+            // save() sudah include validation
+            if (! $this->levelHargaModel->save($data)) {
+                return $this->json(false, $this->levelHargaModel->errors());
             }
 
-            // Tentukan pesan berdasarkan ada/tidaknya id
             $pesan = empty($data['id']) ? lang("App.insert-success") : lang("App.update-success");
 
-            return $this->response->setJSON([
-                'success'  => true,
-                'messages' => $pesan
-            ]);
-        } catch (\Exception $e) {
+            return $this->json(true, $pesan);
+        } catch (\Throwable $e) {
             log_message('critical', __METHOD__ . ': ' . $e->getMessage());
-            return $this->response->setJSON([
-                'success'  => false,
-                'messages' => 'Critical: ' . $e->getMessage()
-            ]);
+            return $this->json(false, 'Critical: ' . $e->getMessage());
         }
     }
 
     public function hapus()
     {
-        if (!$this->request->isAJAX()) {
-            return $this->response->setStatusCode(403)->setJSON(['message' => 'Akses dilarang']);
-        }
+        if ($res = $this->ajax()) return $res;
 
         $id = $this->request->getPost('id');
 
+        if (!$id || !is_numeric($id)) {
+            return $this->json(false, 'ID tidak valid');
+        }
+
         try {
-            if ($this->levelHargaModel->delete($id)) {
-                return $this->response->setJSON([
-                    'success'  => true,
-                    'messages' => lang("App.delete-success")
-                ]);
+            if (! $this->levelHargaModel->find($id)) {
+                return $this->json(false, 'Data tidak ditemukan');
             }
 
-            return $this->response->setJSON([
-                'success'  => false,
-                'messages' => lang("App.delete-error")
-            ]);
-        } catch (\Exception $e) {
+            if ($this->levelHargaModel->delete($id)) {
+                return $this->json(true, lang("App.delete-success"));
+            }
+
+            return $this->json(false, lang("App.delete-error"));
+        } catch (\Throwable $e) {
             log_message('critical', __METHOD__ . ': ' . $e->getMessage());
-            return $this->response->setJSON([
-                'success'  => false,
-                'messages' => 'Terjadi kesalahan: ' . $e->getMessage()
-            ]);
+            return $this->json(false, 'Critical: ' . $e->getMessage());
         }
     }
 }

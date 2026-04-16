@@ -40,16 +40,10 @@
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
                     <div class="row">
-                        <div class="col-12">
-                            <div class="my-3">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="bi bi-circle-fill"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control upper" id="nama" name="nama" placeholder="Nama Level Harga" required>
-                                </div>
-                            </div>
-                        </div> <!-- .col-12 -->
+                        <div class="col-12 mb-2">
+                            <label for="nama">Nama Level Harga <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
                     </div> <!-- .row -->
                 </div> <!-- .modal-body -->
 
