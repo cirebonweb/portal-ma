@@ -62,4 +62,9 @@ class LevelHargaModel extends Model
     {
         return $this->db->table('level_harga')->select('*');
     }
+
+    public function getDropdown()
+    {
+        return $this->select('id, nama')->findAll();
+    }
 }
