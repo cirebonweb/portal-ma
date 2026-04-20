@@ -113,6 +113,7 @@
             </li>
 
             <?= $this->include('layout/sidebar_umum'); ?>
+            <?= $this->include('layout/sidebar_printing'); ?>
 
           </ul>
         </nav>

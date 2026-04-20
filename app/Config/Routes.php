@@ -29,4 +29,17 @@ $routes->group('umum', function ($routes) {
     });
 });
 
+$routes->group('printing', function ($routes) {
+    $routes->get('', 'Printing\DpKategori::index');
+
+    $routes->group('kategori', function ($routes) {
+        $routes->get('', 'Printing\DpKategori::index');
+        $routes->get('tabel', 'Printing\DpKategori::tabel');
+        $routes->post('tabel', 'Printing\DpKategori::tabel');
+        $routes->post('getid', 'Printing\DpKategori::getId');
+        $routes->post('simpan', 'Printing\DpKategori::simpan');
+        $routes->post('hapus', 'Printing\DpKategori::hapus');
+    });
+});
+
 service('auth')->routes($routes);
