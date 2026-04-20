@@ -11,7 +11,7 @@ class CreateDigitalPrintingTables extends Migration
         // 1. Tabel: level_harga
         $this->forge->addField([
             'id'          => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'nama'        => ['type' => 'VARCHAR', 'constraint' => 10],
+            'nama'        => ['type' => 'VARCHAR', 'constraint' => 10, 'unique' => true],
             'created_at'  => ['type' => 'TIMESTAMP', 'null' => true],
             'updated_at'  => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
@@ -40,7 +40,7 @@ class CreateDigitalPrintingTables extends Migration
         // 3. Tabel: dp_kategori
         $this->forge->addField([
             'id'         => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'nama'       => ['type' => 'VARCHAR', 'constraint' => 30],
+            'nama'       => ['type' => 'VARCHAR', 'constraint' => 30, 'unique' => true],
             'created_at' => ['type' => 'TIMESTAMP', 'null' => true],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
@@ -50,7 +50,7 @@ class CreateDigitalPrintingTables extends Migration
         // 4. Tabel: dp_bahan
         $this->forge->addField([
             'id'         => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'nama'       => ['type' => 'VARCHAR', 'constraint' => 30],
+            'nama'       => ['type' => 'VARCHAR', 'constraint' => 30, 'unique' => true],
             'created_at' => ['type' => 'TIMESTAMP', 'null' => true],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
@@ -62,7 +62,7 @@ class CreateDigitalPrintingTables extends Migration
             'id'             => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'dp_kategori_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
             'dp_bahan_id'    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
-            'nama'           => ['type' => 'VARCHAR', 'constraint' => 100],
+            'nama'           => ['type' => 'VARCHAR', 'constraint' => 100, 'unique' => true],
             'lebar'          => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 0.00],
             'panjang'        => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 0.00],
             'hpp'            => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
