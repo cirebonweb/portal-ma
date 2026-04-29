@@ -40,6 +40,15 @@ $routes->group('printing', function ($routes) {
         $routes->post('simpan', 'Printing\DpKategori::simpan');
         $routes->post('hapus', 'Printing\DpKategori::hapus');
     });
+
+    $routes->group('bahan', function ($routes) {
+        $routes->get('', 'Printing\DpBahan::index');
+        $routes->get('tabel', 'Printing\DpBahan::tabel');
+        $routes->post('tabel', 'Printing\DpBahan::tabel');
+        $routes->post('getid', 'Printing\DpBahan::getId');
+        $routes->post('simpan', 'Printing\DpBahan::simpan');
+        $routes->post('hapus', 'Printing\DpBahan::hapus');
+    });
 });
 
 service('auth')->routes($routes);
