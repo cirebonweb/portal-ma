@@ -63,5 +63,5 @@
 <script src="<?= base_url('plugin/datatables/datatables.min.js') ?>" defer></script>
 <script src="<?= base_url('vendor/js/helper_form.min.js') ?>" defer></script>
 <script src="<?= base_url('vendor/js/helper_format.min.js') ?>" defer></script>
-<script src="<?= base_url('page/dp_kategori.min.js') ?>" defer></script>
+<script src="<?= base_url('page/dp_mesin.min.js') ?>" defer></script>
 <?= $this->endSection() ?>

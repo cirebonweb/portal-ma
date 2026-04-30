@@ -37,7 +37,7 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addForeignKey('level_harga_id', 'level_harga', 'id', 'RESTRICT', 'CASCADE');
         $this->forge->createTable('konsumen');
 
-        // 3. Tabel: dp_kategori
+        // 3. Tabel: dp_mesin
         $this->forge->addField([
             'id'         => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'nama'       => ['type' => 'VARCHAR', 'constraint' => 30, 'unique' => true],
@@ -45,7 +45,7 @@ class CreateDigitalPrintingTables extends Migration
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('dp_kategori');
+        $this->forge->createTable('dp_mesin');
 
         // 4. Tabel: dp_bahan
         $this->forge->addField([
@@ -60,7 +60,7 @@ class CreateDigitalPrintingTables extends Migration
         // 5. Tabel: dp_produk
         $this->forge->addField([
             'id'             => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'dp_kategori_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
+            'dp_mesin_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
             'dp_bahan_id'    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'nama'           => ['type' => 'VARCHAR', 'constraint' => 100, 'unique' => true],
             'lebar'          => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 0.00],
@@ -77,9 +77,9 @@ class CreateDigitalPrintingTables extends Migration
             'updated_at'     => ['type' => 'TIMESTAMP', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('dp_kategori_id', 'dp_kategori', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('dp_mesin_id', 'dp_mesin', 'id', 'RESTRICT', 'CASCADE');
         $this->forge->addForeignKey('dp_bahan_id', 'dp_bahan', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addUniqueKey(['dp_kategori_id', 'dp_bahan_id']);
+        $this->forge->addUniqueKey(['dp_mesin_id', 'dp_bahan_id']);
         $this->forge->createTable('dp_produk');
 
         // 6. Tabel: dp_harga_level
@@ -182,7 +182,7 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->dropTable('dp_harga_level', true);
         $this->forge->dropTable('dp_produk', true);
         $this->forge->dropTable('dp_bahan', true);
-        $this->forge->dropTable('dp_kategori', true);
+        $this->forge->dropTable('dp_mesin', true);
         $this->forge->dropTable('konsumen', true);
         $this->forge->dropTable('level_harga', true);
     }

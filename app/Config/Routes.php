@@ -8,6 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 
 $routes->group('umum', function ($routes) {
+    
     $routes->get('', 'Umum\LevelHarga::index');
 
     $routes->group('level-harga', function ($routes) {
@@ -30,15 +31,16 @@ $routes->group('umum', function ($routes) {
 });
 
 $routes->group('printing', function ($routes) {
-    $routes->get('', 'Printing\DpKategori::index');
 
-    $routes->group('kategori', function ($routes) {
-        $routes->get('', 'Printing\DpKategori::index');
-        $routes->get('tabel', 'Printing\DpKategori::tabel');
-        $routes->post('tabel', 'Printing\DpKategori::tabel');
-        $routes->post('getid', 'Printing\DpKategori::getId');
-        $routes->post('simpan', 'Printing\DpKategori::simpan');
-        $routes->post('hapus', 'Printing\DpKategori::hapus');
+    $routes->addRedirect('', 'printing/mesin');
+
+    $routes->group('mesin', function ($routes) {
+        $routes->get('', 'Printing\DpMesin::index');
+        $routes->get('tabel', 'Printing\DpMesin::tabel');
+        $routes->post('tabel', 'Printing\DpMesin::tabel');
+        $routes->post('getid', 'Printing\DpMesin::getId');
+        $routes->post('simpan', 'Printing\DpMesin::simpan');
+        $routes->post('hapus', 'Printing\DpMesin::hapus');
     });
 
     $routes->group('bahan', function ($routes) {

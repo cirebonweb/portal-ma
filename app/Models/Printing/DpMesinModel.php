@@ -4,9 +4,9 @@ namespace App\Models\Printing;
 
 use CodeIgniter\Model;
 
-class DpKategoriModel extends Model
+class DpMesinModel extends Model
 {
-    protected $table            = 'dp_kategori';
+    protected $table            = 'dp_mesin';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
@@ -35,7 +35,7 @@ class DpKategoriModel extends Model
         ],
         'nama' => [
             'label' => 'Kategori Mesin',
-            'rules' => 'required|max_length[10]|is_unique[dp_kategori.nama,id,{id}]'
+            'rules' => 'required|max_length[10]|is_unique[dp_mesin.nama,id,{id}]'
         ],
     ];
 
@@ -60,7 +60,7 @@ class DpKategoriModel extends Model
      */
     public function tabel()
     {
-        return $this->db->table('dp_kategori')->select('*');
+        return $this->db->table('dp_mesin')->select('*');
     }
 
     public function getDropdown()

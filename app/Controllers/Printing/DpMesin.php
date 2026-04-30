@@ -3,16 +3,16 @@
 namespace App\Controllers\Printing;
 
 use App\Controllers\BaseController;
-use App\Models\Printing\DpKategoriModel;
+use App\Models\Printing\DpMesinModel;
 use App\Libraries\TabelLibrari;
 
-class DpKategori extends BaseController
+class DpMesin extends BaseController
 {
-    protected $dpKategoriModel;
+    protected $dpMesinModel;
 
     public function __construct()
     {
-        $this->dpKategoriModel = new DpKategoriModel();
+        $this->dpMesinModel = new DpMesinModel();
     }
 
     public function index(): string
@@ -21,12 +21,12 @@ class DpKategori extends BaseController
             'pageTitle' => 'Kategori Mesin',
             'navigasi'  => '<a href="/printing">Printing</a> &nbsp;'
         ];
-        return view('printing/dp_kategori', $data);
+        return view('printing/dp_mesin', $data);
     }
 
     public function tabel()
     {
-        $builder = $this->dpKategoriModel->tabel();
+        $builder = $this->dpMesinModel->tabel();
 
         $dataTable = new TabelLibrari($builder, $this->request);
         $dataTable->setSearchable(['nama']);
@@ -59,7 +59,7 @@ class DpKategori extends BaseController
             return $this->json(false, 'ID tidak valid', null, 400);
         }
 
-        $data = $this->dpKategoriModel->find($id);
+        $data = $this->dpMesinModel->find($id);
 
         if (!$data) {
             return $this->json(false, 'Data tidak ditemukan', null, 404);
@@ -86,8 +86,8 @@ class DpKategori extends BaseController
 
         try {
             // save() sudah include validation
-            if (! $this->dpKategoriModel->save($data)) {
-                return $this->json(false, $this->dpKategoriModel->errors());
+            if (! $this->dpMesinModel->save($data)) {
+                return $this->json(false, $this->dpMesinModel->errors());
             }
 
             $pesan = empty($data['id']) ? lang("App.insert-success") : lang("App.update-success");
@@ -110,11 +110,11 @@ class DpKategori extends BaseController
         }
 
         try {
-            if (! $this->dpKategoriModel->find($id)) {
+            if (! $this->dpMesinModel->find($id)) {
                 return $this->json(false, 'Data tidak ditemukan');
             }
 
-            if ($this->dpKategoriModel->delete($id)) {
+            if ($this->dpMesinModel->delete($id)) {
                 return $this->json(true, lang("App.delete-success"));
             }
 

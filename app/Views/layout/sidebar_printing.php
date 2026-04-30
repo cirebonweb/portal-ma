@@ -1,6 +1,6 @@
 <?php
 $printing_link = [
-  'printing/kategori',
+  'printing/mesin',
   'printing/bahan',
 ];
 $printing_aktif = in_array(str_replace(base_url(), '', current_url()), $printing_link);
@@ -14,7 +14,7 @@ $printing_aktif = in_array(str_replace(base_url(), '', current_url()), $printing
     <ul class="nav nav-treeview">
 
         <li class="nav-item">
-            <a href="<?= url_to('printing/kategori') ?>" class="nav-link<?= (current_url() == base_url('printing/kategori')) ? ' active' : '' ?>">
+            <a href="<?= url_to('printing/mesin') ?>" class="nav-link<?= (current_url() == base_url('printing/mesin')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
                 <p>Kategori Mesin</p>
             </a>

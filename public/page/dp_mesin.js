@@ -16,7 +16,7 @@ $(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: 'kategori/tabel',
+            url: 'mesin/tabel',
             type: 'POST',
         },
         autoWidth: false,
@@ -67,11 +67,11 @@ $('#nama').on('keyup', function () {
 function simpan(id) {
     let $modalTitle = $('.modal-title'),
         $btnSubmit = $('#btnSubmit'),
-        postUrl = 'kategori/simpan';
+        postUrl = 'mesin/simpan';
 
     // Tentukan URL POST: Simpan atau Update
     if (id > 0) {
-        CirebonwebForm.FormFetch('kategori/getid', { id }, 'POST', {})
+        CirebonwebForm.FormFetch('mesin/getid', { id }, 'POST', {})
             .done(function (response) {
                 if (response.success) {
                     $modalTitle.text('Edit Data');
@@ -129,7 +129,7 @@ function hapus(id) {
         confirmButtonText: 'Ya, hapus!'
     }).then((result) => {
         if (result.isConfirmed) {
-            CirebonwebForm.FormFetch('kategori/hapus', { id }, 'POST', {})
+            CirebonwebForm.FormFetch('mesin/hapus', { id }, 'POST', {})
                 .done(function (response) {
                     if (response.success) {
                         Swal.fire('Sukses', response.messages, 'success').then(() => {
