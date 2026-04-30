@@ -10,7 +10,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <meta name="csrf-token" content="<?= csrf_hash() ?>" />
 
-  <title><?= esc($pageTitle) . ' | ' . setting('App.siteNama') ?></title>
+  <title><?= $pageTitle . ' | ' . setting('App.siteNama') ?></title>
   <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('upload/logo/' . (setting('App.logoIkon180') ?: 'crb-icon-180.png')) ?>">
   <link rel="icon" type="image/png" sizes="192x192" href="<?= base_url('upload/logo/' . (setting('App.logoIkon192') ?: 'crb-icon-192.png')) ?>">
   <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('upload/logo/' . (setting('App.logoIkon32') ?: 'crb-icon-32.png')) ?>">
@@ -131,7 +131,6 @@
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-
                 <li class="breadcrumb-item"><a href="<?= route_to('/') ?>">Home</a></li>
                 <li class="breadcrumb-item active"><?= ($navigasi ? $navigasi . '→ &nbsp;' : '') ?><?= ($navTitle ?? $pageTitle) ?></li>
               </ol>
