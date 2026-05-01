@@ -89,7 +89,16 @@ function simpan(id) {
 
                     // Isi form
                     $formData.find('#id').val(response.data.id);
+                    $formData.find('#level_harga_id').val(response.data.level_harga_id);
+                    $formData.find('#divisi').val(response.data.divisi);
                     $formData.find('#nama').val(response.data.nama);
+                    $formData.find('#perusahaan').val(response.data.perusahaan);
+                    $formData.find('#alamat').val(response.data.alamat);
+                    $formData.find('#kota').val(response.data.kota);
+                    $formData.find('#kota').val(response.data.kota);
+                    $formData.find('#whatsapp').val(response.data.whatsapp);
+                    $formData.find('#telegram').val(response.data.telegram);
+                    $formData.find('#email').val(response.data.email);
                     $modalDiv.modal('show');
                 }
             })

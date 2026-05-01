@@ -18,7 +18,7 @@
 
                             <?php foreach ($levelHarga as $row): ?>
                                 <option value="<?= $row->id ?>">
-                                    <?= esc($row->nama) ?>
+                                    <?= $row->nama ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -77,7 +77,7 @@
 
                                 <?php foreach ($levelHarga as $row): ?>
                                     <option value="<?= $row->id ?>">
-                                        <?= esc($row->nama) ?>
+                                        <?= $row->nama ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -132,7 +132,7 @@
                         <!-- email -->
                         <div class="col-md-12 mb-2">
                             <label for="email">Email</label>
-                            <input type="text" class="form-control upper" id="email" name="email">
+                            <input type="text" class="form-control" id="email" name="email">
                         </div>
 
                     </div> <!-- .row -->

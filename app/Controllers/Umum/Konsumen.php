@@ -18,7 +18,7 @@ class Konsumen extends BaseController
         $this->levelHargaModel = new LevelHargaModel();
     }
 
-    public function index(): string
+    public function index()
     {
         $data = [
             'pageTitle'  => 'Konsumen',
