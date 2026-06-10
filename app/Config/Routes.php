@@ -51,6 +51,15 @@ $routes->group('printing', function ($routes) {
         $routes->post('simpan', 'Printing\DpBahan::simpan');
         $routes->post('hapus', 'Printing\DpBahan::hapus');
     });
+
+    $routes->group('produk', function ($routes) {
+        $routes->get('', 'Printing\DpProduk::index');
+        $routes->get('tabel', 'Printing\DpProduk::tabel');
+        $routes->post('tabel', 'Printing\DpProduk::tabel');
+        $routes->post('getid', 'Printing\DpProduk::getId');
+        $routes->post('simpan', 'Printing\DpProduk::simpan');
+        $routes->post('hapus', 'Printing\DpProduk::hapus');
+    });
 });
 
 service('auth')->routes($routes);
