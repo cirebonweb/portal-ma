@@ -12,22 +12,64 @@ const CirebonwebFormat = {
     /**
      * Memformat tanggal dari YYYY-MM-DD atau DD-MM-YYYY menjadi DD-MM-YYYY.
      *
+     * → Contoh:
+     * { targets: [10, 11], render: function (data, type, row) { return CirebonwebFormat.Tanggal(data) } },
+     * 
      * @param {string} value String tanggal yang akan diformat.
      * @returns {string} Tanggal yang diformat atau string asli jika format tidak dikenali.
      */
-    Tanggal: function (value, mode = 'full') {
+    Tanggal: function (value, mode = 'auto') {
         if (!value) return '-';
 
         const dateObj = new Date(value);
 
-        const optionsDate = { day: '2-digit', month: 'short', year: 'numeric' };
-        const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+        const optionsDate = {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+        };
+
+        const optionsTime = {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        };
 
         const tanggal = dateObj.toLocaleDateString('id-ID', optionsDate);
         const waktu = dateObj.toLocaleTimeString('id-ID', optionsTime);
 
         if (mode === 'tanggal') return tanggal;
+
+        if (mode === 'auto') {
+            if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+                return tanggal;
+            }
+        }
+
         return `${tanggal} → ${waktu}`;
+    },
+
+    /**
+     * Mengisi datepicker dari tanggal format MySQL.
+     *
+     * Contoh:
+     * CirebonwebFormat.isoTanggal('promo_awal', '2026-06-04');
+     *
+     * Hasil:
+     * #promo_awal_tgl = 04-06-2026
+     * #promo_awal     = 2026-06-04
+     *
+     * @param {string} id Base ID tanpa suffix _tgl
+     * @param {string} mysqlDate Format YYYY-MM-DD
+     */
+    isoTanggal: function (id, mysqlDate) {
+        if (!mysqlDate) return;
+
+        const date = $.datepicker.parseDate('yy-mm-dd', mysqlDate);
+
+        $('#' + id + '_tgl').datepicker('setDate', date);
+        $('#' + id).val(mysqlDate);
     },
 
     /**
