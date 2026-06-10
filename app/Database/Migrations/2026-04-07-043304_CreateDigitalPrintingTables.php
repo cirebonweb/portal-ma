@@ -60,18 +60,17 @@ class CreateDigitalPrintingTables extends Migration
         // 5. Tabel: dp_produk
         $this->forge->addField([
             'id'             => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'dp_mesin_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
+            'dp_mesin_id'    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
             'dp_bahan_id'    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'nama'           => ['type' => 'VARCHAR', 'constraint' => 100, 'unique' => true],
             'lebar'          => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 0.00],
             'panjang'        => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 0.00],
-            'hpp'            => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'harga'          => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'promo'          => ['type' => 'INT', 'constraint' => 11, 'null' => true],
-            'promo_awal'     => ['type' => 'DATE', 'null' => true],
-            'promo_akhir'    => ['type' => 'DATE', 'null' => true],
-            'promo_aktif'    => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0],
-            'rumus'          => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0], // 0:luas, 1:qty
+            'hpp'            => ['type' => 'INT', 'constraint' => 11, 'default' => 0], // harga pokok produksi
+            'harga'          => ['type' => 'INT', 'constraint' => 11, 'default' => 0], // harga normal
+            'promo'          => ['type' => 'INT', 'constraint' => 11, 'null' => true], // harga promosi
+            'promo_awal'     => ['type' => 'DATE', 'null' => true], // tangal awal promo
+            'promo_akhir'    => ['type' => 'DATE', 'null' => true], // tanggal akhir promo
+            'rumus'          => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0], // 0:perkalian luas, 1:perkalian qty
             'unggulan'       => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0],
             'created_at'     => ['type' => 'TIMESTAMP', 'null' => true],
             'updated_at'     => ['type' => 'TIMESTAMP', 'null' => true],
