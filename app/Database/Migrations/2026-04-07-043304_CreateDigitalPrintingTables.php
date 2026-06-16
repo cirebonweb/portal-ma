@@ -78,7 +78,6 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('dp_mesin_id', 'dp_mesin', 'id', 'RESTRICT', 'CASCADE');
         $this->forge->addForeignKey('dp_bahan_id', 'dp_bahan', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addUniqueKey(['dp_mesin_id', 'dp_bahan_id']);
         $this->forge->createTable('dp_produk');
 
         // 6. Tabel: dp_harga_level
