@@ -9,7 +9,14 @@ use App\Libraries\TabelLibrari;
 
 class Konsumen extends BaseController
 {
+    /**
+     * @var KonsumenModel
+     */
     protected $konsumenModel;
+
+    /**
+     * @var LevelHargaModel
+     */
     protected $levelHargaModel;
 
     public function __construct()
@@ -69,9 +76,9 @@ class Konsumen extends BaseController
 
             return [
                 $row->id,
-                $row->nama,
                 $row->nama_level ?? 'Retail',
                 $divisi,
+                $row->nama,
                 $row->perusahaan,
                 $row->alamat,
                 $row->kota,
