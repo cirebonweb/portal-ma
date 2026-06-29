@@ -34,6 +34,7 @@ const CirebonwebForm = {
         const $target = $(target);
         const form = $target.find('form')[0];
         if (form) form.reset();
+        $target.find('input[type="hidden"]').val('');
         $target.find('.is-invalid, .is-valid').removeClass('is-invalid is-valid');
         $target.find('.invalid-feedback, .valid-feedback').remove();
     },
