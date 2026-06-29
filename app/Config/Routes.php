@@ -60,6 +60,15 @@ $routes->group('printing', function ($routes) {
         $routes->post('simpan', 'Printing\DpProduk::simpan');
         $routes->post('hapus', 'Printing\DpProduk::hapus');
     });
+
+    $routes->group('harga-level', function ($routes) {
+        $routes->get('', 'Printing\DpHargaLevel::index');
+        $routes->get('tabel', 'Printing\DpHargaLevel::tabel');
+        $routes->post('tabel', 'Printing\DpHargaLevel::tabel');
+        $routes->post('getid', 'Printing\DpHargaLevel::getId');
+        $routes->post('simpan', 'Printing\DpHargaLevel::simpan');
+        $routes->post('hapus', 'Printing\DpHargaLevel::hapus');
+    });
 });
 
 service('auth')->routes($routes);

@@ -125,4 +125,9 @@ class DpProdukModel extends Model
             ->join('dp_mesin b', 'b.id = a.dp_mesin_id', 'left')
             ->join('dp_bahan c', 'c.id = a.dp_bahan_id', 'left');
     }
+
+    public function getDropdown()
+    {
+        return $this->select('id, nama, harga')->findAll();
+    }
 }
