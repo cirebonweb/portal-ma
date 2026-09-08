@@ -43,7 +43,7 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addField([
             'id'         => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'kategori'   => ['type' => 'VARCHAR', 'constraint' => 30], // misal: Outdoor, Indoor, Cutting, Copy Color
-            'nama'       => ['type' => 'VARCHAR', 'constraint' => 30, 'unique' => true], // misal: Allwin 512i, Mimaki CG-60SRIII
+            'nama'       => ['type' => 'VARCHAR', 'constraint' => 100, 'unique' => true], // misal: Allwin 512i, Mimaki CG-60SRIII
             'created_at' => ['type' => 'TIMESTAMP', 'null' => true],
             'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
             'deleted_at' => ['type' => 'TIMESTAMP', 'null' => true],
