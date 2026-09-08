@@ -10,49 +10,36 @@ class DpMesinModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
-    protected $allowedFields    = ['nama'];
+    protected $useSoftDeletes   = false; // master data, dilindungi FK RESTRICT dari dp_produk
 
-    protected bool $allowEmptyInserts = false;
-    protected bool $updateOnlyChanged = true;
+    protected $allowedFields = [
+        'kategori',
+        'nama',
+    ];
 
-    protected array $casts = [];
-    protected array $castHandlers = [];
-
-    // Dates
+    // Timestamps
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-    protected $deletedField  = false;
 
-    // Validation
-    protected $validationRules      = [
+    // Validasi server-side
+    protected $validationRules = [
         'id' => [
             'label' => 'ID',
-            'rules' => 'permit_empty|numeric'
+            'rules' => 'permit_empty|is_natural_no_zero'
+        ],
+        'kategori' => [
+            'label' => 'Kategori Mesin',
+            'rules' => 'required|string|max_length[30]'
         ],
         'nama' => [
-            'label' => 'Kategori Mesin',
-            'rules' => 'required|max_length[10]|is_unique[dp_mesin.nama,id,{id}]'
+            'label' => 'Nama Mesin',
+            'rules' => 'required|string|max_length[100]|is_unique[dp_mesin.nama,id,{id}]'
         ],
     ];
-
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
-    protected $cleanValidationRules = true;
-
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+    protected $validationMessages = [];
+    protected $skipValidation     = false;
 
     /**
      * Query dasar untuk server-side dataTabel.
@@ -60,9 +47,25 @@ class DpMesinModel extends Model
      */
     public function tabel()
     {
-        return $this->db->table('dp_mesin')->select('*');
+        return $this->db->table('dp_mesin a')
+            ->select('a.id, a.kategori, a.nama, a.created_at, a.updated_at');
     }
 
+    /**
+     * Cek apakah mesin masih digunakan oleh produk.
+     * Tabel ini tidak soft delete, jadi FK RESTRICT akan menolak delete
+     * jika masih direferensikan dp_produk.
+     */
+    public function isUsed(int $id): bool
+    {
+        return $this->db->table('dp_produk')
+            ->where('dp_mesin_id', $id)
+            ->countAllResults() > 0;
+    }
+
+    /**
+     * Mendapatkan daftar nama mesin untuk dropdown menu.
+     */
     public function getDropdown()
     {
         return $this->select('id, nama')->findAll();
