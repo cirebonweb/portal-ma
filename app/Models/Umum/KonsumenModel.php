@@ -10,101 +10,95 @@ class KonsumenModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
-    protected $allowedFields    = [
-        'level_harga_id',
+    protected $useSoftDeletes   = true; // data pelanggan penting, histori kontak & kemungkinan reaktivasi
+
+    protected $allowedFields = [
+        'kategori_konsumen_id',
         'nama',
         'perusahaan',
         'alamat',
         'kota',
         'whatsapp',
-        'telegram',
+        'telegram_id',
         'email',
-        'divisi'
+        'divisi',
     ];
 
-    protected bool $allowEmptyInserts = false;
-    protected bool $updateOnlyChanged = true;
-
-    protected array $casts = [];
-    protected array $castHandlers = [];
-
-    // Dates
+    // Timestamps
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-    protected $deletedField  = false;
+    protected $deletedField  = 'deleted_at';
 
-    // Validation
-    protected $validationRules      = [
+    // Validasi server-side
+    protected $validationRules = [
         'id' => [
             'label' => 'ID',
-            'rules' => 'permit_empty|numeric'
+            'rules' => 'permit_empty|is_natural_no_zero'
         ],
-        'level_harga_id' => [
-            'label' => 'ID Level Harga',
-            'rules' => 'permit_empty|numeric'
+        'kategori_konsumen_id' => [
+            'label' => 'Kategori Konsumen',
+            'rules' => 'permit_empty|is_natural_no_zero'
         ],
         'nama' => [
             'label' => 'Nama Konsumen',
-            'rules' => 'required|max_length[40]|is_unique[konsumen.nama,id,{id}]'
+            'rules' => 'required|string|max_length[40]'
         ],
         'perusahaan' => [
-            'label' => 'Perusahaan',
-            'rules' => 'permit_empty|max_length[40]'
+            'label' => 'Nama Perusahaan',
+            'rules' => 'permit_empty|string|max_length[40]'
         ],
         'alamat' => [
             'label' => 'Alamat',
-            'rules' => 'permit_empty|max_length[100]'
+            'rules' => 'permit_empty|string|max_length[100]'
         ],
         'kota' => [
             'label' => 'Kota',
-            'rules' => 'permit_empty|max_length[20]'
+            'rules' => 'permit_empty|string|max_length[20]'
         ],
         'whatsapp' => [
-            'label' => 'Whatsapp',
-            'rules' => 'permit_empty|max_length[20]'
+            'label' => 'Nomor WhatsApp',
+            'rules' => 'permit_empty|string|max_length[20]'
         ],
-        'telegram' => [
-            'label' => 'ID Telegram',
-            'rules' => 'permit_empty|max_length[20]'
+        'telegram_id' => [
+            'label' => 'Telegram ID',
+            'rules' => 'permit_empty|string|max_length[20]'
         ],
         'email' => [
             'label' => 'Email',
-            'rules' => 'permit_empty|max_length[100]|valid_email'
+            'rules' => 'permit_empty|valid_email|max_length[100]'
         ],
         'divisi' => [
             'label' => 'Divisi',
-            'rules' => 'required|numeric'
-        ]
+            'rules' => 'permit_empty|in_list[0,1,2]'
+        ],
     ];
-    
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
-    protected $cleanValidationRules = true;
-
-    // Callbacks
-    protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
-    protected $afterInsert    = [];
-    protected $beforeUpdate   = [];
-    protected $afterUpdate    = [];
-    protected $beforeFind     = [];
-    protected $afterFind      = [];
-    protected $beforeDelete   = [];
-    protected $afterDelete    = [];
+    protected $validationMessages = [];
+    protected $skipValidation     = false;
 
     /**
      * Query dasar untuk server-side dataTabel.
+     * Join kategori_konsumen untuk tampilan nama kategori, bukan hanya ID.
      * @var \CodeIgniter\Database\BaseConnection $db
      */
     public function tabel()
     {
         return $this->db->table('konsumen a')
-            ->select('a.id, a.nama, a.perusahaan, a.alamat, a.kota, a.whatsapp, a.telegram, a.email, 
-            a.divisi, a.created_at, a.updated_at, b.nama nama_level')
-            ->join('level_harga b', 'b.id = a.level_harga_id', 'left');
+            ->select('a.id, a.nama, a.perusahaan, a.kota, a.whatsapp, a.divisi, b.nama as kategori_nama, a.created_at, a.updated_at')
+            ->join('kategori_konsumen b', 'b.id = a.kategori_konsumen_id', 'left');
+    }
+
+    /**
+     * Cek apakah konsumen masih memiliki transaksi nota.
+     * Meski tabel ini soft delete (sehingga FK RESTRICT tidak akan terpicu
+     * saat delete() biasa), method ini tetap berguna untuk validasi bisnis —
+     * misal mencegah hapus konsumen yang masih ada transaksi berjalan (status_nota belum lunas).
+     */
+    public function isUsed(int $id): bool
+    {
+        return $this->db->table('dp_nota')
+            ->where('konsumen_id', $id)
+            ->countAllResults() > 0;
     }
 }
