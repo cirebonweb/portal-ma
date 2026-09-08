@@ -201,6 +201,9 @@ class CreateDigitalPrintingTables extends Migration
             'diserahkan_id'  => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true], // misal: Budi (update saat laporan dicetak)
             'diterima_id'    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'diketahui_id'   => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'status'         => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0], // 0:Draft, 1:Diserahkan, 2:Terkunci, 3:Dibuka Kembali (revisi)
+            'locked_at'      => ['type' => 'DATETIME', 'null' => true],
+            'locked_by'      => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true], // FK users
             'keterangan'     => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'print_at'       => ['type' => 'DATETIME', 'null' => true], // terakhir kali dicetak
             'created_at'     => ['type' => 'TIMESTAMP', 'null' => true],
@@ -237,11 +240,27 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addForeignKey('dp_laporan_id', 'dp_laporan', 'id', 'RESTRICT', 'CASCADE');
         $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'RESTRICT', 'CASCADE');
         $this->forge->createTable('dp_laporan_isi');
+
+        // 13. Tabel: dp_laporan_log
+        $this->forge->addField([
+            'id'             => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'dp_laporan_id'  => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
+            'user_id'        => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
+            'status_sebelum' => ['type' => 'TINYINT', 'constraint' => 4],
+            'status_sesudah' => ['type' => 'TINYINT', 'constraint' => 4],
+            'keterangan'     => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
+            'created_at'     => ['type' => 'TIMESTAMP', 'null' => true],
+        ]);
+        $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('dp_laporan_id', 'dp_laporan', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->createTable('dp_laporan_log');
     }
 
     public function down()
     {
         // Hapus tabel dalam urutan terbalik untuk menghindari kendala kunci asing (FK).
+        $this->forge->dropTable('dp_laporan_log', true);
         $this->forge->dropTable('dp_laporan_isi', true);
         $this->forge->dropTable('dp_laporan', true); // menu printing: Data Laporan
         $this->forge->dropTable('dp_nota_bayar', true);
