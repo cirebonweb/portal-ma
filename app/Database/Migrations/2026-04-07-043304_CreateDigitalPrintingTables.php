@@ -10,268 +10,269 @@ class CreateDigitalPrintingTables extends Migration
     {
         // 1. Tabel: kategori_konsumen
         $this->forge->addField([
-            'id'          => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'nama'        => ['type' => 'VARCHAR', 'constraint' => 20, 'unique' => true], // misal: Retail, Corporate, Karyawan
-            'created_at'  => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at'  => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at'  => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'nama'       => ['type' => 'varchar', 'constraint' => 20, 'unique' => true], // Retail, Corporate, Karyawan
+            'created_at' => ['type' => 'timestamp', 'null' => true],
+            'updated_at' => ['type' => 'timestamp', 'null' => true],
+            'deleted_at' => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('kategori_konsumen');
 
         // 2. Tabel: konsumen
         $this->forge->addField([
-            'id'                   => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'kategori_konsumen_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
-            'nama'                 => ['type' => 'VARCHAR', 'constraint' => 40],
-            'perusahaan'           => ['type' => 'VARCHAR', 'constraint' => 40, 'null' => true],
-            'alamat'               => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
-            'kota'                 => ['type' => 'VARCHAR', 'constraint' => 20, 'null' => true],
-            'whatsapp'             => ['type' => 'VARCHAR', 'constraint' => 20, 'null' => true],
-            'telegram_id'          => ['type' => 'VARCHAR', 'constraint' => 20, 'null' => true],
-            'email'                => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
-            'divisi'               => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0], // 0:umum, 1:printing, 2:advertising
-            'created_at'           => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at'           => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at'           => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'                   => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'kategori_konsumen_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'nama'                 => ['type' => 'varchar', 'constraint' => 40],
+            'perusahaan'           => ['type' => 'varchar', 'constraint' => 40, 'null' => true],
+            'alamat'               => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
+            'kota'                 => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
+            'whatsapp'             => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
+            'telegram_id'          => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
+            'email'                => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
+            'divisi'               => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:umum, 1:printing, 2:advertising
+            'created_at'           => ['type' => 'timestamp', 'null' => true],
+            'updated_at'           => ['type' => 'timestamp', 'null' => true],
+            'deleted_at'           => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('kategori_konsumen_id', 'kategori_konsumen', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('kategori_konsumen_id', 'kategori_konsumen', 'id', 'SET NULL', 'CASCADE');
         $this->forge->createTable('konsumen');
 
-        // 3. Tabel: dp_mesin
+        // 3. Tabel: kategori_produk
         $this->forge->addField([
-            'id'         => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'kategori'   => ['type' => 'VARCHAR', 'constraint' => 30], // misal: Outdoor, Indoor, Cutting, Copy Color
-            'nama'       => ['type' => 'VARCHAR', 'constraint' => 100, 'unique' => true], // misal: Allwin 512i, Mimaki CG-60SRIII
-            'created_at' => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at' => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'divisi'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 1: Printing, 2: Advertising, 3: Partner/Vendor
+            'nama'       => ['type' => 'varchar', 'constraint' => 50], // Mesin Outdoor, Jasa dan Layanan, Cetak Offset
+            'created_at' => ['type' => 'timestamp', 'null' => true],
+            'updated_at' => ['type' => 'timestamp', 'null' => true],
+            'deleted_at' => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('dp_mesin');
+        $this->forge->addUniqueKey(['divisi', 'nama']);
+        $this->forge->createTable('kategori_produk');
 
         // 4. Tabel: dp_bahan
         $this->forge->addField([
-            'id'         => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'nama'       => ['type' => 'VARCHAR', 'constraint' => 30, 'unique' => true],
-            'created_at' => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at' => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at' => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'nama'       => ['type' => 'varchar', 'constraint' => 30, 'unique' => true],
+            'created_at' => ['type' => 'timestamp', 'null' => true],
+            'updated_at' => ['type' => 'timestamp', 'null' => true],
+            'deleted_at' => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('dp_bahan');
 
         // 5. Tabel: dp_produk
         $this->forge->addField([
-            'id'           => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'dp_mesin_id'  => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'dp_bahan_id'  => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
-            'nama'         => ['type' => 'VARCHAR', 'constraint' => 100, 'unique' => true],
-            'lebar'        => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 0.00],
-            'panjang'      => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 0.00],
-            'satuan'       => ['type' => 'VARCHAR', 'constraint' => 10, 'default' => 'm²'],
-            'hpp'          => ['type' => 'INT', 'constraint' => 11, 'default' => 0], // harga pokok produksi
-            'harga'        => ['type' => 'INT', 'constraint' => 11, 'default' => 0], // harga dasar
-            'promo'        => ['type' => 'INT', 'constraint' => 11, 'null' => true], // harga promosi
-            'promo_awal'   => ['type' => 'DATE', 'null' => true], // tanggal awal promo
-            'promo_akhir'  => ['type' => 'DATE', 'null' => true], // tanggal akhir promo
-            'rumus'        => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0], // 0:perkalian luas, 1:perkalian qty
-            'unggulan'     => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0],
-            'created_at'   => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at'   => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at'   => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'                 => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'kategori_produk_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'dp_bahan_id'        => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'nama'               => ['type' => 'varchar', 'constraint' => 100, 'unique' => true],
+            'lebar'              => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
+            'panjang'            => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
+            'satuan'             => ['type' => 'varchar', 'constraint' => 10, 'default' => 'm²'],
+            'hpp'                => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'harga'              => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'promo'              => ['type' => 'int', 'constraint' => 11, 'null' => true],
+            'promo_awal'         => ['type' => 'date', 'null' => true],
+            'promo_akhir'        => ['type' => 'date', 'null' => true],
+            'rumus'              => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:perkalian luas, 1:perkalian qty
+            'unggulan'           => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],
+            'created_at'         => ['type' => 'timestamp', 'null' => true],
+            'updated_at'         => ['type' => 'timestamp', 'null' => true],
+            'deleted_at'         => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('dp_mesin_id', 'dp_mesin', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('dp_bahan_id', 'dp_bahan', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('kategori_produk_id', 'kategori_produk', 'id', 'SET NULL', 'CASCADE');
+        $this->forge->addForeignKey('dp_bahan_id', 'dp_bahan', 'id', 'SET NULL', 'CASCADE');
         $this->forge->createTable('dp_produk');
 
         // 6. Tabel: dp_kategori_harga
         $this->forge->addField([
-            'id'                   => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'kategori_konsumen_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'dp_produk_id'         => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'harga'                => ['type' => 'INT', 'constraint' => 11],
-            'created_at'           => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at'           => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at'           => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'                   => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'kategori_konsumen_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'dp_produk_id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'harga'                => ['type' => 'int', 'constraint' => 11],
+            'created_at'           => ['type' => 'timestamp', 'null' => true],
+            'updated_at'           => ['type' => 'timestamp', 'null' => true],
+            'deleted_at'           => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('kategori_konsumen_id', 'kategori_konsumen', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('kategori_konsumen_id', 'kategori_konsumen', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addUniqueKey(['kategori_konsumen_id', 'dp_produk_id']);
         $this->forge->createTable('dp_kategori_harga');
 
         // 7. Tabel: dp_harga_khusus
         $this->forge->addField([
-            'id'           => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'konsumen_id'  => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'dp_produk_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'harga'        => ['type' => 'INT', 'constraint' => 11],
-            'created_at'   => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at'   => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at'   => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'           => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'konsumen_id'  => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'dp_produk_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'harga'        => ['type' => 'int', 'constraint' => 11],
+            'created_at'   => ['type' => 'timestamp', 'null' => true],
+            'updated_at'   => ['type' => 'timestamp', 'null' => true],
+            'deleted_at'   => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('konsumen_id', 'konsumen', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('konsumen_id', 'konsumen', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addUniqueKey(['konsumen_id', 'dp_produk_id']);
         $this->forge->createTable('dp_harga_khusus');
 
         // 8. Tabel: dp_nota
         $this->forge->addField([
-            'id'             => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'user_id'        => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
-            'konsumen_id'    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'tanggal'        => ['type' => 'DATE'],
-            'nota'           => ['type' => 'VARCHAR', 'constraint' => 30, 'unique' => true],
-            'subtotal'       => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'diskon_persen'  => ['type' => 'TINYINT', 'constraint' => 3, 'default' => 0],
-            'diskon_nominal' => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'nettotal'       => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'bayar'          => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'sisa'           => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'status_nota'    => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0], // 0:Belum Bayar, 1:Belum Lunas, 2:Lunas, 3:Hapus Nota, 4:Retur Nota
-            'status_barang'  => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0], // 0:Belum Ambil, 1:Sudah Ambil
-            'tgl_ambil'      => ['type' => 'DATE', 'null' => true],
-            'keterangan'     => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
-            'created_at'     => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at'     => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at'     => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'user_id'        => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'konsumen_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'tanggal'        => ['type' => 'date'],
+            'nota'           => ['type' => 'varchar', 'constraint' => 30, 'unique' => true],
+            'subtotal'       => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'diskon_persen'  => ['type' => 'tinyint', 'constraint' => 3, 'default' => 0],
+            'diskon_nominal' => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'nettotal'       => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'bayar'          => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'sisa'           => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'status_nota'    => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Belum Bayar, 1:Belum Lunas, 2:Lunas, 3:Hapus Nota, 4:Retur Nota
+            'status_barang'  => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Belum Ambil, 1:Sudah Ambil
+            'tgl_ambil'      => ['type' => 'date', 'null' => true],
+            'keterangan'     => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'created_at'     => ['type' => 'timestamp', 'null' => true],
+            'updated_at'     => ['type' => 'timestamp', 'null' => true],
+            'deleted_at'     => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addKey('tanggal');
-        $this->forge->addForeignKey('user_id', 'users', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'SET NULL', 'CASCADE');
         $this->forge->addForeignKey('konsumen_id', 'konsumen', 'id', 'RESTRICT', 'CASCADE');
         $this->forge->createTable('dp_nota');
 
         // 9. Tabel: dp_nota_isi
         $this->forge->addField([
-            'id'           => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'dp_nota_id'   => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'dp_produk_id' => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'tema'         => ['type' => 'VARCHAR', 'constraint' => 100],
-            'lebar'        => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 0.00],
-            'panjang'      => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 0.00],
-            'luas'         => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 0.00],
-            'qty'          => ['type' => 'SMALLINT', 'constraint' => 6, 'default' => 0],
-            'harga_satuan' => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'subtotal'     => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'hpp'          => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'created_at'   => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at'   => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at'   => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'           => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'dp_nota_id'   => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'dp_produk_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'tema'         => ['type' => 'varchar', 'constraint' => 100],
+            'lebar'        => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
+            'panjang'      => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
+            'luas'         => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
+            'qty'          => ['type' => 'smallint', 'constraint' => 6, 'default' => 0],
+            'harga_satuan' => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'subtotal'     => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'hpp'          => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'created_at'   => ['type' => 'timestamp', 'null' => true],
+            'updated_at'   => ['type' => 'timestamp', 'null' => true],
+            'deleted_at'   => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'RESTRICT', 'CASCADE');
         $this->forge->createTable('dp_nota_isi');
 
         // 10. Tabel: dp_nota_bayar
         $this->forge->addField([
-            'id'             => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'user_id'        => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
-            'dp_nota_id'     => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'tanggal'        => ['type' => 'DATE'],
-            'metode'         => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0], // 0:Tunai, 1:Transfer
-            'bukti_transfer' => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
-            'diterima'       => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'jumlah'         => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'kembalian'      => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'created_at'     => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at'     => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at'     => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'user_id'        => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'dp_nota_id'     => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'tanggal'        => ['type' => 'date'],
+            'metode'         => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Tunai, 1:Transfer
+            'bukti_transfer' => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'diterima'       => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'jumlah'         => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'kembalian'      => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'created_at'     => ['type' => 'timestamp', 'null' => true],
+            'updated_at'     => ['type' => 'timestamp', 'null' => true],
+            'deleted_at'     => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('user_id', 'users', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'SET NULL', 'CASCADE');
+        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('dp_nota_bayar');
 
         // 11. Tabel: dp_laporan
         $this->forge->addField([
-            'id'             => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'user_id'        => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true], // pembuat laporan (misal: Andi)
-            'tanggal'        => ['type' => 'DATE'],
-            'pemasukan'      => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'pengeluaran'    => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'pendapatan'     => ['type' => 'INT', 'constraint' => 11, 'default' => 0], // snapshot: pemasukan - pengeluaran
-            'tunai'          => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'transfer'       => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'diserahkan_id'  => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true], // misal: Budi (update saat laporan dicetak)
-            'diterima_id'    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
-            'diketahui_id'   => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true],
-            'status'         => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 0], // 0:Draft, 1:Diserahkan, 2:Terkunci, 3:Dibuka Kembali (revisi)
-            'locked_at'      => ['type' => 'DATETIME', 'null' => true],
-            'locked_by'      => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true], // FK users
-            'keterangan'     => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
-            'print_at'       => ['type' => 'DATETIME', 'null' => true], // terakhir kali dicetak
-            'created_at'     => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at'     => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at'     => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'            => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'user_id'       => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'tanggal'       => ['type' => 'date'],
+            'pemasukan'     => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'pengeluaran'   => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'pendapatan'    => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'tunai'         => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'transfer'      => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'diserahkan_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'diterima_id'   => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'diketahui_id'  => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'status'        => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],
+            'locked_at'     => ['type' => 'datetime', 'null' => true],
+            'locked_by'     => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'keterangan'    => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'print_at'      => ['type' => 'datetime', 'null' => true],
+            'created_at'    => ['type' => 'timestamp', 'null' => true],
+            'updated_at'    => ['type' => 'timestamp', 'null' => true],
+            'deleted_at'    => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addKey('tanggal');
         $this->forge->addForeignKey('user_id', 'users', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('diserahkan_id', 'users', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('diterima_id', 'users', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('diketahui_id', 'users', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('diserahkan_id', 'users', 'id', 'SET NULL', 'CASCADE');
+        $this->forge->addForeignKey('diterima_id', 'users', 'id', 'SET NULL', 'CASCADE');
+        $this->forge->addForeignKey('diketahui_id', 'users', 'id', 'SET NULL', 'CASCADE');
+        $this->forge->addForeignKey('locked_by', 'users', 'id', 'SET NULL', 'CASCADE');
         $this->forge->addUniqueKey(['user_id', 'tanggal']);
         $this->forge->createTable('dp_laporan');
 
         // 12. Tabel: dp_laporan_isi
         $this->forge->addField([
-            'id'             => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'dp_laporan_id'  => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'dp_nota_id'     => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'null' => true], // isi jika baris ini dari transaksi nota
-            'nota'           => ['type' => 'VARCHAR', 'constraint' => 30, 'null' => true], // nomor nota manual/arsip lama, atau salinan dp_nota.nota
-            'nama'           => ['type' => 'VARCHAR', 'constraint' => 100], // nama konsumen/keterangan transaksi
-            'qty'            => ['type' => 'SMALLINT', 'constraint' => 6, 'default' => 0],
-            'satuan'         => ['type' => 'VARCHAR', 'constraint' => 10, 'null' => true],
-            'harga'          => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'pemasukan'      => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'pengeluaran'    => ['type' => 'INT', 'constraint' => 11, 'default' => 0],
-            'keterangan'     => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
-            'created_at'     => ['type' => 'TIMESTAMP', 'null' => true],
-            'updated_at'     => ['type' => 'TIMESTAMP', 'null' => true],
-            'deleted_at'     => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'            => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'dp_laporan_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'dp_nota_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'nota'          => ['type' => 'varchar', 'constraint' => 30, 'null' => true],
+            'nama'          => ['type' => 'varchar', 'constraint' => 100],
+            'qty'           => ['type' => 'smallint', 'constraint' => 6, 'default' => 0],
+            'satuan'        => ['type' => 'varchar', 'constraint' => 10, 'null' => true],
+            'harga'         => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'pemasukan'     => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'pengeluaran'   => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'keterangan'    => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'created_at'    => ['type' => 'timestamp', 'null' => true],
+            'updated_at'    => ['type' => 'timestamp', 'null' => true],
+            'deleted_at'    => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('dp_laporan_id', 'dp_laporan', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('dp_laporan_id', 'dp_laporan', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'SET NULL', 'CASCADE');
         $this->forge->createTable('dp_laporan_isi');
 
         // 13. Tabel: dp_laporan_log
         $this->forge->addField([
-            'id'             => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'dp_laporan_id'  => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'user_id'        => ['type' => 'INT', 'constraint' => 11, 'unsigned' => true],
-            'status_sebelum' => ['type' => 'TINYINT', 'constraint' => 4],
-            'status_sesudah' => ['type' => 'TINYINT', 'constraint' => 4],
-            'keterangan'     => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
-            'created_at'     => ['type' => 'TIMESTAMP', 'null' => true],
+            'id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'dp_laporan_id'  => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'user_id'        => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'status_sebelum' => ['type' => 'tinyint', 'constraint' => 4],
+            'status_sesudah' => ['type' => 'tinyint', 'constraint' => 4],
+            'keterangan'     => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'created_at'     => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('dp_laporan_id', 'dp_laporan', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('dp_laporan_id', 'dp_laporan', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('user_id', 'users', 'id', 'RESTRICT', 'CASCADE');
         $this->forge->createTable('dp_laporan_log');
     }
 
     public function down()
     {
-        // Hapus tabel dalam urutan terbalik untuk menghindari kendala kunci asing (FK).
-        $this->forge->dropTable('dp_laporan_log', true);
+        $this->forge->dropTable('dp_laporan_log', true);    // printing → status laporan
         $this->forge->dropTable('dp_laporan_isi', true);
-        $this->forge->dropTable('dp_laporan', true); // menu printing: Data Laporan
+        $this->forge->dropTable('dp_laporan', true);        // printing → data laporan
         $this->forge->dropTable('dp_nota_bayar', true);
         $this->forge->dropTable('dp_nota_isi', true);
-        $this->forge->dropTable('dp_nota', true); // menu printing: Nota Penjualan
-        $this->forge->dropTable('dp_harga_khusus', true); // menu printing: Harga Khusus
-        $this->forge->dropTable('dp_kategori_harga', true); // menu printing: Harga Per Kategori
-        $this->forge->dropTable('dp_produk', true); // menu printing: Data Produk
-        $this->forge->dropTable('dp_bahan', true); // menu printing: Data Bahan
-        $this->forge->dropTable('dp_mesin', true); // menu printing: Data Mesin
-        $this->forge->dropTable('konsumen', true); // menu umum: Data Konsumen
-        $this->forge->dropTable('kategori_konsumen', true); // menu umum: Kategori Konsumen
+        $this->forge->dropTable('dp_nota', true);           // printing → data nota
+        $this->forge->dropTable('dp_harga_khusus', true);   // printing → harga khusus konsumen
+        $this->forge->dropTable('dp_kategori_harga', true); // printing → kategori harga konsumen
+        $this->forge->dropTable('dp_produk', true);         // printing → data produk
+        $this->forge->dropTable('dp_bahan', true);          // printing → data bahan
+        $this->forge->dropTable('kategori_produk', true);   // umum → kategori produk
+        $this->forge->dropTable('konsumen', true);          // umum → konsumen
+        $this->forge->dropTable('kategori_konsumen', true); // umum → kategori konsumen
     }
 }
