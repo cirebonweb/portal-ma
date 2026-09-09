@@ -9,15 +9,15 @@ $routes->get('/', 'Home::index');
 
 $routes->group('umum', function ($routes) {
     
-    $routes->get('', 'Umum\LevelHarga::index');
+    $routes->get('', 'Umum\KategoriKonsumen::index');
 
-    $routes->group('level-harga', function ($routes) {
-        $routes->get('', 'Umum\LevelHarga::index');
-        $routes->get('tabel', 'Umum\LevelHarga::tabel');
-        $routes->post('tabel', 'Umum\LevelHarga::tabel');
-        $routes->post('getid', 'Umum\LevelHarga::getId');
-        $routes->post('simpan', 'Umum\LevelHarga::simpan');
-        $routes->post('hapus', 'Umum\LevelHarga::hapus');
+    $routes->group('kategori-konsumen', function ($routes) {
+        $routes->get('', 'Umum\KategoriKonsumen::index');
+        $routes->get('tabel', 'Umum\KategoriKonsumen::tabel');
+        $routes->post('tabel', 'Umum\KategoriKonsumen::tabel');
+        $routes->post('getid', 'Umum\KategoriKonsumen::getId');
+        $routes->post('simpan', 'Umum\KategoriKonsumen::simpan');
+        $routes->post('hapus', 'Umum\KategoriKonsumen::hapus');
     });
 
     $routes->group('konsumen', function ($routes) {
@@ -68,6 +68,15 @@ $routes->group('printing', function ($routes) {
         $routes->post('getid', 'Printing\DpHargaLevel::getId');
         $routes->post('simpan', 'Printing\DpHargaLevel::simpan');
         $routes->post('hapus', 'Printing\DpHargaLevel::hapus');
+    });
+
+    $routes->group('harga-khusus', function ($routes) {
+        $routes->get('', 'Printing\DpHargaKhusus::index');
+        $routes->get('tabel', 'Printing\DpHargaKhusus::tabel');
+        $routes->post('tabel', 'Printing\DpHargaKhusus::tabel');
+        $routes->post('getid', 'Printing\DpHargaKhusus::getId');
+        $routes->post('simpan', 'Printing\DpHargaKhusus::simpan');
+        $routes->post('hapus', 'Printing\DpHargaKhusus::hapus');
     });
 });
 

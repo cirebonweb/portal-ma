@@ -29,7 +29,7 @@ class KategoriKonsumenModel extends Model
             'rules' => 'permit_empty|is_natural_no_zero'
         ],
         'nama' => [
-            'label' => 'Nama Kategori Konsumen',
+            'label' => 'Kategori Konsumen',
             'rules' => 'required|string|max_length[20]|is_unique[kategori_konsumen.nama,id,{id}]'
         ]
     ];
@@ -56,5 +56,13 @@ class KategoriKonsumenModel extends Model
         return $this->db->table('konsumen')
             ->where('kategori_konsumen_id', $id)
             ->countAllResults() > 0;
+    }
+
+    /**
+     * Mendapatkan daftar nama kategori konsumen untuk dropdown menu.
+     */
+    public function getDropdown()
+    {
+        return $this->select('id, nama')->findAll();
     }
 }
