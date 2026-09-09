@@ -19,7 +19,7 @@ $(function () {
             url: 'konsumen/tabel',
             type: 'POST',
             data: function (d) {
-                d.filter_level = $('#filter_level').val();
+                d.filter_konsumen = $('#filter_konsumen').val();
                 d.filter_divisi = $('#filter_divisi').val();
             }
         },
@@ -33,7 +33,7 @@ $(function () {
                 text: 'Reload',
                 action: function (e, dt, node, config) {
                     dt.search('').draw();
-                    $('#filter_level').val('').trigger('change');
+                    $('#filter_konsumen').val('').trigger('change');
                     $('#filter_divisi').val('').trigger('change');
 
                     // Reload data dari server
@@ -44,7 +44,7 @@ $(function () {
             },
             {
                 extend: 'excelHtml5',
-                exportOptions: { columns: ':visible:not(:eq(12))' }
+                exportOptions: { columns: ':not(.no-export)' }
             }
         ],
         columnDefs: [
@@ -55,8 +55,8 @@ $(function () {
     });
 
     // Custom dropdown filter
-    $('#tabelData_filter.dataTables_filter').append($('#filter_level, #filter_divisi'));
-    $(document).on('change', '#filter_level, #filter_divisi', function () {
+    $('#tabelData_filter.dataTables_filter').append($('#filter_konsumen, #filter_divisi'));
+    $(document).on('change', '#filter_konsumen, #filter_divisi', function () {
         $tabelData.DataTable().ajax.reload(null, false);
     });
 });
@@ -89,7 +89,7 @@ function simpan(id) {
 
                     // Isi form
                     $formData.find('#id').val(response.data.id);
-                    $formData.find('#level_harga_id').val(response.data.level_harga_id);
+                    $formData.find('#kategori_konsumen_id').val(response.data.kategori_konsumen_id);
                     $formData.find('#divisi').val(response.data.divisi);
                     $formData.find('#nama').val(response.data.nama);
                     $formData.find('#perusahaan').val(response.data.perusahaan);
@@ -97,7 +97,7 @@ function simpan(id) {
                     $formData.find('#kota').val(response.data.kota);
                     $formData.find('#kota').val(response.data.kota);
                     $formData.find('#whatsapp').val(response.data.whatsapp);
-                    $formData.find('#telegram').val(response.data.telegram);
+                    $formData.find('#telegram_id').val(response.data.telegram_id);
                     $formData.find('#email').val(response.data.email);
                     $modalDiv.modal('show');
                 }
@@ -112,13 +112,13 @@ function simpan(id) {
     // Form Validasi
     $formData.validate($.extend(CirebonwebForm.FormValidasi(), {
         rules: {
-            level_harga_id: { required: false },
+            kategori_konsumen_id: { required: true },
             nama: { required: true, minlength: 3, maxlength: 40 },
             perusahaan: { required: false, minlength: 3, maxlength: 40 },
             alamat: { required: false, minlength: 5, maxlength: 100 },
-            kota: { required: false, minlength: 5, maxlength: 20 },
+            kota: { required: true, minlength: 5, maxlength: 20 },
             whatsapp: { required: false, minlength: 5, maxlength: 20 },
-            telegram: { required: false, digits: true, minlength: 5, maxlength: 20 },
+            telegram_id: { required: false, digits: true, minlength: 5, maxlength: 20 },
             email: { required: false, customEmail: true },
             divisi: { required: false, digits: true }
         },

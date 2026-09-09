@@ -85,8 +85,9 @@ class KonsumenModel extends Model
     public function tabel()
     {
         return $this->db->table('konsumen a')
-            ->select('a.id, a.nama, a.perusahaan, a.kota, a.whatsapp, a.divisi, b.nama as kategori_nama, a.created_at, a.updated_at')
-            ->join('kategori_konsumen b', 'b.id = a.kategori_konsumen_id', 'left');
+            ->select('a.id, a.nama, a.perusahaan, a.alamat, a.kota, a.whatsapp, a.telegram_id, a.email, a.divisi, b.nama as kategori_nama, a.created_at, a.updated_at')
+            ->join('kategori_konsumen b', 'b.id = a.kategori_konsumen_id', 'left')
+            ->where('a.deleted_at', null);
     }
 
     /**

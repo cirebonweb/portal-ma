@@ -4,7 +4,7 @@ namespace App\Controllers\Umum;
 
 use App\Controllers\BaseController;
 use App\Models\Umum\KonsumenModel;
-use App\Models\Umum\LevelHargaModel;
+use App\Models\Umum\KategoriKonsumenModel;
 use App\Libraries\TabelLibrari;
 
 class Konsumen extends BaseController
@@ -15,22 +15,22 @@ class Konsumen extends BaseController
     protected $konsumenModel;
 
     /**
-     * @var LevelHargaModel
+     * @var KategoriKonsumenModel
      */
-    protected $levelHargaModel;
+    protected $kategoriKonsumenModel;
 
     public function __construct()
     {
         $this->konsumenModel = new KonsumenModel();
-        $this->levelHargaModel = new LevelHargaModel();
+        $this->kategoriKonsumenModel = new KategoriKonsumenModel();
     }
 
     public function index()
     {
         $data = [
-            'pageTitle'  => 'Konsumen',
+            'pageTitle'  => 'Data Konsumen',
             'navigasi'   => '<a href="/umum">Umum</a> &nbsp;',
-            'levelHarga' => $this->levelHargaModel->getDropdown()
+            'kategori' => $this->kategoriKonsumenModel->getDropdown()
         ];
         return view('umum/konsumen', $data);
     }
@@ -39,15 +39,11 @@ class Konsumen extends BaseController
     {
         $builder = $this->konsumenModel->tabel();
 
-        // Ajax filter level harga
-        $filterLevel = $this->request->getPost('filter_level');
+        // Ajax filter kategori konsumen
+        $filterKonsumen = $this->request->getPost('filter_konsumen');
 
-        if ($filterLevel !== '') {
-            if ($filterLevel === 'Retail') {
-                $builder->where('level_harga_id IS NULL', null, false);
-            } else {
-                $builder->where('level_harga_id', $filterLevel);
-            }
+        if ($filterKonsumen !== null && $filterKonsumen !== '') {
+            $builder->where('kategori_konsumen_id', $filterKonsumen);
         }
 
         // Ajax filter divisi
@@ -76,14 +72,14 @@ class Konsumen extends BaseController
 
             return [
                 $row->id,
-                $row->nama_level ?? 'Retail',
+                $row->kategori_nama,
                 $divisi,
                 $row->nama,
                 $row->perusahaan,
-                $row->alamat,
                 $row->kota,
+                $row->alamat,
                 $row->whatsapp,
-                $row->telegram,
+                $row->telegram_id,
                 $row->email,
                 $row->created_at,
                 $row->updated_at,
@@ -119,13 +115,13 @@ class Konsumen extends BaseController
 
         $data = [
             'id' => $this->request->getPost('id'),
-            'level_harga_id' => $this->request->getPost('level_harga_id'),
+            'kategori_konsumen_id' => $this->request->getPost('kategori_konsumen_id'),
             'nama' => $this->request->getPost('nama'),
             'perusahaan' => $this->request->getPost('perusahaan'),
             'alamat' => $this->request->getPost('alamat'),
             'kota' => $this->request->getPost('kota'),
             'whatsapp' => $this->request->getPost('whatsapp'),
-            'telegram' => $this->request->getPost('telegram'),
+            'telegram_id' => $this->request->getPost('telegram_id'),
             'email' => $this->request->getPost('email'),
             'divisi' => $this->request->getPost('divisi')
         ];

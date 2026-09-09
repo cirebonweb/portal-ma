@@ -12,11 +12,10 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <select id="filter_level" class="form-control form-control-sm d-inline-block w-auto mx-1">
-                            <option value=""># Level</option>
-                            <option value="Retail">Retail</option>
+                        <select id="filter_konsumen" class="form-control form-control-sm d-inline-block w-auto mx-1">
+                            <option value=""># Kategori</option>
 
-                            <?php foreach ($levelHarga as $row): ?>
+                            <?php foreach ($kategori as $row): ?>
                                 <option value="<?= $row->id ?>">
                                     <?= $row->nama ?>
                                 </option>
@@ -34,18 +33,18 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Level</th>
+                                    <th>Kategori</th>
                                     <th class="min-tablet-l">Divisi</th>
                                     <th>Konsumen</th>
-                                    <th class="min-tablet-l">Perusahaan</th>
-                                    <th class="desktop">Alamat</th> <!-- 5 -->
+                                    <th class="desktop">Perusahaan</th> <!-- 5 -->
                                     <th class="desktop">Kota</th>
+                                    <th class="none">Alamat</th>
                                     <th class="none">Whatsapp</th>
-                                    <th class="none">ID Telegram</th>
-                                    <th class="none">Email</th>
-                                    <th class="none">Tgl. Buat</th> <!-- 10 -->
+                                    <th class="none">Telegram ID</th>
+                                    <th class="none">Email</th> <!-- 10 -->
+                                    <th class="none">Tgl. Buat</th>
                                     <th class="none">Tgl. Rubah</th>
-                                    <th class="min-tablet-l">Aksi</th>
+                                    <th class="min-tablet-l no-export">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -69,13 +68,11 @@
                     <input type="hidden" id="id" name="id">
                     <div class="row">
 
-                        <!-- level_harga_id -->
+                        <!-- kategori_konsumen_id -->
                         <div class="col-md-6 mb-4">
-                            <label for="level_harga_id">Level harga <span class="text-danger">*</span></label>
-                            <select id="level_harga_id" name="level_harga_id" class="form-control">
-                                <option value="">Retail</option>
-
-                                <?php foreach ($levelHarga as $row): ?>
+                            <label for="kategori_konsumen_id">Kategori konsumen <span class="text-danger">*</span></label>
+                            <select id="kategori_konsumen_id" name="kategori_konsumen_id" class="form-control">
+                                <?php foreach ($kategori as $row): ?>
                                     <option value="<?= $row->id ?>">
                                         <?= $row->nama ?>
                                     </option>
@@ -113,8 +110,8 @@
 
                         <!-- kota -->
                         <div class="col-md-6 mb-4">
-                            <label for="kota">Kota</label>
-                            <input type="text" class="form-control upper" id="kota" name="kota">
+                            <label for="kota">Kota/Kabupaten <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control upper" id="kota" name="kota" required>
                         </div>
 
                         <!-- whatsapp -->
@@ -123,10 +120,10 @@
                             <input type="text" class="form-control upper" id="whatsapp" name="whatsapp">
                         </div>
 
-                        <!-- telegram -->
+                        <!-- telegram id -->
                         <div class="col-md-6 mb-4">
-                            <label for="telegram">ID Telegram</label>
-                            <input type="text" class="form-control upper" id="telegram" name="telegram">
+                            <label for="telegram_id">ID Telegram</label>
+                            <input type="text" class="form-control upper" id="telegram_id" name="telegram_id">
                         </div>
 
                         <!-- email -->

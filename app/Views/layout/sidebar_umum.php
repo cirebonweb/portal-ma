@@ -24,7 +24,7 @@ $umum_aktif = in_array(str_replace(base_url(), '', current_url()), $umum_link);
         <li class="nav-item">
             <a href="<?= url_to('umum/konsumen') ?>" class="nav-link<?= (current_url() == base_url('umum/konsumen')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-arrow-return-right"></i>
-                <p>Konsumen</p>
+                <p>Data Konsumen</p>
             </a>
         </li>
 
