@@ -31,6 +31,13 @@ class KategoriKonsumen extends BaseController
     {
         $builder = $this->kategoriKonsumenModel->tabel();
 
+        // Ajax filter status
+        $filterStatus = $this->request->getPost('filter_status');
+
+        if ($filterStatus !== null && $filterStatus !== '') {
+            $builder->where('status', $filterStatus);
+        }
+
         $dataTable = new TabelLibrari($builder, $this->request);
         $dataTable->setSearchable(['nama']);
 
@@ -43,6 +50,7 @@ class KategoriKonsumen extends BaseController
             return [
                 $row->id,
                 $row->nama,
+                $row->status == 1 ? '<span class="lencana bg-primary">Aktif</span>' : '<span class="lencana bg-merah">Nonaktif</span>',
                 $row->created_at,
                 $row->updated_at,
                 $aksi
@@ -57,13 +65,11 @@ class KategoriKonsumen extends BaseController
         if ($res = $this->ajax()) return $res;
 
         $id = $this->request->getPost('id');
-
         if (!$id || !is_numeric($id)) {
             return $this->json(false, 'ID tidak valid', null, 400);
         }
 
         $data = $this->kategoriKonsumenModel->find($id);
-
         if (!$data) {
             return $this->json(false, 'Data tidak ditemukan', null, 404);
         }
@@ -76,8 +82,9 @@ class KategoriKonsumen extends BaseController
         if ($res = $this->ajax()) return $res;
 
         $data = [
-            'id'   => $this->request->getPost('id'),
-            'nama' => $this->request->getPost('nama')
+            'id'     => $this->request->getPost('id'),
+            'nama'   => $this->request->getPost('nama'),
+            'status' => $this->request->getPost('status')
         ];
 
         // Bersihkan input kosong jadi null
@@ -107,7 +114,6 @@ class KategoriKonsumen extends BaseController
         if ($res = $this->ajax()) return $res;
 
         $id = $this->request->getPost('id');
-
         if (!$id || !is_numeric($id)) {
             return $this->json(false, 'ID tidak valid');
         }

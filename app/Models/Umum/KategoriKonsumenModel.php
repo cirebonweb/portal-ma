@@ -10,10 +10,11 @@ class KategoriKonsumenModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $useSoftDeletes   = false; // master data, dilindungi FK RESTRICT dari konsumen & dp_kategori_harga
-
+    protected $useSoftDeletes   = false;
+    protected $protectFields    = true;
     protected $allowedFields = [
         'nama',
+        'status'
     ];
 
     // Timestamps
@@ -31,6 +32,10 @@ class KategoriKonsumenModel extends Model
         'nama' => [
             'label' => 'Kategori Konsumen',
             'rules' => 'required|string|max_length[20]|is_unique[kategori_konsumen.nama,id,{id}]'
+        ],
+        'status' => [
+            'label' => 'Status',
+            'rules' => 'required|in_list[0,1]'
         ]
     ];
     protected $validationMessages = [];
@@ -43,19 +48,7 @@ class KategoriKonsumenModel extends Model
     public function tabel()
     {
         return $this->db->table('kategori_konsumen')
-            ->select('id, nama, created_at, updated_at');
-    }
-
-    /**
-     * Cek apakah kategori masih digunakan oleh konsumen.
-     * Berguna sebelum proses hapus, karena tabel ini tidak soft delete
-     * dan FK RESTRICT akan menolak delete jika masih direferensikan.
-     */
-    public function isUsed(int $id): bool
-    {
-        return $this->db->table('konsumen')
-            ->where('kategori_konsumen_id', $id)
-            ->countAllResults() > 0;
+            ->select('id, nama, status, created_at, updated_at');
     }
 
     /**
