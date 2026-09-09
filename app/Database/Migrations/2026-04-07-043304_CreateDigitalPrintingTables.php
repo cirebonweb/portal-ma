@@ -12,9 +12,9 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'nama'       => ['type' => 'varchar', 'constraint' => 20, 'unique' => true], // Retail, Corporate, Karyawan
+            'active'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at' => ['type' => 'timestamp', 'null' => true],
             'updated_at' => ['type' => 'timestamp', 'null' => true],
-            'deleted_at' => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('kategori_konsumen');
@@ -23,6 +23,7 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addField([
             'id'                   => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'kategori_konsumen_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'user_id'              => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'nama'                 => ['type' => 'varchar', 'constraint' => 40],
             'perusahaan'           => ['type' => 'varchar', 'constraint' => 40, 'null' => true],
             'alamat'               => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
@@ -31,22 +32,23 @@ class CreateDigitalPrintingTables extends Migration
             'telegram_id'          => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
             'email'                => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
             'divisi'               => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:umum, 1:printing, 2:advertising
+            'active'               => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at'           => ['type' => 'timestamp', 'null' => true],
             'updated_at'           => ['type' => 'timestamp', 'null' => true],
-            'deleted_at'           => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('kategori_konsumen_id', 'kategori_konsumen', 'id', 'SET NULL', 'CASCADE');
+        $this->forge->addForeignKey('kategori_konsumen_id', 'kategori_konsumen', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('konsumen');
 
         // 3. Tabel: kategori_produk
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'divisi'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 1: Printing, 2: Advertising, 3: Partner/Vendor
+            'divisi'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0: Umum, 1: Printing, 2: Advertising, 3: Partner
             'nama'       => ['type' => 'varchar', 'constraint' => 50], // Mesin Outdoor, Jasa dan Layanan, Cetak Offset
+            'active'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at' => ['type' => 'timestamp', 'null' => true],
             'updated_at' => ['type' => 'timestamp', 'null' => true],
-            'deleted_at' => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addUniqueKey(['divisi', 'nama']);
@@ -56,9 +58,9 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'nama'       => ['type' => 'varchar', 'constraint' => 30, 'unique' => true],
+            'active'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at' => ['type' => 'timestamp', 'null' => true],
             'updated_at' => ['type' => 'timestamp', 'null' => true],
-            'deleted_at' => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('dp_bahan');
@@ -79,13 +81,13 @@ class CreateDigitalPrintingTables extends Migration
             'promo_akhir'        => ['type' => 'date', 'null' => true],
             'rumus'              => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:perkalian luas, 1:perkalian qty
             'unggulan'           => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],
+            'active'             => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at'         => ['type' => 'timestamp', 'null' => true],
             'updated_at'         => ['type' => 'timestamp', 'null' => true],
-            'deleted_at'         => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('kategori_produk_id', 'kategori_produk', 'id', 'SET NULL', 'CASCADE');
-        $this->forge->addForeignKey('dp_bahan_id', 'dp_bahan', 'id', 'SET NULL', 'CASCADE');
+        $this->forge->addForeignKey('kategori_produk_id', 'kategori_produk', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('dp_bahan_id', 'dp_bahan', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('dp_produk');
 
         // 6. Tabel: dp_kategori_harga
@@ -94,13 +96,13 @@ class CreateDigitalPrintingTables extends Migration
             'kategori_konsumen_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
             'dp_produk_id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
             'harga'                => ['type' => 'int', 'constraint' => 11],
+            'active'               => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at'           => ['type' => 'timestamp', 'null' => true],
             'updated_at'           => ['type' => 'timestamp', 'null' => true],
-            'deleted_at'           => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('kategori_konsumen_id', 'kategori_konsumen', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('kategori_konsumen_id', 'kategori_konsumen', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->addUniqueKey(['kategori_konsumen_id', 'dp_produk_id']);
         $this->forge->createTable('dp_kategori_harga');
 
@@ -112,18 +114,16 @@ class CreateDigitalPrintingTables extends Migration
             'harga'        => ['type' => 'int', 'constraint' => 11],
             'created_at'   => ['type' => 'timestamp', 'null' => true],
             'updated_at'   => ['type' => 'timestamp', 'null' => true],
-            'deleted_at'   => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('konsumen_id', 'konsumen', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('konsumen_id', 'konsumen', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->addUniqueKey(['konsumen_id', 'dp_produk_id']);
         $this->forge->createTable('dp_harga_khusus');
 
         // 8. Tabel: dp_nota
         $this->forge->addField([
             'id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'user_id'        => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'konsumen_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
             'tanggal'        => ['type' => 'date'],
             'nota'           => ['type' => 'varchar', 'constraint' => 30, 'unique' => true],
@@ -137,14 +137,16 @@ class CreateDigitalPrintingTables extends Migration
             'status_barang'  => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Belum Ambil, 1:Sudah Ambil
             'tgl_ambil'      => ['type' => 'date', 'null' => true],
             'keterangan'     => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'user_buat'      => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'user_ubah'      => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'created_at'     => ['type' => 'timestamp', 'null' => true],
             'updated_at'     => ['type' => 'timestamp', 'null' => true],
-            'deleted_at'     => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addKey('tanggal');
-        $this->forge->addForeignKey('user_id', 'users', 'id', 'SET NULL', 'CASCADE');
-        $this->forge->addForeignKey('konsumen_id', 'konsumen', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('user_buat', 'users', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('user_ubah', 'users', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('konsumen_id', 'konsumen', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('dp_nota');
 
         // 9. Tabel: dp_nota_isi
@@ -162,11 +164,10 @@ class CreateDigitalPrintingTables extends Migration
             'hpp'          => ['type' => 'int', 'constraint' => 11, 'default' => 0],
             'created_at'   => ['type' => 'timestamp', 'null' => true],
             'updated_at'   => ['type' => 'timestamp', 'null' => true],
-            'deleted_at'   => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('dp_produk_id', 'dp_produk', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('dp_nota_isi');
 
         // 10. Tabel: dp_nota_bayar
@@ -182,17 +183,15 @@ class CreateDigitalPrintingTables extends Migration
             'kembalian'      => ['type' => 'int', 'constraint' => 11, 'default' => 0],
             'created_at'     => ['type' => 'timestamp', 'null' => true],
             'updated_at'     => ['type' => 'timestamp', 'null' => true],
-            'deleted_at'     => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('user_id', 'users', 'id', 'SET NULL', 'CASCADE');
-        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('dp_nota_bayar');
 
         // 11. Tabel: dp_laporan
         $this->forge->addField([
             'id'            => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'user_id'       => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
             'tanggal'       => ['type' => 'date'],
             'pemasukan'     => ['type' => 'int', 'constraint' => 11, 'default' => 0],
             'pengeluaran'   => ['type' => 'int', 'constraint' => 11, 'default' => 0],
@@ -203,22 +202,23 @@ class CreateDigitalPrintingTables extends Migration
             'diterima_id'   => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'diketahui_id'  => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'status'        => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],
-            'locked_at'     => ['type' => 'datetime', 'null' => true],
             'locked_by'     => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'locked_at'     => ['type' => 'datetime', 'null' => true],
             'keterangan'    => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
-            'print_at'      => ['type' => 'datetime', 'null' => true],
+            'user_buat'     => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
+            'user_ubah'     => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true],
             'created_at'    => ['type' => 'timestamp', 'null' => true],
             'updated_at'    => ['type' => 'timestamp', 'null' => true],
-            'deleted_at'    => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addKey('tanggal');
-        $this->forge->addForeignKey('user_id', 'users', 'id', 'RESTRICT', 'CASCADE');
-        $this->forge->addForeignKey('diserahkan_id', 'users', 'id', 'SET NULL', 'CASCADE');
-        $this->forge->addForeignKey('diterima_id', 'users', 'id', 'SET NULL', 'CASCADE');
-        $this->forge->addForeignKey('diketahui_id', 'users', 'id', 'SET NULL', 'CASCADE');
-        $this->forge->addForeignKey('locked_by', 'users', 'id', 'SET NULL', 'CASCADE');
-        $this->forge->addUniqueKey(['user_id', 'tanggal']);
+        $this->forge->addForeignKey('diserahkan_id', 'users', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('diterima_id', 'users', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('diketahui_id', 'users', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('locked_by', 'users', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('user_buat', 'users', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('user_ubah', 'users', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addUniqueKey('tanggal');
         $this->forge->createTable('dp_laporan');
 
         // 12. Tabel: dp_laporan_isi
@@ -236,26 +236,24 @@ class CreateDigitalPrintingTables extends Migration
             'keterangan'    => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
             'created_at'    => ['type' => 'timestamp', 'null' => true],
             'updated_at'    => ['type' => 'timestamp', 'null' => true],
-            'deleted_at'    => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('dp_laporan_id', 'dp_laporan', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'SET NULL', 'CASCADE');
+        $this->forge->addForeignKey('dp_laporan_id', 'dp_laporan', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('dp_nota_id', 'dp_nota', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('dp_laporan_isi');
 
         // 13. Tabel: dp_laporan_log
         $this->forge->addField([
-            'id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'dp_laporan_id'  => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
-            'user_id'        => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
-            'status_sebelum' => ['type' => 'tinyint', 'constraint' => 4],
-            'status_sesudah' => ['type' => 'tinyint', 'constraint' => 4],
-            'keterangan'     => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
-            'created_at'     => ['type' => 'timestamp', 'null' => true],
+            'id'            => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'dp_laporan_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'user_id'       => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'status'        => ['type' => 'tinyint', 'constraint' => 1], // 0:Dicetak, 1:Dikunci, 2:Dibuka
+            'keterangan'    => ['type' => 'varchar', 'constraint' => 255, 'null' => true],
+            'created_at'    => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('dp_laporan_id', 'dp_laporan', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('user_id', 'users', 'id', 'RESTRICT', 'CASCADE');
+        $this->forge->addForeignKey('dp_laporan_id', 'dp_laporan', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('dp_laporan_log');
     }
 
