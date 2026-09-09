@@ -16,6 +16,8 @@ if (typeof $.validator !== 'undefined') {
 }
 
 let loading_requests = 0;
+let loading_timer = null;
+let loading_visible = false;
 
 /**
  * Cirebonweb Form Helper
