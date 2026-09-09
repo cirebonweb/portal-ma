@@ -15,11 +15,11 @@
   <link rel="icon" type="image/png" sizes="192x192" href="<?= base_url('upload/logo/' . (setting('App.logoIkon192') ?: 'crb-icon-192.png')) ?>">
   <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('upload/logo/' . (setting('App.logoIkon32') ?: 'crb-icon-32.png')) ?>">
   <link rel="shortcut icon" type="image/x-icon" href="<?= base_url('upload/logo/' . (setting('App.logoIkon') ?: 'crb-icon.ico')) ?>">
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" as="style" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" as="style" />
   <link rel="preload" href="<?= base_url('dist/css/adminlte.min.css') ?>" as="style" />
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="<?= base_url('plugin/fontawesome/css/all.min.css') ?>" />
   <link rel="stylesheet" href="<?= base_url('dist/css/adminlte.min.css') ?>" />
@@ -89,7 +89,7 @@
     <!-- /.navbar -->
 
     <!-- .sidebar -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside class="main-sidebar sidebar-dark-primary">
       <a href="<?= url_to('/') ?>" class="brand-link"><img src="<?= base_url('upload/logo/') . (setting('App.logoPutih') ?: 'crb-logo-putih.png') ?>" height="58"></a>
 
       <div class="sidebar">
@@ -125,7 +125,7 @@
       <!-- awal judul halaman -->
       <section class="content-header">
         <div class="container-fluid">
-          <div class="row mb-2">
+          <div class="row px-3 mb-2">
             <div class="col-sm-6">
               <h1><?= $pageTitle ?></h1>
             </div>
@@ -171,15 +171,18 @@
           }
         })
       },
+
       showPreloader: function() {
         const $pre = $('.preloader');
+        $pre.addClass('no-transition');
         $pre.css({
+          'transition': 'none',
           'height': '100%',
-          'display': 'flex',
-          'background-color': 'rgba(0, 0, 0, 0.4)'
+          'display': 'flex'
         });
         $pre.children().show();
       },
+
       hidePreloader: function() {
         const $pre = $('.preloader');
         $pre.css('height', 0);

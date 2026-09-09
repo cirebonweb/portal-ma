@@ -126,25 +126,55 @@ const CirebonwebForm = {
     /**
      * Fungsi untuk menampilkan status loading global (misalnya, spinner)
      */
+    // showLoading: function () {
+    //     if (loading_requests === 0) {
+    //         Beranda.showPreloader();
+    //     }
+    //     loading_requests++;
+    // },
     showLoading: function () {
-        if (loading_requests === 0) {
-            // Logika menampilkan loading spinner/overlay di sini
-            console.log("-> Tampilkan Loading: Mulai proses AJAX.");
-            Beranda.showPreloader();
-        }
         loading_requests++;
+        // Hanya request pertama yang memulai timer
+        if (loading_requests === 1) {
+            loading_timer = setTimeout(function () {
+                // Setelah 0.9 detik request masih berjalan
+                if (loading_requests > 0) {
+                    Beranda.showPreloader();
+                    loading_visible = true;
+                }
+            }, 900);
+        }
     },
 
     /**
      * Fungsi untuk menyembunyikan status loading global
      */
+    // hideLoading: function () {
+    //     loading_requests--;
+    //     if (loading_requests <= 0) {
+    //         loading_requests = 0;
+    //         Beranda.hidePreloader();
+    //     }
+    // },
     hideLoading: function () {
-        loading_requests--;
-        if (loading_requests <= 0) {
-            loading_requests = 0; // Pastikan tidak negatif
-            // Logika menyembunyikan loading spinner/overlay di sini
-            console.log("<- Sembunyikan Loading: Semua request AJAX selesai.");
-            Beranda.hidePreloader();
+        // Pastikan counter tidak pernah negatif
+        if (loading_requests > 0) {
+            loading_requests--;
+        }
+
+        // Semua request sudah selesai
+        if (loading_requests === 0) {
+            // Request selesai sebelum 1 detik
+            if (loading_timer !== null) {
+                clearTimeout(loading_timer);
+                loading_timer = null;
+            }
+
+            // Hanya sembunyikan jika preloader memang sudah tampil
+            if (loading_visible) {
+                Beranda.hidePreloader();
+                loading_visible = false;
+            }
         }
     },
 

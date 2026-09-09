@@ -16,14 +16,14 @@ $umum_aktif = in_array(str_replace(base_url(), '', current_url()), $umum_link);
 
         <li class="nav-item">
             <a href="<?= url_to('umum/level-harga') ?>" class="nav-link<?= (current_url() == base_url('umum/level-harga')) ? ' active' : '' ?>">
-                <i class="nav-icon bi bi-circle"></i>
+                <i class="nav-icon bi bi-arrow-return-right"></i>
                 <p>Level Harga</p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="<?= url_to('umum/konsumen') ?>" class="nav-link<?= (current_url() == base_url('umum/konsumen')) ? ' active' : '' ?>">
-                <i class="nav-icon bi bi-circle"></i>
+                <i class="nav-icon bi bi-arrow-return-right"></i>
                 <p>Konsumen</p>
             </a>
         </li>

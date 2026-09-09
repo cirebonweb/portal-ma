@@ -17,28 +17,28 @@ $printing_aktif = in_array(str_replace(base_url(), '', current_url()), $printing
 
         <li class="nav-item">
             <a href="<?= url_to('printing/mesin') ?>" class="nav-link<?= (current_url() == base_url('printing/mesin')) ? ' active' : '' ?>">
-                <i class="nav-icon bi bi-circle"></i>
+                <i class="nav-icon bi bi-arrow-return-right"></i>
                 <p>Kategori Mesin</p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="<?= url_to('printing/bahan') ?>" class="nav-link<?= (current_url() == base_url('printing/bahan')) ? ' active' : '' ?>">
-                <i class="nav-icon bi bi-circle"></i>
+                <i class="nav-icon bi bi-arrow-return-right"></i>
                 <p>Kategori Bahan</p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="<?= url_to('printing/produk') ?>" class="nav-link<?= (current_url() == base_url('printing/produk')) ? ' active' : '' ?>">
-                <i class="nav-icon bi bi-circle"></i>
+                <i class="nav-icon bi bi-arrow-return-right"></i>
                 <p>Produk</p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="<?= url_to('printing/harga-level') ?>" class="nav-link<?= (current_url() == base_url('printing/harga-level')) ? ' active' : '' ?>">
-                <i class="nav-icon bi bi-circle"></i>
+                <i class="nav-icon bi bi-arrow-return-right"></i>
                 <p>Harga Level</p>
             </a>
         </li>
