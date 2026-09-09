@@ -16,7 +16,7 @@
 
 .table thead th {
     padding: 10px 12px;
-    background-color: #f8fafc;
+    background-color: #e7f3ff;
     border-top: 0;
     border-bottom: 1px solid var(--ui-border);
     white-space: nowrap;
@@ -25,7 +25,7 @@
 
 .table tbody td {
     padding: 10px 12px;
-    border-top: 1px solid #f0f2f5;
+    border-top: 1px solid var(--ui-border-light);
     vertical-align: middle;
 }
 
@@ -72,7 +72,7 @@
 }
 
 table.dataTable.no-footer {
-    border-bottom: 0 !important;
+    border-bottom: 1px solid var(--ui-border);
 }
 
 table.dataTable thead th,
