@@ -12,7 +12,7 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'nama'       => ['type' => 'varchar', 'constraint' => 20, 'unique' => true], // Retail, Corporate, Karyawan
-            'active'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
+            'status'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at' => ['type' => 'timestamp', 'null' => true],
             'updated_at' => ['type' => 'timestamp', 'null' => true],
         ]);
@@ -32,7 +32,7 @@ class CreateDigitalPrintingTables extends Migration
             'telegram_id'          => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
             'email'                => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
             'divisi'               => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:umum, 1:printing, 2:advertising
-            'active'               => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
+            'status'               => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at'           => ['type' => 'timestamp', 'null' => true],
             'updated_at'           => ['type' => 'timestamp', 'null' => true],
         ]);
@@ -46,7 +46,7 @@ class CreateDigitalPrintingTables extends Migration
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'divisi'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0: Umum, 1: Printing, 2: Advertising, 3: Partner
             'nama'       => ['type' => 'varchar', 'constraint' => 50], // Mesin Outdoor, Jasa dan Layanan, Cetak Offset
-            'active'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
+            'status'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at' => ['type' => 'timestamp', 'null' => true],
             'updated_at' => ['type' => 'timestamp', 'null' => true],
         ]);
@@ -58,7 +58,7 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'nama'       => ['type' => 'varchar', 'constraint' => 30, 'unique' => true],
-            'active'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
+            'status'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at' => ['type' => 'timestamp', 'null' => true],
             'updated_at' => ['type' => 'timestamp', 'null' => true],
         ]);
@@ -81,7 +81,7 @@ class CreateDigitalPrintingTables extends Migration
             'promo_akhir'        => ['type' => 'date', 'null' => true],
             'rumus'              => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:perkalian luas, 1:perkalian qty
             'unggulan'           => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],
-            'active'             => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
+            'status'             => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at'         => ['type' => 'timestamp', 'null' => true],
             'updated_at'         => ['type' => 'timestamp', 'null' => true],
         ]);
@@ -96,7 +96,7 @@ class CreateDigitalPrintingTables extends Migration
             'kategori_konsumen_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
             'dp_produk_id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
             'harga'                => ['type' => 'int', 'constraint' => 11],
-            'active'               => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
+            'status'               => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
             'created_at'           => ['type' => 'timestamp', 'null' => true],
             'updated_at'           => ['type' => 'timestamp', 'null' => true],
         ]);
