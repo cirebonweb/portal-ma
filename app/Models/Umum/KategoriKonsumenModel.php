@@ -10,7 +10,7 @@ class KategoriKonsumenModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = false; // FK RESTRICT dari konsumen, dp_kategori_harga
     protected $protectFields    = true;
     protected $allowedFields = [
         'nama',

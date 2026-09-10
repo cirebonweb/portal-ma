@@ -143,8 +143,7 @@
                         <!-- status -->
                         <div class="col-md-4 mb-2">
                             <label for="status" class="mr-3">Status Konsumen</label>
-                            <!-- <input type="checkbox" checked id="status_toggle" checked data-toggle="toggle" data-on="Aktif" data-off="Noaktif" data-onstyle="success" data-offstyle="danger" data-style="slow" data-size="sm" data-width="80"> -->
-                            <input type="checkbox" checked id="status_toggle" checked data-toggle="toggle" data-on="Aktif" data-off="Noaktif" data-onstyle="success" data-offstyle="danger" data-style="slow" data-size="sm" data-width="100">
+                            <input type="checkbox" checked id="status_toggle" checked data-toggle="toggle" data-on="Aktif" data-off="Nonaktif" data-onstyle="success" data-offstyle="danger" data-style="slow" data-size="sm" data-width="100">
                             <input type="hidden" name="status" id="status" value="1">
                         </div>
 

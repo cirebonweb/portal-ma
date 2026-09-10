@@ -22,7 +22,7 @@ class KategoriProduk extends BaseController
     {
         $data = [
             'pageTitle' => 'Kategori Produk',
-            'navigasi'  => '<a href="/umum/kategori-produk">Kategori Produk</a> &nbsp;'
+            'navigasi'  => '<a href="/umum">Umum</a> &nbsp;',
         ];
         return view('umum/kategori_produk', $data);
     }

@@ -61,7 +61,7 @@
 
                         <div class="col-12 mb-2 d-flex align-items-center">
                             <label for="status" class="mb-0 mr-2">Status</label>
-                            <input type="checkbox" checked id="status_toggle" checked data-toggle="toggle" data-on="Aktif" data-off="Noaktif" data-onstyle="success" data-offstyle="danger" data-style="slow" data-size="sm" data-width="80">
+                            <input type="checkbox" checked id="status_toggle" checked data-toggle="toggle" data-on="Aktif" data-off="Nonaktif" data-onstyle="success" data-offstyle="danger" data-style="slow" data-size="sm" data-width="80">
                         </div>
 
                     </div> <!-- .row -->
