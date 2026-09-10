@@ -2,6 +2,7 @@
 
 <?= $this->section('css') ?>
 <?= $this->include('plugin/tabel_css') ?>
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 <?= $this->endSection() ?>
 
 <?= $this->section('konten') ?>
@@ -11,17 +12,26 @@
             <div class="col-md-12 col-lg-9">
                 <div class="card">
                     <div class="card-body">
+
+                        <select id="filter_status" class="form-control form-control-sm d-inline-block w-auto mx-1">
+                            <option value=""># Status</option>
+                            <option value="1">Aktif</option>
+                            <option value="0">Nonaktif</option>
+                        </select>
+
                         <table id="tabelData" class="table table-bordered table-hover dataTable dtr-inline">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Kategori Bahan</th>
+                                    <th>Nama Bahan</th>
+                                    <th class="min-tablet-l">Status</th>
                                     <th class="desktop">Tgl. Buat</th>
-                                    <th class="desktop">Tgl. Rubah</th>
-                                    <th>Aksi</th>
+                                    <th class="desktop">Tgl. Ubah</th>
+                                    <th class="no-export">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
+
                     </div> <!-- .card-body -->
                 </div> <!-- .card -->
             </div> <!-- .col-md-12 col-lg-9 -->
@@ -40,10 +50,20 @@
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
                     <div class="row">
-                        <div class="col-12 mb-2">
+
+                        <!-- nama bahan -->
+                        <div class="col-md-12 mb-4">
                             <label for="nama">Nama Bahan <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="nama" name="nama" required>
                         </div>
+
+                        <!-- status -->
+                        <div class="col-md-12 mb-2">
+                            <label for="status" class="mr-3">Status Bahan</label>
+                            <input type="checkbox" checked id="status_toggle" checked data-toggle="toggle" data-on="Aktif" data-off="Nonaktif" data-onstyle="success" data-offstyle="danger" data-style="slow" data-size="sm" data-width="100">
+                            <input type="hidden" name="status" id="status" value="1">
+                        </div>
+
                     </div> <!-- .row -->
                 </div> <!-- .modal-body -->
 
@@ -64,4 +84,5 @@
 <script src="<?= base_url('vendor/js/helper_form.min.js') ?>" defer></script>
 <script src="<?= base_url('vendor/js/helper_format.min.js') ?>" defer></script>
 <script src="<?= base_url('page/dp_bahan.min.js') ?>" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" defer></script>
 <?= $this->endSection() ?>

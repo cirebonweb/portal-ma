@@ -8,6 +8,9 @@ use App\Libraries\TabelLibrari;
 
 class DpBahan extends BaseController
 {
+    /**
+     * @var DpBahanModel
+     */
     protected $dpBahanModel;
 
     public function __construct()
@@ -18,7 +21,7 @@ class DpBahan extends BaseController
     public function index(): string
     {
         $data = [
-            'pageTitle' => 'Kategori Bahan',
+            'pageTitle' => 'Data Bahan',
             'navigasi'  => '<a href="/printing">Printing</a> &nbsp;'
         ];
         return view('printing/dp_bahan', $data);
@@ -28,10 +31,17 @@ class DpBahan extends BaseController
     {
         $builder = $this->dpBahanModel->tabel();
 
+        // Ajax filter status
+        $filterStatus = $this->request->getPost('filter_status');
+        if ($filterStatus !== null && $filterStatus !== '') {
+            $builder->where('status', $filterStatus);
+        }
+
         $dataTable = new TabelLibrari($builder, $this->request);
         $dataTable->setSearchable(['nama']);
 
         $dataTable->setRowCallback(function ($row) {
+
             $aksi = '<div class="btn-group" role="group">';
             $aksi .= '<button class="btn btn-sm btn-dark" type="button" onclick="simpan(' . $row->id . ')">edit</button>';
             $aksi .= '<button class="btn btn-sm btn-danger" type="button" onclick="hapus(' . $row->id . ')">hapus</button>';
@@ -40,6 +50,7 @@ class DpBahan extends BaseController
             return [
                 $row->id,
                 $row->nama,
+                $row->status == 1 ? '<span class="lencana bg-primary">Aktif</span>' : '<span class="lencana bg-merah">Nonaktif</span>',
                 $row->created_at,
                 $row->updated_at,
                 $aksi
@@ -54,13 +65,11 @@ class DpBahan extends BaseController
         if ($res = $this->ajax()) return $res;
 
         $id = $this->request->getPost('id');
-
         if (!$id || !is_numeric($id)) {
             return $this->json(false, 'ID tidak valid', null, 400);
         }
 
         $data = $this->dpBahanModel->find($id);
-
         if (!$data) {
             return $this->json(false, 'Data tidak ditemukan', null, 404);
         }
@@ -73,8 +82,9 @@ class DpBahan extends BaseController
         if ($res = $this->ajax()) return $res;
 
         $data = [
-            'id'   => $this->request->getPost('id'),
-            'nama' => $this->request->getPost('nama')
+            'id'     => $this->request->getPost('id'),
+            'nama'   => $this->request->getPost('nama'),
+            'status' => $this->request->getPost('status')
         ];
 
         // Bersihkan input kosong jadi null
@@ -85,7 +95,6 @@ class DpBahan extends BaseController
         }
 
         try {
-            // save() sudah include validation
             if (! $this->dpBahanModel->save($data)) {
                 return $this->json(false, $this->dpBahanModel->errors());
             }

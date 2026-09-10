@@ -10,10 +10,11 @@ class DpBahanModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $useSoftDeletes   = false; // master data, dilindungi FK RESTRICT dari dp_produk
-
+    protected $useSoftDeletes   = false; // FK RESTRICT dari dp_produk
+    protected $protectFields    = true;
     protected $allowedFields = [
         'nama',
+        'status'
     ];
 
     // Timestamps
@@ -30,8 +31,12 @@ class DpBahanModel extends Model
         ],
         'nama' => [
             'label' => 'Nama Bahan',
-            'rules' => 'required|string|max_length[30]|is_unique[dp_bahan.nama,id,{id}]'
+            'rules' => 'required|string|min_length[3]|max_length[30]|is_unique[dp_bahan.nama,id,{id}]'
         ],
+        'status' => [
+            'label' => 'Status',
+            'rules' => 'required|in_list[0,1]'
+        ]
     ];
     protected $validationMessages = [];
     protected $skipValidation     = false;
@@ -42,20 +47,8 @@ class DpBahanModel extends Model
      */
     public function tabel()
     {
-        return $this->db->table('dp_bahan a')
-            ->select('a.id, a.nama, a.created_at, a.updated_at');
-    }
-
-    /**
-     * Cek apakah bahan masih digunakan oleh produk.
-     * Tabel ini tidak soft delete, jadi FK RESTRICT akan menolak delete
-     * jika masih direferensikan dp_produk.
-     */
-    public function isUsed(int $id): bool
-    {
-        return $this->db->table('dp_produk')
-            ->where('dp_bahan_id', $id)
-            ->countAllResults() > 0;
+        return $this->db->table('dp_bahan')
+            ->select('id, nama, status, created_at, updated_at');
     }
 
     /**
