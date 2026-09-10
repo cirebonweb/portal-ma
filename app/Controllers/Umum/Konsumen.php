@@ -39,31 +39,35 @@ class Konsumen extends BaseController
     {
         $builder = $this->konsumenModel->tabel();
 
-        // Ajax filter kategori konsumen
+        // Ajax filter kategori_konsumen_id
         $filterKonsumen = $this->request->getPost('filter_konsumen');
-
         if ($filterKonsumen !== null && $filterKonsumen !== '') {
             $builder->where('kategori_konsumen_id', $filterKonsumen);
         }
 
         // Ajax filter divisi
         $filterDivisi = $this->request->getPost('filter_divisi');
-
         if ($filterDivisi !== null && $filterDivisi !== '') {
             $builder->where('divisi', $filterDivisi);
         }
 
+        // Ajax filter status
+        $filterStatus = $this->request->getPost('filter_status');
+        if ($filterStatus !== null && $filterStatus !== '') {
+            $builder->where('a.status', $filterStatus);
+        }
+
         $dataTable = new TabelLibrari($builder, $this->request);
-        $dataTable->setSearchable(['nama', 'perusahaan']);
+        $dataTable->setSearchable(['a.nama', 'perusahaan', 'kota']);
 
         $dataTable->setRowCallback(function ($row) {
-            $mapDivisi = [
+
+            $divisi = match ((int) $row->divisi) {
                 0 => 'Umum',
                 1 => 'Printing',
-                2 => 'Advertising'
-            ];
-
-            $divisi = $mapDivisi[(int) $row->divisi] ?? 'Umum';
+                2 => 'Advertising',
+                default => 'Tidak Diketahui'
+            };
 
             $aksi = '<div class="btn-group" role="group">';
             $aksi .= '<button class="btn btn-sm btn-dark" type="button" onclick="simpan(' . $row->id . ')">edit</button>';
@@ -72,7 +76,7 @@ class Konsumen extends BaseController
 
             return [
                 $row->id,
-                $row->kategori_nama,
+                $row->kategori,
                 $divisi,
                 $row->nama,
                 $row->perusahaan,
@@ -81,6 +85,7 @@ class Konsumen extends BaseController
                 $row->whatsapp,
                 $row->telegram_id,
                 $row->email,
+                $row->status == 1 ? '<span class="lencana bg-primary">Aktif</span>' : '<span class="lencana bg-merah">Nonaktif</span>',
                 $row->created_at,
                 $row->updated_at,
                 $aksi
@@ -95,13 +100,11 @@ class Konsumen extends BaseController
         if ($res = $this->ajax()) return $res;
 
         $id = $this->request->getPost('id');
-
         if (!$id || !is_numeric($id)) {
             return $this->json(false, 'ID tidak valid', null, 400);
         }
 
         $data = $this->konsumenModel->find($id);
-
         if (!$data) {
             return $this->json(false, 'Data tidak ditemukan', null, 404);
         }
@@ -115,6 +118,7 @@ class Konsumen extends BaseController
 
         $data = [
             'id' => $this->request->getPost('id'),
+            'user_id' => auth()->user()?->id,
             'kategori_konsumen_id' => $this->request->getPost('kategori_konsumen_id'),
             'nama' => $this->request->getPost('nama'),
             'perusahaan' => $this->request->getPost('perusahaan'),
@@ -123,7 +127,8 @@ class Konsumen extends BaseController
             'whatsapp' => $this->request->getPost('whatsapp'),
             'telegram_id' => $this->request->getPost('telegram_id'),
             'email' => $this->request->getPost('email'),
-            'divisi' => $this->request->getPost('divisi')
+            'divisi' => $this->request->getPost('divisi'),
+            'status' => $this->request->getPost('status')
         ];
 
         // Bersihkan input kosong jadi null
@@ -134,7 +139,6 @@ class Konsumen extends BaseController
         }
 
         try {
-            // save() sudah include validation
             if (! $this->konsumenModel->save($data)) {
                 return $this->json(false, $this->konsumenModel->errors());
             }

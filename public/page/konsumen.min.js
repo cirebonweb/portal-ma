@@ -21,6 +21,7 @@ $(function () {
             data: function (d) {
                 d.filter_konsumen = $('#filter_konsumen').val();
                 d.filter_divisi = $('#filter_divisi').val();
+                d.filter_status = $('#filter_status').val();
             }
         },
         autoWidth: false,
@@ -35,6 +36,7 @@ $(function () {
                     dt.search('').draw();
                     $('#filter_konsumen').val('').trigger('change');
                     $('#filter_divisi').val('').trigger('change');
+                    $('#filter_status').val('').trigger('change');
 
                     // Reload data dari server
                     swal.fire('Informasi', 'Selesai reload tabel ke kondisi awal', 'success').then(function () {
@@ -49,14 +51,14 @@ $(function () {
         ],
         columnDefs: [
             { targets: '_all', className: 'dt-head-center' },
-            { targets: [10, 11], render: function (data, type, row) { return CirebonwebFormat.Tanggal(data) } },
-            { targets: 12, className: 'dt-body-center', orderable: false },
+            { targets: [11, 12], render: function (data, type, row) { return CirebonwebFormat.Tanggal(data) } },
+            { targets: 13, className: 'dt-body-center', orderable: false },
         ]
     });
 
     // Custom dropdown filter
-    $('#tabelData_filter.dataTables_filter').append($('#filter_konsumen, #filter_divisi'));
-    $(document).on('change', '#filter_konsumen, #filter_divisi', function () {
+    $('#tabelData_filter.dataTables_filter').append($('#filter_konsumen, #filter_divisi, #filter_status'));
+    $(document).on('change', '#filter_konsumen, #filter_divisi, #filter_status', function () {
         $tabelData.DataTable().ajax.reload(null, false);
     });
 });
@@ -71,6 +73,13 @@ $('.upper').on('keyup', function () {
     let end = this.selectionEnd;
     this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);
     this.setSelectionRange(start, end); // Mempertahankan kursor di tempatnya semula
+});
+
+// Status Checkbox
+$(function () {
+    $('#status_toggle').on('change', function () {
+        $('#status').val($(this).prop('checked') ? '1' : '0');
+    });
 });
 
 // Form Submit (Insert/Update)
@@ -99,6 +108,10 @@ function simpan(id) {
                     $formData.find('#whatsapp').val(response.data.whatsapp);
                     $formData.find('#telegram_id').val(response.data.telegram_id);
                     $formData.find('#email').val(response.data.email);
+
+                    // Set status toggle & trigger change agar #status ikut terisi (1 / 0)
+                    let statusVal = response.data.status == 1 ? 'on' : 'off';
+                    $formData.find('#status_toggle').bootstrapToggle(statusVal).trigger('change');
                     $modalDiv.modal('show');
                 }
             })
@@ -106,6 +119,9 @@ function simpan(id) {
         $('#id').val('');
         $modalTitle.text('Tambah Data');
         $btnSubmit.text('Simpan');
+
+        // Default Tambah Data: Toggle ON & sync nilai input hidden ke '1'
+        $formData.find('#status_toggle').bootstrapToggle('on').trigger('change');
         $modalDiv.modal('show');
     }
 

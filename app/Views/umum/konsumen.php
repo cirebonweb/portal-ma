@@ -2,6 +2,7 @@
 
 <?= $this->section('css') ?>
 <?= $this->include('plugin/tabel_css') ?>
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 <?= $this->endSection() ?>
 
 <?= $this->section('konten') ?>
@@ -29,6 +30,12 @@
                             <option value="2">Advertising</option>
                         </select>
 
+                        <select id="filter_status" class="form-control form-control-sm d-inline-block w-auto mx-1">
+                            <option value=""># Status</option>
+                            <option value="1">Aktif</option>
+                            <option value="0">Nonaktif</option>
+                        </select>
+
                         <table id="tabelData" class="table table-bordered table-hover dataTable dtr-inline">
                             <thead>
                                 <tr>
@@ -42,8 +49,9 @@
                                     <th class="none">Whatsapp</th>
                                     <th class="none">Telegram ID</th>
                                     <th class="none">Email</th> <!-- 10 -->
+                                    <th class="none">Status</th>
                                     <th class="none">Tgl. Buat</th>
-                                    <th class="none">Tgl. Rubah</th>
+                                    <th class="none">Tgl. Ubah</th>
                                     <th class="min-tablet-l no-export">Aksi</th>
                                 </tr>
                             </thead>
@@ -69,7 +77,7 @@
                     <div class="row">
 
                         <!-- kategori_konsumen_id -->
-                        <div class="col-md-6 mb-4">
+                        <div class="col-6 mb-4">
                             <label for="kategori_konsumen_id">Kategori konsumen <span class="text-danger">*</span></label>
                             <select id="kategori_konsumen_id" name="kategori_konsumen_id" class="form-control">
                                 <?php foreach ($kategori as $row): ?>
@@ -81,7 +89,7 @@
                         </div>
 
                         <!-- divisi -->
-                        <div class="col-md-6 mb-4">
+                        <div class="col-6 mb-4">
                             <label for="divisi">Divisi <span class="text-danger">*</span></label>
                             <select id="divisi" name="divisi" class="form-control">
                                 <option value="0">Umum</option>
@@ -103,33 +111,41 @@
                         </div>
 
                         <!-- alamat -->
-                        <div class="col-md-6 mb-4">
+                        <div class="col-sm-7 col-12 mb-4">
                             <label for="alamat">Alamat</label>
                             <input type="text" class="form-control upper" id="alamat" name="alamat">
                         </div>
 
                         <!-- kota -->
-                        <div class="col-md-6 mb-4">
+                        <div class="col-sm-5 col-12 mb-4">
                             <label for="kota">Kota/Kabupaten <span class="text-danger">*</span></label>
                             <input type="text" class="form-control upper" id="kota" name="kota" required>
                         </div>
 
                         <!-- whatsapp -->
-                        <div class="col-md-6 mb-4">
+                        <div class="col-sm-7 col-6 mb-4">
                             <label for="whatsapp">Whatsapp</label>
                             <input type="text" class="form-control upper" id="whatsapp" name="whatsapp">
                         </div>
 
                         <!-- telegram id -->
-                        <div class="col-md-6 mb-4">
-                            <label for="telegram_id">ID Telegram</label>
+                        <div class="col-sm-5 col-6 mb-4">
+                            <label for="telegram_id">Telegram ID</label>
                             <input type="text" class="form-control upper" id="telegram_id" name="telegram_id">
                         </div>
 
                         <!-- email -->
-                        <div class="col-md-12 mb-2">
+                        <div class="col-md-8 mb-4">
                             <label for="email">Email</label>
                             <input type="text" class="form-control" id="email" name="email">
+                        </div>
+
+                        <!-- status -->
+                        <div class="col-md-4 mb-2">
+                            <label for="status" class="mr-3">Status Konsumen</label>
+                            <!-- <input type="checkbox" checked id="status_toggle" checked data-toggle="toggle" data-on="Aktif" data-off="Noaktif" data-onstyle="success" data-offstyle="danger" data-style="slow" data-size="sm" data-width="80"> -->
+                            <input type="checkbox" checked id="status_toggle" checked data-toggle="toggle" data-on="Aktif" data-off="Noaktif" data-onstyle="success" data-offstyle="danger" data-style="slow" data-size="sm" data-width="100">
+                            <input type="hidden" name="status" id="status" value="1">
                         </div>
 
                     </div> <!-- .row -->
@@ -152,4 +168,5 @@
 <script src="<?= base_url('vendor/js/helper_form.min.js') ?>" defer></script>
 <script src="<?= base_url('vendor/js/helper_format.min.js') ?>" defer></script>
 <script src="<?= base_url('page/konsumen.min.js') ?>" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" defer></script>
 <?= $this->endSection() ?>

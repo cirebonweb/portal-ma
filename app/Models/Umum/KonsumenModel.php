@@ -10,10 +10,11 @@ class KonsumenModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $useSoftDeletes   = true; // data pelanggan penting, histori kontak & kemungkinan reaktivasi
-
+    protected $useSoftDeletes   = false;
+    protected $protectFields    = true;
     protected $allowedFields = [
         'kategori_konsumen_id',
+        'user_id',
         'nama',
         'perusahaan',
         'alamat',
@@ -22,6 +23,7 @@ class KonsumenModel extends Model
         'telegram_id',
         'email',
         'divisi',
+        'status'
     ];
 
     // Timestamps
@@ -29,7 +31,6 @@ class KonsumenModel extends Model
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
 
     // Validasi server-side
     protected $validationRules = [
@@ -39,6 +40,10 @@ class KonsumenModel extends Model
         ],
         'kategori_konsumen_id' => [
             'label' => 'Kategori Konsumen',
+            'rules' => 'permit_empty|is_natural_no_zero'
+        ],
+        'user_id' => [
+            'label' => 'User ID',
             'rules' => 'permit_empty|is_natural_no_zero'
         ],
         'nama' => [
@@ -55,7 +60,7 @@ class KonsumenModel extends Model
         ],
         'kota' => [
             'label' => 'Kota',
-            'rules' => 'permit_empty|string|max_length[20]'
+            'rules' => 'required|string|max_length[20]'
         ],
         'whatsapp' => [
             'label' => 'Nomor WhatsApp',
@@ -73,33 +78,22 @@ class KonsumenModel extends Model
             'label' => 'Divisi',
             'rules' => 'permit_empty|in_list[0,1,2]'
         ],
+        'status' => [
+            'label' => 'Status',
+            'rules' => 'required|in_list[0,1]'
+        ]
     ];
     protected $validationMessages = [];
     protected $skipValidation     = false;
 
     /**
      * Query dasar untuk server-side dataTabel.
-     * Join kategori_konsumen untuk tampilan nama kategori, bukan hanya ID.
      * @var \CodeIgniter\Database\BaseConnection $db
      */
     public function tabel()
     {
         return $this->db->table('konsumen a')
-            ->select('a.id, a.nama, a.perusahaan, a.alamat, a.kota, a.whatsapp, a.telegram_id, a.email, a.divisi, b.nama as kategori_nama, a.created_at, a.updated_at')
-            ->join('kategori_konsumen b', 'b.id = a.kategori_konsumen_id', 'left')
-            ->where('a.deleted_at', null);
-    }
-
-    /**
-     * Cek apakah konsumen masih memiliki transaksi nota.
-     * Meski tabel ini soft delete (sehingga FK RESTRICT tidak akan terpicu
-     * saat delete() biasa), method ini tetap berguna untuk validasi bisnis —
-     * misal mencegah hapus konsumen yang masih ada transaksi berjalan (status_nota belum lunas).
-     */
-    public function isUsed(int $id): bool
-    {
-        return $this->db->table('dp_nota')
-            ->where('konsumen_id', $id)
-            ->countAllResults() > 0;
+            ->select('a.id, a.nama, a.perusahaan, a.alamat, a.kota, a.whatsapp, a.telegram_id, a.email, a.divisi, a.status, b.nama as kategori, a.created_at, a.updated_at')
+            ->join('kategori_konsumen b', 'b.id = a.kategori_konsumen_id', 'left');
     }
 }
