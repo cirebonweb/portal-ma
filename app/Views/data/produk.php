@@ -117,7 +117,9 @@
                         <div class="col-6 mb-4">
                             <label for="promo">Harga Promo</label>
                             <div class="input-group">
-                                <div class="input-group-prepend"><span class="input-group-text">Rp</span></div>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="promoCek"><input type="checkbox"></span>
+                                </div>
                                 <input type="text" class="form-control text-right rupiah" id="promo" name="promo" value="" minlength="3" maxlength="14">
                             </div>
                         </div>
