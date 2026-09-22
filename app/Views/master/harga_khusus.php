@@ -79,8 +79,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Rp</span>
                                 </div>
-                                <input type="text" class="form-control text-right rupiah" id="hargaRp" value="0" required>
-                                <input type="hidden" id="harga" name="harga" value="0">
+                                <input type="text" class="form-control text-right rupiah" id="harga" name="harga" value="0" required>
                             </div>
                         </div>
                     </div>

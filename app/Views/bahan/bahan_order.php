@@ -74,8 +74,7 @@
 
                         <div class="col-4 mb-4">
                             <label for="tgl_order">Tanggal Order <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control text-center tanggal" id="tgl_order_tgl" required>
-                            <input type="hidden" id="tgl_order" name="tgl_order">
+                            <input type="text" class="form-control text-center tanggal" id="tgl_order" name="tgl_order" required>
                         </div>
 
                         <div class="col-8 mb-4">
@@ -99,8 +98,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Rp</span>
                                 </div>
-                                <input type="text" class="form-control text-right rupiah" id="subtotalRp" value="0" disabled>
-                                <input type="hidden" id="subtotal" name="subtotal" value="0">
+                                <input type="text" class="form-control text-right rupiah" id="subtotal" name="subtotal" value="0" readonly>
                             </div>
                         </div>
 
@@ -110,8 +108,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Rp</span>
                                 </div>
-                                <input type="text" class="form-control text-right rupiah" id="ongkirRp" value="0" minlength="1" maxlength="14" required>
-                                <input type="hidden" id="ongkir" name="ongkir" value="0">
+                                <input type="text" class="form-control text-right rupiah" id="ongkir" name="ongkir" value="0" minlength="1" maxlength="14" required>
                             </div>
                         </div>
 
@@ -121,8 +118,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Rp</span>
                                 </div>
-                                <input type="text" class="form-control text-right rupiah" id="totalRp" value="0" disabled>
-                                <input type="hidden" id="total" name="total" value="0">
+                                <input type="text" class="form-control text-right rupiah" id="total" name="total" value="0" readonly>
                             </div>
                         </div>
 

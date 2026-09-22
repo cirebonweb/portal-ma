@@ -56,7 +56,7 @@ class BahanOrderModel extends Model
         ],
         'subtotal' => [
             'label' => 'Subtotal',
-            'rules' => 'permit_empty|integer|greater_than[0]'
+            'rules' => 'permit_empty|integer|greater_than_equal_to[0]'
         ],
         'ongkir' => [
             'label' => 'Ongkir',
@@ -64,7 +64,7 @@ class BahanOrderModel extends Model
         ],
         'total' => [
             'label' => 'Total',
-            'rules' => 'permit_empty|integer|greater_than[0]'
+            'rules' => 'permit_empty|integer|greater_than_equal_to[0]'
         ],
         'status_stok' => [
             'label' => 'Status Stok',

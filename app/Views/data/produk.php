@@ -119,20 +119,17 @@
                             <div class="input-group">
                                 <div class="input-group-prepend"><span class="input-group-text">Rp</span></div>
                                 <input type="text" class="form-control text-right rupiah" id="promo" name="promo" value="" minlength="3" maxlength="14">
-                                <input type="hidden" id="promo" name="promo" value="">
                             </div>
                         </div>
 
                         <div class="col-6 mb-4">
-                            <label for="promo_awal_tgl">Promo Awal</label>
-                            <input type="text" class="form-control text-center tanggal" id="promo_awal_tgl" autocomplete="off">
-                            <input type="hidden" id="promo_awal" name="promo_awal">
+                            <label for="promo_awal">Promo Awal</label>
+                            <input type="text" class="form-control text-center tanggal" id="promo_awal" name="promo_awal" autocomplete="off">
                         </div>
 
                         <div class="col-6 mb-4">
-                            <label for="promo_akhir_tgl">Promo Akhir</label>
-                            <input type="text" class="form-control text-center tanggal" id="promo_akhir_tgl" autocomplete="off">
-                            <input type="hidden" id="promo_akhir" name="promo_akhir">
+                            <label for="promo_akhir">Promo Akhir</label>
+                            <input type="text" class="form-control text-center tanggal" id="promo_akhir" name="promo_akhir" autocomplete="off">
                         </div>
 
                         <!-- <div class="col-6 mb-3">
