@@ -2,29 +2,28 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="description" content="<?= setting('App.siteTagline') ?>" />
-  <meta name="author" content="www.cirebonweb.com" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="noindex,nofollow" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <meta name="csrf-token" content="<?= csrf_hash() ?>" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="<?= setting('App.siteTagline') ?: 'Tagline Situs' ?>">
+  <meta name="author" content="www.cirebonweb.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="csrf-token" content="<?= csrf_hash() ?>">
 
-  <title><?= $pageTitle . ' | ' . setting('App.siteNama') ?></title>
+  <title><?= $pageTitle . ' | ' . (setting('App.siteNama') ?: 'Nama Situs') ?></title>
   <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('upload/logo/' . (setting('App.logoIkon180') ?: 'crb-icon-180.png')) ?>">
   <link rel="icon" type="image/png" sizes="192x192" href="<?= base_url('upload/logo/' . (setting('App.logoIkon192') ?: 'crb-icon-192.png')) ?>">
   <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('upload/logo/' . (setting('App.logoIkon32') ?: 'crb-icon-32.png')) ?>">
   <link rel="shortcut icon" type="image/x-icon" href="<?= base_url('upload/logo/' . (setting('App.logoIkon') ?: 'crb-icon.ico')) ?>">
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" as="style" />
-  <link rel="preload" href="<?= base_url('dist/css/adminlte.min.css') ?>" as="style" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" as="style">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous" />
-  <link rel="stylesheet" href="<?= base_url('plugin/fontawesome/css/all.min.css') ?>" />
-  <link rel="stylesheet" href="<?= base_url('dist/css/adminlte.min.css') ?>" />
-  <link rel="stylesheet" href="<?= base_url('plugin/sweetalert/sweetalert2.min.css') ?>" />
-  <link rel="stylesheet" href="<?= base_url('vendor/css/custom_adminlte.min.css') ?>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="<?= versi('dist/css/adminlte.min.css') ?>">
+  <link rel="stylesheet" href="<?= versi('plugin/sweetalert/sweetalert2.min.css') ?>">
+  <link rel="stylesheet" href="<?= versi('vendor/css/custom_adminlte.min.css') ?>">
+  <link rel="stylesheet" href="<?= versi('vendor/css/custom_sidebar.min.css') ?>">
   <?= $this->renderSection('css') ?>
 </head>
 
@@ -104,19 +103,22 @@
               </a>
             </li>
 
-            <!-- Profil -->
-            <li class="nav-item">
-              <a href="<?= url_to('/') ?>" class="nav-link<?= (current_url() == base_url('profil')) ? ' active' : '' ?>">
-                <i class="nav-icon bi bi-person-vcard"></i>
-                <p>Profil</p>
-              </a>
-            </li>
-
-            <?= $this->include('layout/sidebar_umum'); ?>
-            <?= $this->include('layout/sidebar_printing'); ?>
+            <?= $this->include('layout/sidebar'); ?>
 
           </ul>
         </nav>
+      </div>
+
+      <!-- Footer user -->
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-user-icon"> <i class="bi bi-person-circle"></i> </div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name"> <?= auth()->user()->username ?? 'Webmaster' ?> </div>
+            <div class="sidebar-user-role"> Administrator </div>
+          </div>
+          <a href="<?= url_to('logout') ?>" class="sidebar-user-logout" title="Logout"> <i class="bi bi-box-arrow-right"></i> </a>
+        </div>
       </div>
     </aside>
     <!-- /.sidebar -->
@@ -156,11 +158,25 @@
     </footer>
   </div>
 
-  <script src="<?= base_url('plugin/jquery/jquery.min.js') ?>"></script>
-  <script src="<?= base_url('plugin/bootstrap/bootstrap.bundle.min.js') ?>"></script>
-  <script src="<?= base_url('dist/js/adminlte.min.js') ?>"></script>
-  <script src="<?= base_url('plugin/sweetalert/sweetalert2.min.js') ?>" defer></script>
+  <script src="<?= versi('plugin/jquery/jquery.min.js') ?>"></script>
+  <script src="<?= versi('plugin/bootstrap/bootstrap.bundle.min.js') ?>"></script>
+  <script src="<?= versi('dist/js/adminlte.min.js') ?>"></script>
+  <script src="<?= versi('plugin/sweetalert/sweetalert2.min.js') ?>" defer></script>
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const activeSubmenus = document.querySelectorAll('.nav-sidebar .nav-treeview .nav-link.active');
+      activeSubmenus.forEach(function(link) {
+        const parentNavItems = link.closest('.nav-treeview')?.parentElement.closest('.nav-item');
+        if (parentNavItems) {
+          parentNavItems.classList.add('menu-is-opening', 'menu-open');
+          const parentNavLink = parentNavItems.querySelector(':scope > .nav-link');
+          if (parentNavLink) {
+            parentNavLink.classList.add('active');
+          }
+        }
+      });
+    });
+
     const Beranda = {
       refreshCsrf: function() {
         console.log("CSRF token refreshed (placeholder).");
@@ -176,7 +192,6 @@
         const $pre = $('.preloader');
         $pre.addClass('no-transition');
         $pre.css({
-          'transition': 'none',
           'height': '100%',
           'display': 'flex'
         });
@@ -192,7 +207,9 @@
       }
     };
   </script>
+
   <?= $this->renderSection('js') ?>
+
   <script>
     <?php if (session()->getFlashdata('sukses')): ?>
       $(function() {

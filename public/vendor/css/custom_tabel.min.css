@@ -5,9 +5,9 @@
  */
 
 
-/* =========================================================
-   14. TABLE
-   ========================================================= */
+/* ---------------------------------------------------------
+   TABLE
+   --------------------------------------------------------- */
 
 .table {
     margin-bottom: 0;
@@ -55,10 +55,59 @@
     border-color: var(--ui-border-light);
 }
 
+/* ---------------------------------------------------------
+   BUTTONS
+   --------------------------------------------------------- */
 
-/* =========================================================
-   15. DATATABLES
-   ========================================================= */
+button.dt-button,
+div.dt-button,
+a.dt-button,
+input.dt-button {
+    line-height: 17px;
+}
+
+.dataTables_wrapper .dt-buttons {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.dataTables_wrapper button.dt-button,
+.dataTables_wrapper div.dt-button,
+.dataTables_wrapper a.dt-button,
+.dataTables_wrapper input.dt-button {
+    /* padding: 4px 10px !important; */
+    border: 1px solid #dfe4ea !important;
+    border-radius: 6px !important;
+    background: #fff !important;
+    color: var(--ui-text-secondary) !important;
+    font-size: 12px !important;
+    box-shadow: none !important;
+}
+
+.dataTables_wrapper button.dt-button:hover:not(.disabled),
+.dataTables_wrapper div.dt-button:hover:not(.disabled),
+.dataTables_wrapper a.dt-button:hover:not(.disabled),
+.dataTables_wrapper input.dt-button:hover:not(.disabled) {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    color: var(--ui-text) !important;
+}
+
+button.dt-button,
+div.dt-button,
+a.dt-button,
+input.dt-button {
+    margin-right: 0;
+}
+
+
+/* ---------------------------------------------------------
+   DATATABLES
+   --------------------------------------------------------- */
+
+div.dataTables_processing {
+    z-index: 99;
+}
 
 .dataTables_wrapper {
     color: var(--ui-text-secondary);
@@ -87,7 +136,7 @@ table.dataTable thead td {
 
 .dataTables_wrapper .dataTables_length select,
 .dataTables_wrapper .dataTables_filter input {
-    min-height: 34px;
+    min-height: 31px;
     border: 1px solid #dfe4ea;
     border-radius: 6px;
     background-color: #fff;
@@ -100,7 +149,7 @@ table.dataTable thead td {
 }
 
 .dataTables_wrapper .dataTables_filter input {
-    width: 50%;
+    width: 110px;
     margin-left: 6px;
     padding: 5px 9px;
 }
@@ -108,7 +157,7 @@ table.dataTable thead td {
 .dataTables_wrapper .dataTables_length select:focus,
 .dataTables_wrapper .dataTables_filter input:focus {
     border-color: #93b4f8;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
+    /* box-shadow: 0 0 0 3px rgba(37, 99, 235, .08); */
 }
 
 .dataTables_wrapper label {
@@ -119,33 +168,6 @@ table.dataTable thead td {
 .dataTables_wrapper .form-control {
     font-size: 13px;
 } */
-
-.dataTables_wrapper .dt-buttons {
-    margin-right: 20px;
-    margin-bottom: 10px;
-}
-
-.dataTables_wrapper button.dt-button,
-.dataTables_wrapper div.dt-button,
-.dataTables_wrapper a.dt-button,
-.dataTables_wrapper input.dt-button {
-    padding: 4px 10px !important;
-    border: 1px solid #dfe4ea !important;
-    border-radius: 6px !important;
-    background: #fff !important;
-    color: var(--ui-text-secondary) !important;
-    font-size: 12px !important;
-    box-shadow: none !important;
-}
-
-.dataTables_wrapper button.dt-button:hover:not(.disabled),
-.dataTables_wrapper div.dt-button:hover:not(.disabled),
-.dataTables_wrapper a.dt-button:hover:not(.disabled),
-.dataTables_wrapper input.dt-button:hover:not(.disabled) {
-    background: #f8fafc !important;
-    border-color: #cbd5e1 !important;
-    color: var(--ui-text) !important;
-}
 
 table.dataTable thead>tr>th.sorting::before,
 table.dataTable thead>tr>th.sorting::after,
@@ -200,7 +222,7 @@ table.dataTable>tbody>tr.child span.dtr-data::before {
 .dataTables_wrapper .dataTables_info {
     margin-top: 15px;
     padding-top: 14px;
-    color: #94a3b8;
+    /* color: #94a3b8; */
 }
 
 .dataTables_wrapper .dataTables_paginate {
@@ -248,7 +270,23 @@ table.dataTable>tbody>tr.child span.dtr-data::before {
     color: var(--ui-text-muted) !important;
 }
 
+.dataTables_wrapper .form-control,
+.dataTables_wrapper .custom-select,
+.dataTables_wrapper select.form-control {
+    font-size: 12px;
+}
+
+
 @media screen and (max-width: 640px) {
+
+    .dataTables_wrapper .dt-buttons {
+        float: left !important;
+        /* text-align: center; */
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        width: auto;
+    }
 
     .dataTables_wrapper .dataTables_filter {
         margin-bottom: 1em;

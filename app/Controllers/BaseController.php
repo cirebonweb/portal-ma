@@ -3,19 +3,16 @@
 namespace App\Controllers;
 
 use CodeIgniter\Controller;
+use CodeIgniter\Database\ConnectionInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\Session\SessionInterface;
+use CodeIgniter\Validation\ValidationInterface;
 use Psr\Log\LoggerInterface;
 
 /**
  * BaseController provides a convenient place for loading components
  * and performing functions that are needed by all your controllers.
- *
- * Extend this class in any new controllers:
- * ```
- *     class Home extends BaseController
- * ```
- *
  * For security, be sure to declare any new methods as protected or private.
  */
 abstract class BaseController extends Controller
@@ -25,10 +22,10 @@ abstract class BaseController extends Controller
      * The creation of dynamic property is deprecated in PHP 8.2.
      */
 
-    protected $session;
+    protected SessionInterface $session;
     protected $request;
-    protected $validation;
-    protected $db;
+    protected ValidationInterface $validation;
+    protected ConnectionInterface $db;
 
     /**
      * @return void
@@ -37,7 +34,7 @@ abstract class BaseController extends Controller
     {
         // Load here all helpers you want to be available in your controllers that extend BaseController.
         // Caution: Do not put the this below the parent::initController() call below.
-        // $this->helpers = ['form', 'url'];
+        $this->helpers = ['asset', 'url'];
 
         // Caution: Do not edit this line.
         parent::initController($request, $response, $logger);
@@ -57,7 +54,7 @@ abstract class BaseController extends Controller
         return null;
     }
 
-    protected function json($success, $messages = null, $data = null, $code = 200)
+    protected function json(bool $success, mixed $messages = null, mixed $data = null, int $code = 200): ResponseInterface
     {
         return $this->response->setStatusCode($code)->setJSON([
             'success'  => $success,

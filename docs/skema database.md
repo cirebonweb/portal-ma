@@ -1,149 +1,194 @@
-# Dokumentasi & Referensi Skema Database
+### Skema Menu
 
-## Pendahuluan
-Dokumen ini berfungsi sebagai peta jalan (*roadmap*) arsitektur database sekaligus panduan urutan pengerjaan modul MVC (*Model-View-Controller*). Urutan penomoran tabel disusun berdasarkan **tingkat dependensi data** (dimulai dari *master data* terisolasi hingga transaksi dan pelaporan yang kompleks). 
+- Dashboard CS → Statistik penjualan produk digital printing
+- Dashboard Printing → Statistik antrian proses cetak
+- Dashboard Admin → Statistik penerimaan uang masuk harian baik tunai maupun transfer
 
-Dengan pendekatan ini, pengembangan MVC dapat dilakukan secara terukur tanpa memicu *error* akibat relasi data (*foreign key*) yang belum siap. Setiap poin menjelaskan fungsi bisnis tabel serta keterhubungannya dengan tabel lain untuk mempermudah pembuatan *Model*, *Migration*, dan *Seeder*.
+Master
+- Tipe Konsumen → /konsumen-tipe
+- Tipe Mesin    → /mesin-tipe
+- Tipe Harga    → /harga-tipe
+- Harga Khusus  → /harga-khusus
+- Finishing     → /finishing
 
----
+Bahan
+- Data Bahan   → /bahan
+- Order Bahan  → /bahan-order
+- Stok Bahan   → /bahan-stok
+- Sisa Bahan   → /bahan-sisa
+- Limbah Bahan → /bahan-limbah
 
-### 1. Tabel `kategori_konsumen`
-Bertujuan untuk mengelompokkan profil atau tipe konsumen secara umum, seperti *Retail/Umum*, *Corporate/Perusahaan*, *Reseller*, maupun *Internal Karyawan*. Pengelompokan ini sangat krusial karena menjadi fondasi utama dalam menentukan skema pelayanan, sistem penagihan, hingga batas limit piutang untuk tiap kelompok pelanggan.
+Data
+- Data Konsumen   → /konsumen
+- Data Supplier   → /supplier
+- Data Mesin      → /mesin
+- Data Produk     → /produk
+- Data Nota       → /nota
+- Data Cetak      → /cetak
+- Data Pembayaran → /pembayaran
+- Data Laporan    → /laporan
 
-Selain untuk administrasi pelanggan, data dari tabel ini juga dijadikan acuan utama untuk menghubungkan kelompok konsumen ke dalam sistem penjenjangan (*tiering*) harga produk cetak.
-
-**Relasi:**
-* **`konsumen`**: Satu kategori konsumen menaungi banyak data profil konsumen (*One-to-Many*).
-* **`dp_kategori_harga`**: Menjadi acuan penentuan kelompok harga khusus yang berlaku untuk tipe konsumen tertentu.
-
----
-
-### 2. Tabel `kategori_produk`
-Bertujuan untuk mengelompokkan jenis produk secara umum di dalam sistem. Contoh kategori yang umum digunakan meliputi *Mesin Outdoor*, *Jasa dan Layanan*, hingga *Cetak Offset*. 
-
-Pemisahan kategori ini memudahkan navigasi katalog saat kasir atau operator menginput pesanan, serta mempermudah penyusunan statistik penjualan per divisi produk dalam laporan manajemen.
-
-**Relasi:**
-* **`dp_produk`**: Satu kategori produk menaungi banyak varian produk *digital printing* (*One-to-Many*).
-
----
-
-### 3. Tabel `dp_bahan`
-Bertujuan untuk mencatat *master data* media atau bahan baku cetak yang digunakan dalam operasional *digital printing*. Contohnya seperti *Flexi 280g*, *Flexi Korchin*, *Albatross*, *Art Paper 150g*.
-
-Tabel ini menyimpan informasi mendasar mengenai ketersediaan dan spesifikasi fisik bahan, yang nantinya digunakan untuk mengkalkulasi kebutuhan produksi, konversi ukuran fisik, dan penetapan harga dasar produk.
-
-**Relasi:**
-* **`dp_produk`**: Menjadi komponen utama dalam pendefinisian spesifikasi varian produk cetak (*Many-to-One*).
+Log
+- Log Laporan → /laporan-log
 
 ---
 
-### 4. Tabel `dp_kategori_harga`
-Bertujuan untuk mendefinisikan nama atau jenjang (*tiering*) kelompok harga khusus untuk transaksi *digital printing*. Contoh skema tiering (sistem atau metode yang mengelompokkan sesuatu ke dalam berbagai tingkatan 'tier' atau lapisan berdasarkan kriteria tertentu) yang sering dipakai adalah *Harga Standar*, *Harga Member VIP*, *Harga Agent*, atau *Harga Rekanan*.
+### Skema Tabel (sesuai urutan migrasi up)
 
-Tabel ini bertindak sebagai penjelas konteks atau *header* sebelum matriks nominal harga spesifik diterapkan pada masing-masing produk atau bahan cetak.
+| Nama Tabel      | Relasi Tabel              | Role User  |
+|-----------------|---------------------------|------------|
+| konsumen_tipe   |                           | cs         | 
+| konsumen        | konsumen_tipe, users      | cs         | 
+| supplier        |                           | admin      | 
+| mesin_tipe      |                           | printing   | 
+| mesin           | mesin_tipe                | printing   | 
+| bahan           | mesin_tipe                | printing   | 
+| bahan_order     | bahan, supplier, users    | admin      | 
+| bahan_order_isi | bahan_order, bahan        | admin      | 
+| bahan_stok      | bahan, bahan_order        | >sistem    | 
+| produk          | bahan                     | cs         | 
+| harga_tipe      | konsumen_tipe, produk     | cs         | 
+| harga_khusus    | konsumen, produk          | cs         | 
+| finishing       |                           | cs         | 
+| nota            | konsumen, users           | cs         | 
+| nota_isi        | nota, produk, finishing   | cs         | 
+| nota_bayar      | nota, users               | cs         |
+| cetak           | mesin, bahan, users       | printing   | 
+| cetak_isi       | cetak, nota_isi           | printing   | 
+| bahan_sisa      | bahan, cetak              | >sistem    |
+| bahan_limbah    | bahan, cetak, bahan_sisa  | cs         | 
+| laporan         | users                     | cs         |
+| laporan_isi     | laporan, nota, users      | cs         |
+| laporan_log     | laporan, users            | >sistem    |
 
-**Relasi:**
-* **`kategori_konsumen`**: Dihubungkan ke kelompok konsumen sebagai acuan *tier* harga default mereka.
-* **`dp_harga_khusus`**: Menjadi *parent header* bagi daftar matriks variasi harga spesifik per produk/bahan (*One-to-Many*).
-
----
-
-### 5. Tabel `konsumen`
-Bertujuan untuk menyimpan data lengkap profil pelanggan yang bertransaksi, seperti nama pelanggan, kontak/WhatsApp, alamat, nama perusahaan, serta catatan limit kredit/piutang.
-
-Tabel ini menjadi entitas utama dalam setiap transaksi pemesanan. Data di dalamnya dipanggil untuk mengidentifikasi siapa pemilik nota serta menetapkan skema harga secara otomatis berdasarkan kategori pelanggan yang melekat padanya.
-
-**Relasi:**
-* **`kategori_konsumen`**: Mengambil nilai kategori dari tabel `kategori_konsumen` (*Many-to-One*).
-* **`dp_nota`**: Satu konsumen dapat memiliki banyak riwayat transaksi nota pemesanan (*One-to-Many*).
-
----
-
-### 6. Tabel `dp_produk`
-Bertujuan untuk mengelola katalog item layanan atau produk jadi cetak yang ditawarkan kepada pelanggan, seperti *Cetak Spanduk Flexi*, *Kartu Nama Box*, atau *Brosur A4*.
-
-Di dalam tabel ini diatur rumus perhitungan harga dasar (seperti hitungan per meter persegi ($m^2$), per lembar, atau pcs) serta pengikatan bahan baku dasar yang digunakan oleh produk tersebut.
-
-**Relasi:**
-* **`kategori_produk`**: Terikat pada satu kategori produk umum (*Many-to-One*).
-* **`dp_bahan`**: Menggunakan referensi bahan cetak utama yang sesuai (*Many-to-One*).
-* **`dp_harga_khusus`**: Item produk yang didaftarkan ke matriks variasi harga *tiering*.
-* **`dp_nota_isi`**: Dipilih sebagai item rincian pesanan di dalam nota transaksi (*One-to-Many*).
-
----
-
-### 7. Tabel `dp_harga_khusus`
-Bertujuan untuk menyimpan matriks atau daftar nominal harga khusus (*override*) berdasarkan kombinasi produk/bahan dengan kelompok harga konsumen tertentu.
-
-Dengan tabel ini, sistem dapat mengakomodasi fleksibilitas bisnis di mana satu produk yang sama (misal: *Spanduk Flexi*) memiliki nominal harga per meter yang berbeda-beda tergantung tingkat kelompok harga pembelinya.
-
-**Relasi:**
-* **`dp_kategori_harga`**: Terikat pada skema/tier harga tertentu (*Many-to-One*).
-* **`dp_produk`**: Menunjuk pada item produk cetak spesifik yang diberi penyesuaian harga (*Many-to-One*).
+Keterangan: 
+- tabel `users` bawaan dari codeigniter4 shield tanpa modifikasi.
+- superadmin → akses penuh seluruh sistem.
+- cs         → Customer Service.
+- printing   → Operator Mesin & Kepala Produksi.
+- admin      → Admin Keuangan.
+- Bahan, Data, Master dan Log adalah struktur folder untuk Controllers dan Views sesuai dengan skema menu.
+- untuk setiap tabel *_isi merupakan bagian dari tabel induk.
 
 ---
 
-### 8. Tabel `dp_nota`
-Bertujuan sebagai *header* utama pencatatan transaksi pemesanan/penjualan *digital printing*. Tabel ini menyimpan data akumulatif dari satu pesanan, seperti nomor nota/faktur, tanggal masuk, tanggal tenggat (*deadline*), total biaya, diskon, status pengerjaan, dan status pelunasan.
+### Skema Order Bahan dan Stok Bahan
 
-Tabel ini menjadi pusat koordinasi antara divisi kasir (pembayaran), divisi produksi (pengerjaan cetak), dan divisi pengambilan barang.
+**Keterkaitan**
+- Menu: Bahan → URL: /bahan → Tabel: bahan
+- Menu: Stok Bahan → URL: /bahan-stok → Tabel: bahan_stok
+- Menu: Order Bahan → URL: /bahan-order → Tabel: bahan_order
 
-**Relasi:**
-* **`konsumen`**: Mengacu pada pelanggan yang memesan transaksi ini (*Many-to-One*).
-* **`dp_nota_isi`**: Memiliki banyak rincian item cetakan yang dipesan dalam satu nota (*One-to-Many*).
-* **`dp_nota_bayar`**: Memiliki banyak riwayat pencatatan DP/pelunasan (*One-to-Many*).
-* **`dp_laporan_isi`**: Dapat dirangkum ke dalam satu atau lebih laporan operasional.
+**Contoh Simulasi**
+1. User melakukan input data bahan `bahan` :
+```
+| ID | Tipe Mesin                | Kode | Nama Bahan        | Gramasi | Lebar  | Panjang | Isi Paket          | Rumus          | Aksi       |
+|----|---------------------------|------|-------------------|---------|--------|---------|--------------------|----------------|------------|
+| 1  | Printing (Outdoor/Indoor) | FLX  | Flexy 280-3260    | 280 gsm | 3.2 m  | 60 m    | 1 roll = 192 m²    | Perkalian luas | Edit/Hapus |
+| 2  | Printing (Outdoor/Indoor) | FLX  | Flexy 280-3270    | 280 gsm | 3.2 m  | 70 m    | 1 roll = 224 m²    | Perkalian luas | Edit/Hapus |
+| 3  | Printing (Outdoor/Indoor) | STR  | Stiker Ritrama    | 0 gsm   | 1.27 m | 50 m    | 1 roll = 63.5 m²   | Perkalian luas | Edit/Hapus |
+| 4  | Copy Colour A3+           | STQ  | Stiker Quantac    | 0 gsm   | 0.33 m | 0.48 m  | 1 rim = 100 lembar | Perkalian qty  | Edit/Hapus |
+| 5  | Press Mug                 | MCL  | Mug Coating Lokal | 0 gsm   | 0 m    | 0 m     | 1 dus = 48 pcs     | Perkalian qty  | Edit/Hapus |
+```
+- ID : `bahan.id`
+- Tipe Mesin : `bahan.mesin_tipe_id` → `mesin_tipe.nama`
+- Kode : `bahan.kode`
+- Nama Bahan : `bahan.nama`
+- Gramasi : `bahan.gsm`
+- Lebar : `bahan.lebar`
+- Panjang : `bahan.panjang`
+- Isi Paket : 1 `bahan.satuan_2` = `bahan.isi_paket` `bahan.satuan_1`
+- Rumus : `bahan.rumus`
+
+1. User melakukan pembelian bahan `bahan_order` dan `bahan_order_isi` :
+```
+- ID : 1 → `bahan_order.id`
+- Nama Supplier : PT. ABCD → `bahan_order.supplier_id`
+- Tanggal Order : 19-10-2026 → `bahan_order.tgl_order`
+- No. PO : PO-12345 → `bahan_order.order`
+- SubTotal : Rp 4.7853.400 → `bahan_order.subtotal`
+- Ongkir : Rp 30.000 → `bahan_order.ongkir`
+- Total : Rp 4.783.400 → `bahan_order.total`
+- Tombol : Tambah Stok Bahan → `bahan_order.status`
+↓ bahan_order_isi ↓
+-----------------------------------------------------------------------------------------------------------------------
+| ID | Nama Bahan        | Ukuran        | Harga Satuan     | Harga Paket        | Qty    | Jumlah       | Aksi       |
+|----|-------------------|---------------|------------------|--------------------|--------|--------------|------------|
+| 1  | Flexy 280-3260    | 3.2 x 60 m    | Rp 4.800 /m      | Rp 921.600 /roll   | 2 roll | Rp 1.843.200 | Edit/Hapus |
+| 2  | Flexy 280-3270    | 3.2 x 70 m    | Rp 5.800 /m      | Rp 1.299.200 /roll | 1 roll | Rp 1.299.200 | Edit/Hapus |
+| 3  | Stiker Ritrama    | 1.27 x 50 m   | Rp 14.000 /m     | Rp 889.000 /roll   | 1 roll | Rp 889.000   | Edit/Hapus |
+| 4  | Stiker Quantac    | 0.33 x 0.48 m | Rp 2.900 /lembar | Rp 290.000 /rim    | 1 rim  | Rp 290.000   | Edit/Hapus |
+| 5  | Mug Coating Lokal | 0 x 0 m       | Rp 9.000 /pcs    | Rp 432.000 /dus    | 1 dus  | Rp 432.000   | Edit/Hapus |
+-----------------------------------------------------------------------------------------------------------------------
+```
+**Keterangan**
+- User dapat melakukan perubahan pada bahan_order kapan saja;
+- Saat `bahan_order.status_stok` = 0 maka tombol 'Tambah Stok Bahan' dan Aksi menjadi enabled;
+- Saat klik tombol 'Tambah Stok Bahan' maka semua `bahan_order_isi` masuk ke `bahan_stok`;
+- `bahan_order.status_stok` = 1 dimana tombol 'Tambah Stok Bahan' dan Aksi menjadi disabled.
+
+2. Tampilan pada Stok Bahan `bahan_stok`
+```
+| ID | Kode Bahan | Nama Bahan        | Ukuran        | Stok Masuk | Stok Pakai | Stok Sisa  | Kondisi       | Status   | Keterangan  |
+|----|------------|-------------------|---------------|------------|------------|------------|---------------|----------|-------------|
+| 1  | FLX-1-001  | Flexy 280-3260    | 3.2 x 60 m    | 2.240 m²   | 0 m²       | 2.240 m²   | Kondisi Baik  | Aktif    |             |
+| 2  | FLX-1-002  | Flexy 280-3260    | 3.2 x 60 m    | 2.240 m²   | 0 m²       | 2.240 m²   | Kondisi Baik  | Aktif    |             |
+| 3  | FLX-2-003  | Flexy 280-3270    | 3.2 x 70 m    | 2.240 m²   | 0 m²       | 2.240 m²   | Kondisi Rusak | Nonaktif | Bahan rusak |
+| 4  | STR-3-001  | Stiker Ritrama    | 1.27 x 50 m   | 317.5 m²   | 0 m²       | 317.5 m²   | Kondisi Baik  | Aktif    |             |
+| 5  | STQ-4-001  | Stiker Quantac    | 0.33 x 0.48 m | 100 lembar | 0 lembar   | 100 lembar | Kondisi Baik  | Aktif    |             |
+| 6  | MCL-5-001  | Mug Coating Lokal | 0 x 0 m       | 48 pcs     | 0 pcs      | 48 pcs     | Kondisi Baik  | Aktif    |             |
+```
+**Kode Bahan**
+- 'FLX, STR, STQ, MCL' diambil dari `bahan.kode`
+- '1, 2, 3, 4, 5' diambil dari `bahan_order_isi.id`
+- '001, 002, 003' hasil generate nomor urut Controller
+
+**Status**
+- `bahan_order.status_stok`: 0 = pembelian belum dimasukkan ke stok, 1 = seluruh item pembelian sudah dimasukkan ke stok.
+- `bahan_stok.status`: 0 = stok nonaktif/tidak layak dipakai, 1 = stok aktif/layak dipakai.
 
 ---
 
-### 9. Tabel `dp_nota_isi`
-Bertujuan mencatat rincian tiap *line-item* barang/jasa yang dipesan di dalam satu nota transaksi. 
+### Alogaritma Laporan
+1. laporan.status
+- 0 : Draft → saat laporan pertama kali dibuat oleh cs
+- 1 : Dicetak → saat laporan di print oleh cs
+- 2 : Dikunci → saat laporan di input oleh admin keuangan
+- 3 : Dibuka → saat laporan ingin direvisi dan hanya dibuka oleh admin keuangan
+- 4 : Direvisi → saat laporan direvisi oleh cs dan kembali lagi ke laporan.status = 1
 
-Tabel ini menampung variabel spesifik pengerjaan *digital printing*, seperti panjang, lebar, jumlah cetak (pcs), perhitungan luas ($m^2$), finishing tambahan, harga satuan, hingga total harga per item pesanan.
+2. laporan_log
+- laporan.status 0 → Laporan dibuat oleh `users.username`
+- laporan.status 1 → Laporan dicetak oleh `users.username`
+- laporan.status 2 → Laporan dikunci oleh `users.username`
+- laporan.status 3 → Laporan dibuka oleh `users.username`
+- laporan.status 4 → Laporan direvisi oleh `users.username`
 
-**Relasi:**
-* **`dp_nota`**: Terikat pada satu *header* nota transaksi utama (*Many-to-One*).
-* **`dp_produk`**: Mengacu pada item produk cetak yang dipilih (*Many-to-One*).
+Untuk status Dikunci dan Dibuka tabel admin keuangan belum dibuat, karena ini nantinya fitur tambahan. Jadi sementara fitur Dikunci dan Dibuka bisa di-skip atau tetap dipertahankan persiapan tabel admin keuangan jika sudah dibuat. 
 
+Log yang selalu ada saat laporan Dicetak, hanya saja tidak mempengaruhi `laporan.status`. 
+Misal `laporan.status` = '2' maka jangan sampai menjadi '1'.
+
+3. Gambaran alur saat dijalankan di CodeIgniter 4:
+```ruby
+Simulasi Penerapan pada Alur Kerja (MVC)
+├── CS Membuat Laporan Baru (Draft):
+│   ├── laporan: status = 0, keterangan = "Laporan Shift Pagi"
+│   └── laporan_log: user_id = 5, aksi = "Dibuat", catatan = "Laporan draft dibuat oleh CS Budi"
+│
+├── CS Mencetak Laporan (Pertama Kali):
+│   ├── laporan: status = 1
+│   └── laporan_log: user_id = 5, aksi = "Dicetak", catatan = "Laporan dicetak oleh CS Budi"
+│
+├── Admin Keuangan Membuka Kembali Laporan (Fitur Masa Depan):
+│   ├── laporan: status = 3, keterangan = "Tolong perbaiki nota No. 102"
+│   └── laporan_log: user_id = 2, aksi = "Dibuka", catatan = "Laporan dibuka oleh Admin Keuangan (Siti) untuk revisi"
+│
+├── CS Mencetak Ulang Laporan yang Sudah Dikunci (status = 2):
+│   ├──  laporan: status TETAP 2 (Tidak berubah karena di-check di Controller: if (status == 2) { // jangan ubah status }).
+└── └──  laporan_log: Tetap bertambah 1 baris baru: user_id = 5, aksi = "Dicetak", catatan = "Laporan cetak ulang oleh CS Budi"
+```
 ---
 
-### 10. Tabel `dp_nota_bayar`
-Bertujuan menyimpan riwayat log pembayaran transaksi nota secara terperinci. Tabel ini mendukung skema pembayaran fleksibel seperti uang muka (DP), pelunasan bertahap/cicilan, hingga pembayaran lunas di awal.
-
-Informasi yang dicatat mencakup nominal bayar, tanggal bayar, metode pembayaran (*Cash*, *Transfer*, *QRIS*), serta catatan/bukti transaksi.
-
-**Relasi:**
-* **`dp_nota`**: Terikat pada transaksi nota yang sedang dibayar (*Many-to-One*).
-
----
-
-### 11. Tabel `dp_laporan`
-Bertujuan sebagai *header* rekapitulasi atau laporan pencatatan operasional dan keuangan berkala. Contohnya seperti *Laporan Kas Harian*, *Laporan Serah Terima Shift*, atau *Laporan Penutupan Harian Printing*.
-
-Tabel ini digunakan untuk mengunci (*freeze*) akumulasi transaksi pada periode tertentu agar data keuangan tidak berubah pasca-penutupan buku.
-
-**Relasi:**
-* **`dp_laporan_isi`**: Menampung rincian daftar nota transaksi yang dimasukkan ke dalam laporan tersebut (*One-to-Many*).
-* **`dp_laporan_log`**: Memiliki riwayat log aktivitas dan perubahannya (*One-to-Many*).
-
----
-
-### 12. Tabel `dp_laporan_isi`
-Bertujuan mencatat pemetaan atau daftar nota mana saja yang dimasukkan dan dihitung ke dalam satu dokumen rekap laporan tertentu.
-
-Tabel *pivot* ini memastikan bahwa satu nota transaksi tercatat dengan jelas pada dokumen laporan penutupan yang mana.
-
-**Relasi:**
-* **`dp_laporan`**: Terikat pada *header* rekap laporan terkait (*Many-to-One*).
-* **`dp_nota`**: Mengacu pada nota transaksi yang dimasukkan ke dalam rincian laporan (*Many-to-One*).
-
----
-
-### 13. Tabel `dp_laporan_log`
-Bertujuan mencatat *audit trail* atau jejak histori aktivitas perlakuan terhadap dokumen laporan (misal: catatan kapan laporan dibuat sebagai *Draft*, diajukan (*Submitted*), disetujui supervisor (*Approved*), hingga ditutup (*Closed*)).
-
-Pencatatan ini penting untuk transparansi operasional dan mencegah kecurangan (*fraud*) dalam pelaporan keuangan.
-
-**Relasi:**
-* **`dp_laporan`**: Terikat pada dokumen *header* laporan yang dicatat riwayatnya (*Many-to-One*).
+### Catatan Struktur Database
+Untuk struktur tabel `konsumen`, `produk`, `nota`, `nota_isi`, `nota_bayar`, `laporan`, `laporan_isi` tabel tidak dapat dirubah karena menyesuaikan dengan aplikasi lama Excel VBA & .mde dimana database akan dipindahkan ke CodeIgniter 4 & MySql. Untuk tabel lainnya merupakan penambahan sendiri yang belum ada pada firur VBA.
