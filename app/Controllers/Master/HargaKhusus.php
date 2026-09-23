@@ -24,36 +24,22 @@ class HargaKhusus extends BaseController
         $this->model = new HargaKhususModel();
         $this->konsumenModel = new KonsumenModel();
         $this->produkModel = new ProdukModel();
+        helper('format');
     }
 
     public function index(): string
     {
         return view('master/harga_khusus', [
-            'pageTitle' => 'Harga Khusus',
-            'navigasi' => '<a href="/master">Master</a> &nbsp;',
+            'pageTitle'    => 'Harga Khusus',
+            'navigasi'     => '<a href="/master">Master</a> &nbsp;',
             'menuKonsumen' => $this->konsumenModel->getDropdown(),
-            'menuProduk' => $this->produkModel
-                ->select('id, nama')
-                ->orderBy('nama', 'ASC')
-                ->findAll(),
+            'menuProduk'   => $this->produkModel->getDropdown(),
         ]);
     }
 
-    protected function filterTabel(BaseBuilder $builder): BaseBuilder
+    protected function filterTabel(): BaseBuilder
     {
-        $builder = $this->model->tabel();
-        $filterKonsumen = $this->request->getPost('filter_konsumen');
-        $filterProduk = $this->request->getPost('filter_produk');
-
-        if ($filterKonsumen !== null && $filterKonsumen !== '') {
-            $builder->where('a.konsumen_id', $filterKonsumen);
-        }
-
-        if ($filterProduk !== null && $filterProduk !== '') {
-            $builder->where('a.produk_id', $filterProduk);
-        }
-
-        return $builder;
+        return $this->model->tabel();
     }
 
     protected function dataTabel(\stdClass $row): array
@@ -65,9 +51,9 @@ class HargaKhusus extends BaseController
 
         return [
             $row->id,
-            $row->konsumen ?: '-',
-            $row->produk ?: '-',
-            'Rp ' . number_format((float) $row->harga, 0, ',', '.'),
+            $row->konsumen,
+            $row->produk . ' | ' . formatRupiah($row->harga_produk),
+            formatRupiah($row->harga),
             $row->created_at,
             $row->updated_at,
             $aksi,
@@ -77,10 +63,10 @@ class HargaKhusus extends BaseController
     protected function dataSimpan(): array
     {
         return [
-            'id' => $this->request->getPost('id'),
+            'id'          => $this->request->getPost('id'),
             'konsumen_id' => $this->request->getPost('konsumen_id'),
-            'produk_id' => $this->request->getPost('produk_id'),
-            'harga' => $this->request->getPost('harga'),
+            'produk_id'   => $this->request->getPost('produk_id'),
+            'harga'       => $this->request->getPost('harga'),
         ];
     }
 }

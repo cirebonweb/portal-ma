@@ -24,35 +24,26 @@ class HargaTipe extends BaseController
         $this->model = new HargaTipeModel();
         $this->konsumenTipeModel = new KonsumenTipeModel();
         $this->produkModel = new ProdukModel();
+        helper('format');
     }
 
     public function index(): string
     {
-        $data = [
-            'pageTitle' => 'Harga Tipe',
-            'navigasi' => '<a href="/master">Master</a> &nbsp;',
+        return view('master/harga_khusus', [
+            'pageTitle'        => 'Tipe Harga',
+            'navigasi'         => '<a href="/master">Master</a> &nbsp;',
             'menuKonsumenTipe' => $this->konsumenTipeModel->getDropdown(),
-            'menuProduk' => $this->produkModel
-                ->select('id, nama')
-                ->orderBy('nama', 'ASC')
-                ->findAll(),
-        ];
-
-        return view('master/harga_tipe', $data);
+            'menuProduk'       => $this->produkModel->getDropdown(),
+        ]);
     }
 
     protected function filterTabel(BaseBuilder $builder): BaseBuilder
     {
         $builder = $this->model->tabel();
         $filterKonsumenTipe = $this->request->getPost('filter_konsumen_tipe');
-        $filterProduk = $this->request->getPost('filter_produk');
 
         if ($filterKonsumenTipe !== null && $filterKonsumenTipe !== '') {
             $builder->where('a.konsumen_tipe_id', $filterKonsumenTipe);
-        }
-
-        if ($filterProduk !== null && $filterProduk !== '') {
-            $builder->where('a.produk_id', $filterProduk);
         }
 
         return $builder;
@@ -67,9 +58,9 @@ class HargaTipe extends BaseController
 
         return [
             $row->id,
-            $row->tipe_konsumen ?: '-',
-            $row->produk ?: '-',
-            'Rp ' . number_format((float) $row->harga, 0, ',', '.'),
+            $row->tipe_konsumen,
+            $row->produk . ' | ' . formatRupiah($row->harga_produk),
+            formatRupiah($row->harga),
             $row->created_at,
             $row->updated_at,
             $aksi,
@@ -79,10 +70,10 @@ class HargaTipe extends BaseController
     protected function dataSimpan(): array
     {
         return [
-            'id' => $this->request->getPost('id'),
+            'id'               => $this->request->getPost('id'),
             'konsumen_tipe_id' => $this->request->getPost('konsumen_tipe_id'),
-            'produk_id' => $this->request->getPost('produk_id'),
-            'harga' => $this->request->getPost('harga'),
+            'produk_id'        => $this->request->getPost('produk_id'),
+            'harga'            => $this->request->getPost('harga'),
         ];
     }
 }

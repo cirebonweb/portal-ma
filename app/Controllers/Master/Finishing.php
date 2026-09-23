@@ -21,11 +21,10 @@ class Finishing extends BaseController
 
     public function index(): string
     {
-        $data = [
+        return view('master/finishing', [
             'pageTitle' => 'Finishing',
             'navigasi'  => '<a href="/master">Master</a> &nbsp;',
-        ];
-        return view('master/mesin_tipe', $data);
+        ]);
     }
 
     protected function dataTabel(\stdClass $row): array

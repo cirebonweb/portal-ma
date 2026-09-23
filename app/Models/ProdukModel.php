@@ -85,4 +85,9 @@ class ProdukModel extends Model
             ->select('a.id, a.kategori, a.nama, a.hpp, a.harga, a.promo, a.promo_awal, a.promo_akhir, a.unggulan, a.status, a.created_at, a.updated_at, b.nama as mesin')
             ->join('mesin_tipe b', 'b.id = a.mesin_tipe_id', 'left');
     }
+
+    public function getDropdown()
+    {
+        return $this->select('id, nama, harga')->orderBy('nama', 'ASC')->findAll();
+    }
 }

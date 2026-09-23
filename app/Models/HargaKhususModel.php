@@ -47,7 +47,7 @@ class HargaKhususModel extends Model
     public function tabel()
     {
         return $this->db->table('harga_khusus a')
-            ->select('a.id, a.konsumen_id, a.produk_id, a.harga, a.created_at, a.updated_at, b.nama as konsumen, c.nama as produk')
+            ->select('a.id, a.konsumen_id, a.produk_id, a.harga, a.created_at, a.updated_at, b.nama as konsumen, c.nama as produk, c.harga as harga_produk')
             ->join('konsumen b', 'b.id = a.konsumen_id', 'left')
             ->join('produk c', 'c.id = a.produk_id', 'left');
     }

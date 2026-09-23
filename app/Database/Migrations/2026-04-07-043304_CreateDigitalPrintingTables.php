@@ -186,7 +186,7 @@ class CreateDigitalPrintingTables extends Migration
         // harga_tipe → (Master) Tipe Harga
         $this->forge->addField([
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'konsumen_tipe_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true], // Retail, Corporate, Karyawan
+            'konsumen_tipe_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true], // Kecuali Retail atau harga produk umum
             'produk_id'        => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
             'harga'            => ['type' => 'int', 'constraint' => 11],
             'created_at'       => ['type' => 'timestamp', 'null' => true],

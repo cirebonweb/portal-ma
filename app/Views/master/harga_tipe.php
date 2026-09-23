@@ -12,15 +12,10 @@
             <div class="col-md-12 col-lg-10">
                 <div class="card">
                     <div class="card-body">
+
                         <select id="filter_konsumen_tipe" class="form-control form-control-sm d-inline-block w-auto mx-1">
-                            <option value=""># Tipe Konsumen</option>
+                            <option value=""># Tipe</option>
                             <?php foreach ($menuKonsumenTipe as $row): ?>
-                                <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <select id="filter_produk" class="form-control form-control-sm d-inline-block w-auto mx-1">
-                            <option value=""># Produk</option>
-                            <?php foreach ($menuProduk as $row): ?>
                                 <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -29,7 +24,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Tipe Konsumen</th>
+                                    <th>Tipe</th>
                                     <th>Produk</th>
                                     <th>Harga</th>
                                     <th class="desktop">Tgl. Buat</th>
@@ -38,6 +33,7 @@
                                 </tr>
                             </thead>
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -55,25 +51,28 @@
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
                     <div class="row">
-                        <div class="col-md-12 mb-3">
+
+                        <div class="col-12 mb-4">
+                            <label for="produk_id">Produk <span class="text-danger">*</span></label>
+                            <select id="produk_id" name="produk_id" class="form-control select2" style="width:100%;" required>
+                                <option value="">-- Pilih --</option>
+                                <?php foreach ($menuProduk as $row): ?>
+                                    <option value="<?= $row->id ?>"><?= esc($row->nama) . ' | ' . formatRupiah($row->harga) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="col-6 mb-4">
                             <label for="konsumen_tipe_id">Tipe Konsumen <span class="text-danger">*</span></label>
-                            <select id="konsumen_tipe_id" name="konsumen_tipe_id" class="form-control select2" required style="width:100%;">
-                                <option value="">-- Pilih Tipe Konsumen --</option>
+                            <select id="konsumen_tipe_id" name="konsumen_tipe_id" class="form-control" style="width:100%;" required>
+                                <option value="">-- Pilih --</option>
                                 <?php foreach ($menuKonsumenTipe as $row): ?>
                                     <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="col-md-12 mb-3">
-                            <label for="produk_id">Produk <span class="text-danger">*</span></label>
-                            <select id="produk_id" name="produk_id" class="form-control select2" required style="width:100%;">
-                                <option value="">-- Pilih Produk --</option>
-                                <?php foreach ($menuProduk as $row): ?>
-                                    <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-12 mb-3">
+
+                        <div class="col-6 mb-3">
                             <label for="hargaRp">Harga <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -82,6 +81,7 @@
                                 <input type="text" class="form-control text-right rupiah" id="harga" name="harga" value="0" required>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">
