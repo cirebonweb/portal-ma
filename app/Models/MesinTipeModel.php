@@ -52,12 +52,13 @@ class MesinTipeModel extends Model
     }
 
     /**
-     * Mendapatkan daftar nama tipe mesin berdasarkan tabel `bahan` untuk dropdown menu.
+     * Mendapatkan list mesin_tipe berdasarkan data yang dimiliki pada tabel bahan.
+     * Selanjutnya diteruskan 'BahanModel' → 'getBahanMesin($id)'
      */
-    public function getWithBahan()
+    public function getTipeMesin()
     {
         return $this->select('mesin_tipe.id, mesin_tipe.nama')
-            ->join('bahan', 'bahan.mesin_tipe_id = mesin_tipe.id', 'right')
+            ->join('bahan', 'bahan.mesin_tipe_id = mesin_tipe.id')
             ->groupBy('mesin_tipe.id')
             ->orderBy('mesin_tipe.nama', 'ASC')
             ->findAll();

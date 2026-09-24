@@ -43,7 +43,7 @@ abstract class BaseController extends Controller
         $this->session = service('session');
         $this->request = service('request');
         $this->validation = service('validation');
-        $this->db = \Config\Database::connect();
+        // $this->db = \Config\Database::connect();
     }
 
     protected function ajax()

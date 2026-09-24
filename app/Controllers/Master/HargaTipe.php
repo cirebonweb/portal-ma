@@ -29,7 +29,7 @@ class HargaTipe extends BaseController
 
     public function index(): string
     {
-        return view('master/harga_khusus', [
+        return view('master/harga_tipe', [
             'pageTitle'        => 'Tipe Harga',
             'navigasi'         => '<a href="/master">Master</a> &nbsp;',
             'menuKonsumenTipe' => $this->konsumenTipeModel->getDropdown(),

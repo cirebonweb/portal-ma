@@ -13,9 +13,10 @@ class ProdukModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields = [
-        'mesin_tipe_id',
+        'bahan_id',
         'kategori',
         'nama',
+        'rumus',
         'hpp',
         'harga',
         'promo',
@@ -35,13 +36,17 @@ class ProdukModel extends Model
             'label' => 'ID',
             'rules' => 'permit_empty|is_natural_no_zero'
         ],
-        'mesin_tipe_id' => [
-            'label' => 'Tipe Mesin',
+        'bahan_id' => [
+            'label' => 'Bahan',
             'rules' => 'permit_empty|is_natural_no_zero'
         ],
         'kategori' => [
             'label' => 'Kategori',
             'rules' => 'permit_empty|in_list[0,1,2]'
+        ],
+        'rumus' => [
+            'label' => 'Rumus',
+            'rules' => 'permit_empty|in_list[0,1]'
         ],
         'nama' => [
             'label' => 'Nama Produk',
@@ -82,12 +87,16 @@ class ProdukModel extends Model
     public function tabel()
     {
         return $this->db->table('produk a')
-            ->select('a.id, a.kategori, a.nama, a.hpp, a.harga, a.promo, a.promo_awal, a.promo_akhir, a.unggulan, a.status, a.created_at, a.updated_at, b.nama as mesin')
-            ->join('mesin_tipe b', 'b.id = a.mesin_tipe_id', 'left');
+            ->select('a.id, a.bahan_id, a.kategori, a.nama, a.hpp, a.harga, a.promo, a.promo_awal, a.promo_akhir, a.unggulan, a.status, a.created_at, a.updated_at, b.nama as bahan, c.nama as mesin')
+            ->join('bahan b', 'b.id = a.bahan_id', 'left')
+            ->join('mesin_tipe c', 'c.id = b.mesin_tipe_id', 'left');
     }
 
     public function getDropdown()
     {
-        return $this->select('id, nama, harga')->orderBy('nama', 'ASC')->findAll();
+        return $this->select('produk.id, produk.nama, produk.harga, produk.rumus, bahan.rumus as rumus_bahan, bahan.lebar as bahan_lebar, bahan.panjang as bahan_panjang')
+            ->join('bahan', 'bahan.id = produk.bahan_id', 'left')
+            ->orderBy('produk.nama', 'ASC')
+            ->findAll();
     }
 }

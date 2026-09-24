@@ -32,7 +32,8 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Kategori</th>
-                                    <th>Tipe Mesin</th>
+                                    <th>Tipe</th>
+                                    <th>Bahan</th>
                                     <th>Nama Produk</th>
                                     <th>HPP Produk</th>
                                     <th>Harga Produk</th>
@@ -89,12 +90,27 @@
                         </div>
 
                         <div class="col-6 mb-4">
-                            <label for="mesin_tipe_id">Tipe Mesin</label>
+                            <label for="mesin_tipe_id">Filter Tipe Mesin</label>
                             <select id="mesin_tipe_id" name="mesin_tipe_id" class="form-control" style="width:100%;">
-                                <option value="">-- Pilih --</option>
+                                <option value="">Tanpa Bahan</option>
                                 <?php foreach ($menuMesinTipe as $row): ?>
                                     <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
                                 <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="col-6 mb-4">
+                            <label for="bahan_id">Bahan</label>
+                            <select id="bahan_id" name="bahan_id" class="form-control select2" style="width:100%;" disabled>
+                                <option value="">-- Pilih --</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12 mb-4">
+                            <label for="rumus">Metode Hitung (Rumus) <span class="text-danger">*</span></label>
+                            <select id="rumus" name="rumus" class="form-control">
+                                <option value="0">Perkalian Luas (Lebar x Panjang x Qty x Harga)</option>
+                                <option value="1">Perkalian Qty (Qty x Harga)</option>
                             </select>
                         </div>
 

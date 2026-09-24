@@ -60,7 +60,7 @@ class KonsumenModel extends Model
         ],
         'kota' => [
             'label' => 'Kota',
-            'rules' => 'required|string|max_length[20]'
+            'rules' => 'permit_empty|string|max_length[20]'
         ],
         'whatsapp' => [
             'label' => 'Nomor WhatsApp',
@@ -97,6 +97,10 @@ class KonsumenModel extends Model
      */
     public function getDropdown()
     {
-        return $this->select('id, nama')->orderBy('nama', 'ASC')->findAll();
+        return $this
+        ->select('konsumen.id, konsumen.nama, konsumen_tipe.nama as tipe')
+        ->join('konsumen_tipe', 'konsumen_tipe.id = konsumen.konsumen_tipe_id', 'left')
+        ->orderBy('nama', 'ASC')
+        ->findAll();
     }
 }

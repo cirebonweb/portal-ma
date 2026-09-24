@@ -11,68 +11,6 @@ $routes->get('/', 'Home::index');
 // $routes->get('/', 'Dashboard::index');
 
 // ============================================================================
-// KELOMPOK: BAHAN (Folder: Controllers/Bahan/)
-// ============================================================================
-$routes->group('', ['namespace' => 'App\Controllers\Bahan'], function ($routes) {
-
-    // URL: /bahan
-    $routes->group('bahan', function ($routes) {
-        $routes->get('', 'Bahan::index');
-        $routes->match(['GET', 'POST'], 'tabel', 'Bahan::tabel');
-        $routes->post('getid', 'Bahan::getId');
-        $routes->post('simpan', 'Bahan::simpan');
-        $routes->post('hapus', 'Bahan::hapus');
-    });
-
-    // URL: /bahan-order
-    $routes->group('bahan-order', function ($routes) {
-        $routes->get('', 'BahanOrder::index');
-        $routes->match(['GET', 'POST'], 'tabel', 'BahanOrder::tabel');
-        $routes->post('getid', 'BahanOrder::getId');
-        $routes->post('simpan', 'BahanOrder::simpan');
-        $routes->post('tambahstok', 'BahanOrder::tambahStok');
-        $routes->post('gettotal', 'BahanOrder::getTotal');
-    });
-
-    // URL: /bahan-order/isi
-    $routes->group('bahan-order/isi', function ($routes) {
-        $routes->get('', 'BahanOrderIsi::index');
-        $routes->match(['GET', 'POST'], 'tabel', 'BahanOrderIsi::tabel');
-        $routes->post('getid', 'BahanOrderIsi::getId');
-        $routes->post('getbahanmesin', 'BahanOrderIsi::getBahanMesin');
-        $routes->post('simpan', 'BahanOrderIsi::simpan');
-        $routes->post('hapus', 'BahanOrderIsi::hapus');
-    });
-
-    // URL: /bahan-stok
-    $routes->group('bahan-stok', function ($routes) {
-        $routes->get('', 'BahanStok::index');
-        $routes->match(['GET', 'POST'], 'tabel', 'BahanStok::tabel');
-        $routes->post('getid', 'BahanStok::getId');
-        $routes->post('simpan', 'BahanStok::simpan');
-    });
-
-    // URL: /bahan-sisa
-    // $routes->group('bahan-sisa', function ($routes) {
-    //     $routes->get('', 'BahanSisa::index');
-    //     $routes->match(['GET', 'POST'], 'tabel', 'BahanSisa::tabel');
-    //     $routes->post('getid', 'BahanSisa::getId');
-    //     $routes->post('simpan', 'BahanSisa::simpan');
-    //     $routes->post('hapus', 'BahanSisa::hapus');
-    // });
-
-    // URL: /bahan-limbah
-    // $routes->group('bahan-limbah', function ($routes) {
-    //     $routes->get('', 'BahanLimbah::index');
-    //     $routes->match(['GET', 'POST'], 'tabel', 'BahanLimbah::tabel');
-    //     $routes->post('getid', 'BahanLimbah::getId');
-    //     $routes->post('simpan', 'BahanLimbah::simpan');
-    //     $routes->post('hapus', 'BahanLimbah::hapus');
-    // });
-});
-
-
-// ============================================================================
 // KELOMPOK: DATA (Folder: Controllers/Data/)
 // ============================================================================
 $routes->group('', ['namespace' => 'App\Controllers\Data'], function ($routes) {
@@ -109,6 +47,7 @@ $routes->group('', ['namespace' => 'App\Controllers\Data'], function ($routes) {
         $routes->get('', 'Produk::index');
         $routes->match(['GET', 'POST'], 'tabel', 'Produk::tabel');
         $routes->post('getid', 'Produk::getId');
+        $routes->post('getbahanmesin', 'Produk::getBahanMesin');
         $routes->post('simpan', 'Produk::simpan');
         $routes->post('hapus', 'Produk::hapus');
     });
@@ -161,6 +100,64 @@ $routes->group('', ['namespace' => 'App\Controllers\Data'], function ($routes) {
     // });
 });
 
+// ============================================================================
+// KELOMPOK: BAHAN (Folder: Controllers/Bahan/)
+// ============================================================================
+$routes->group('', ['namespace' => 'App\Controllers\Bahan'], function ($routes) {
+
+    // URL: /bahan
+    $routes->group('bahan', function ($routes) {
+        $routes->get('', 'Bahan::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'Bahan::tabel');
+        $routes->post('getid', 'Bahan::getId');
+        $routes->post('simpan', 'Bahan::simpan');
+        $routes->post('hapus', 'Bahan::hapus');
+    });
+
+    // URL: /bahan-order
+    $routes->group('bahan-order', function ($routes) {
+        $routes->get('', 'BahanOrder::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'BahanOrder::tabel');
+        $routes->post('getid', 'BahanOrder::getId');
+        $routes->post('simpan', 'BahanOrder::simpan');
+        $routes->post('tambahstok', 'BahanOrder::tambahStok');
+        $routes->post('gettotal', 'BahanOrder::getTotal');
+
+        // URL: /bahan-order/isi
+        $routes->get('isi', 'BahanOrderIsi::index');
+        $routes->match(['GET', 'POST'], 'isi/tabel', 'BahanOrderIsi::tabel');
+        $routes->post('isi/getid', 'BahanOrderIsi::getId');
+        $routes->post('isi/getbahanmesin', 'BahanOrderIsi::getBahanMesin');
+        $routes->post('isi/simpan', 'BahanOrderIsi::simpan');
+        $routes->post('isi/hapus', 'BahanOrderIsi::hapus');
+    });
+
+    // URL: /bahan-stok
+    $routes->group('bahan-stok', function ($routes) {
+        $routes->get('', 'BahanStok::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'BahanStok::tabel');
+        $routes->post('getid', 'BahanStok::getId');
+        $routes->post('simpan', 'BahanStok::simpan');
+    });
+
+    // URL: /bahan-sisa
+    // $routes->group('bahan-sisa', function ($routes) {
+    //     $routes->get('', 'BahanSisa::index');
+    //     $routes->match(['GET', 'POST'], 'tabel', 'BahanSisa::tabel');
+    //     $routes->post('getid', 'BahanSisa::getId');
+    //     $routes->post('simpan', 'BahanSisa::simpan');
+    //     $routes->post('hapus', 'BahanSisa::hapus');
+    // });
+
+    // URL: /bahan-limbah
+    // $routes->group('bahan-limbah', function ($routes) {
+    //     $routes->get('', 'BahanLimbah::index');
+    //     $routes->match(['GET', 'POST'], 'tabel', 'BahanLimbah::tabel');
+    //     $routes->post('getid', 'BahanLimbah::getId');
+    //     $routes->post('simpan', 'BahanLimbah::simpan');
+    //     $routes->post('hapus', 'BahanLimbah::hapus');
+    // });
+});
 
 // ============================================================================
 // KELOMPOK: MASTER (Folder: Controllers/Master/)

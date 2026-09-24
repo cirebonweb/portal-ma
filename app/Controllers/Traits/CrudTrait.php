@@ -59,33 +59,6 @@ trait CrudTrait
     }
 
     // 3. Fungsi Simpan (Insert / Update)
-    // public function simpan()
-    // {
-    //     if ($res = $this->ajax()) return $res;
-
-    //     $data = method_exists($this, 'dataSimpan') ? $this->dataSimpan() : $this->request->getPost();
-
-    //     // Bersihkan string kosong menjadi null secara otomatis
-    //     foreach ($data as $key => $value) {
-    //         if ($value === '') {
-    //             $data[$key] = null;
-    //         }
-    //     }
-
-    //     try {
-    //         if (!$this->model->save($data)) {
-    //             return $this->json(false, $this->model->errors());
-    //         }
-
-    //         $pesan = empty($data['id']) ? lang("App.insert-success") : lang("App.update-success");
-    //         return $this->json(true, $pesan);
-    //     } catch (\Throwable $e) {
-    //         log_message('critical', __METHOD__ . ': ' . $e->getMessage());
-    //         return $this->json(false, 'Critical: ' . $e->getMessage());
-    //     }
-    // }
-
-    // 3. Fungsi Simpan (Insert / Update)
     public function simpan()
     {
         if ($res = $this->ajax()) return $res;

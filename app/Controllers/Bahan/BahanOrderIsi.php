@@ -6,9 +6,9 @@ use App\Controllers\BaseController;
 use App\Controllers\Traits\CrudTrait;
 use App\Models\BahanOrderIsiModel;
 use App\Models\BahanOrderModel;
-use App\Models\SupplierModel;
-use App\Models\MesinTipeModel;
 use App\Models\BahanModel;
+use App\Models\MesinTipeModel;
+use App\Models\SupplierModel;
 use CodeIgniter\Database\BaseBuilder;
 
 class BahanOrderIsi extends BaseController
@@ -18,8 +18,8 @@ class BahanOrderIsi extends BaseController
     protected BahanOrderIsiModel $model;
     protected BahanOrderModel $bahanOrderModel;
     protected BahanModel $bahanModel;
-    protected SupplierModel $supplierModel;
     protected MesinTipeModel $mesinTipeModel;
+    protected SupplierModel $supplierModel;
 
     // protected $searchable = ['b.nama'];
     protected $orderable = ['a.id', 'b.nama'];
@@ -29,8 +29,8 @@ class BahanOrderIsi extends BaseController
         $this->model = new BahanOrderIsiModel();
         $this->bahanOrderModel = new BahanOrderModel();
         $this->bahanModel = new BahanModel();
-        $this->supplierModel = new SupplierModel();
         $this->mesinTipeModel = new MesinTipeModel();
+        $this->supplierModel = new SupplierModel();
         // helper('master');
     }
 
@@ -57,7 +57,7 @@ class BahanOrderIsi extends BaseController
             'item'          => $item,
             'id'            => $id,
             'dataOrder'     => $this->bahanOrderModel->getDataOrder($id),
-            'menuTipeMesin' => $this->mesinTipeModel->getWithBahan(),
+            'menuTipeMesin' => $this->mesinTipeModel->getTipeMesin(),
             'menuBahan'     => $this->bahanModel->getDropdown()
         ];
 

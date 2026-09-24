@@ -72,12 +72,12 @@ class Konsumen extends BaseController
     {
         return [
             'id'               => $this->request->getPost('id'),
-            'konsumen_tipe_id' => $this->request->getPost('konsumen_tipe_id'),
+            'konsumen_tipe_id' => $this->request->getPost('konsumen_tipe_id') ?? 1,
             // 'user_id'       => auth()->user()?->id,
             'nama'             => $this->request->getPost('nama'),
             'perusahaan'       => $this->request->getPost('perusahaan'),
             'alamat'           => $this->request->getPost('alamat'),
-            'kota'             => $this->request->getPost('kota'),
+            'kota'             => $this->request->getPost('kota') ?? 'Cirebon',
             'whatsapp'         => $this->request->getPost('whatsapp'),
             'email'            => $this->request->getPost('email')
         ];

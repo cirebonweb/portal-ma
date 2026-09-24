@@ -21,14 +21,14 @@ class CreateDigitalPrintingTables extends Migration
         // konsumen → (Data) Konsumen
         $this->forge->addField([
             'id'               => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'konsumen_tipe_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'konsumen_tipe_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true], // Default 1:Retail
             'user_id'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // Persiapan jika konsumen bisa login
             'nama'             => ['type' => 'varchar', 'constraint' => 30],
             'perusahaan'       => ['type' => 'varchar', 'constraint' => 30, 'null' => true],
             'alamat'           => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
             'kota'             => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
             'whatsapp'         => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
-            'telegram_id'      => ['type' => 'varchar', 'constraint' => 20, 'null' => true],
+            'telegram_id'      => ['type' => 'varchar', 'constraint' => 20, 'null' => true], // Skip untuk saat ini
             'email'            => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
             'divisi'           => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Umum, 1:Printing, 2:Advertising
             'created_at'       => ['type' => 'timestamp', 'null' => true],
@@ -165,22 +165,23 @@ class CreateDigitalPrintingTables extends Migration
 
         // produk → (Data) Produk
         $this->forge->addField([
-            'id'            => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'mesin_tipe_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // null kecuali 0:Internal
-            'kategori'      => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Internal (antrean cetak & potong stok), 1:Eksternal, 2:Jasa/Layanan
-            'nama'          => ['type' => 'varchar', 'constraint' => 100, 'unique' => true],
-            'hpp'           => ['type' => 'int', 'constraint' => 11, 'default' => 0],
-            'harga'         => ['type' => 'int', 'constraint' => 11, 'default' => 0],
-            'promo'         => ['type' => 'int', 'constraint' => 11, 'null' => true],
-            'promo_awal'    => ['type' => 'date', 'null' => true],
-            'promo_akhir'   => ['type' => 'date', 'null' => true],
-            'unggulan'      => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],
-            'status'        => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
-            'created_at'    => ['type' => 'timestamp', 'null' => true],
-            'updated_at'    => ['type' => 'timestamp', 'null' => true],
+            'id'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'bahan_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // null untuk produk tanpa bahan
+            'kategori'    => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Internal (antrean cetak & potong stok), 1:Eksternal, 2:Jasa/Layanan
+            'nama'        => ['type' => 'varchar', 'constraint' => 100, 'unique' => true],
+            'rumus'       => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Perkalian luas, 1:Perkalian qty
+            'hpp'         => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'harga'       => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'promo'       => ['type' => 'int', 'constraint' => 11, 'null' => true],
+            'promo_awal'  => ['type' => 'date', 'null' => true],
+            'promo_akhir' => ['type' => 'date', 'null' => true],
+            'unggulan'    => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],
+            'status'      => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
+            'created_at'  => ['type' => 'timestamp', 'null' => true],
+            'updated_at'  => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('mesin_tipe_id', 'mesin_tipe', 'id', 'SET NULL', 'RESTRICT');
+        $this->forge->addForeignKey('bahan_id', 'bahan', 'id', 'CASCADE', 'SET NULL');
         $this->forge->createTable('produk');
 
         // harga_tipe → (Master) Tipe Harga
