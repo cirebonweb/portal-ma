@@ -79,7 +79,8 @@ class NotaIsiModel extends Model
         ],
         'status' => [
             'label' => 'Status',
-            'rules' => 'permit_empty|in_list[0,1,2,3,4]'
+            'rules' => 'permit_empty|in_list[0,1,2,3,4,5]'
+            // 0: Draft, 1: Antrian, 2: Pending, 3: Proses, 4: Selesai, 5: Batal
         ],
         'keterangan' => [
             'label' => 'Keterangan',
@@ -92,7 +93,7 @@ class NotaIsiModel extends Model
     public function tabel()
     {
         return $this->db->table('nota_isi a')
-            ->select('a.id, a.nota_id, a.produk_id, a.finishing_id, a.tema, a.lebar, a.panjang, a.luas, a.qty, a.harga, a.jumlah, a.status, a.keterangan, a.created_at, a.updated_at, b.no_nota, c.nama as produk, d.nama as finishing')
+            ->select('a.id, a.tema, a.lebar, a.panjang, qty, a.harga, a.jumlah, a.status, a.keterangan, a.created_at, a.updated_at, c.nama as produk, d.nama as finishing')
             ->join('nota b', 'b.id = a.nota_id', 'left')
             ->join('produk c', 'c.id = a.produk_id', 'left')
             ->join('finishing d', 'd.id = a.finishing_id', 'left');

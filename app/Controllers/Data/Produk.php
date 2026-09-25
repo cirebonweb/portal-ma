@@ -24,7 +24,7 @@ class Produk extends BaseController
         $this->model = new ProdukModel();
         $this->mesinTipeModel = new MesinTipeModel();
         $this->bahanModel = new BahanModel();
-        // helper('format');
+        helper('format');
     }
 
     public function index(): string
@@ -67,9 +67,11 @@ class Produk extends BaseController
             $row->mesin ?: '-',
             $row->bahan ?: '-',
             $row->nama,
+            formatDesimal($row->lebar) . ' x ' . formatDesimal($row->panjang) . ' m',
+            $row->rumus ? 'Perkalian Qty' : 'Perkalian Luas',
             $row->hpp,
             $row->harga,
-            $row->promo === null ? '-' : $row->promo,
+            $row->promo === null ? '0' : $row->promo,
             $row->promo_awal,
             $row->promo_akhir,
             (int) $row->unggulan === 1 ? '<span class="lencana bg-success">Ya</span>' : '<span class="lencana bg-secondary">Tidak</span>',
@@ -87,6 +89,8 @@ class Produk extends BaseController
             'bahan_id'    => $this->request->getPost('bahan_id') ?: null,
             'kategori'    => $this->request->getPost('kategori'),
             'nama'        => $this->request->getPost('nama'),
+            'lebar'       => $this->request->getPost('lebar') ?? 0.00,
+            'panjang'     => $this->request->getPost('panjang') ?? 0.00,
             'rumus'       => $this->request->getPost('rumus') ?? 0,
             'hpp'         => $this->request->getPost('hpp'),
             'harga'       => $this->request->getPost('harga'),

@@ -70,7 +70,23 @@ utama pada stabilitas server:
 - Periksa diff agar perubahan tidak meluas ke area yang tidak diminta.
 - Perbarui dokumentasi yang berkaitan langsung dengan perubahan.
 - Catat asumsi atau pekerjaan yang belum diverifikasi jika diperlukan.
-- Log pekerjaan AI boleh ringkas untuk perubahan kecil dan lebih lengkap untuk perubahan besar, keputusan desain, atau perubahan yang belum selesai.
+- Setelah setiap pekerjaan selesai, selalu catat ringkasannya pada
+  `docs/05-log-job-ai.md`.
+- Catatan log minimal memuat tanggal, ringkasan pekerjaan, file atau area yang
+  berubah, dan hasil validasi jika ada.
+- Gunakan catatan yang lebih lengkap jika perubahan besar, keputusan desain,
+  atau pekerjaan yang belum selesai perlu dijelaskan.
+- Perbarui status pada bagian `Tahap proyek CRUD` di
+  `docs/01-status-proyek.md` jika pekerjaan mengubah status modul.
+
+### Status tahap proyek CRUD
+
+Gunakan penanda berikut secara konsisten:
+
+- `[x] selesai` — pekerjaan selesai dan hasilnya dapat dijadikan referensi untuk
+  membuat atau mengembangkan CRUD terkait.
+- `[p] proses` — pekerjaan sedang dikerjakan saat ini.
+- `[ ] antrian` — pekerjaan belum dikerjakan.
 
 ## Batasan perubahan
 

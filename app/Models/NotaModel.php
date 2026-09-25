@@ -44,13 +44,13 @@ class NotaModel extends Model
             'label' => 'Konsumen',
             'rules' => 'required|is_natural_no_zero'
         ],
-        'tgl_nota' => [
-            'label' => 'Tanggal Nota',
-            'rules' => 'required|valid_date'
-        ],
         'no_nota' => [
             'label' => 'Nomor Nota',
             'rules' => 'required|string|max_length[30]|is_unique[nota.no_nota,id,{id}]'
+        ],
+        'tgl_nota' => [
+            'label' => 'Tanggal Nota',
+            'rules' => 'required|valid_date'
         ],
         'subtotal' => [
             'label' => 'Subtotal',

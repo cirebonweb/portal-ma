@@ -9,9 +9,10 @@ dan proses deployment Portal MA.
 - [Arsitektur Aplikasi](./02-arsitektur-aplikasi.md)
 - [Alur Aplikasi](./03-alur-aplikasi.md)
 - [Panduan Pengguna](./04-panduan-pengguna.md) — diisi bertahap setelah CRUD diuji
-- `05-skema-database.md` — akan dibuat setelah struktur database diverifikasi
-- `06-modul-dan-fitur.md` — akan dibuat bertahap
-- `07-deployment.md` — akan dibuat menjelang persiapan production
+- [Log Pekerjaan AI](./05-log-job-ai.md)
+- `06-skema-database.md` — akan dibuat setelah struktur database diverifikasi
+- `07-modul-dan-fitur.md` — akan dibuat bertahap
+- `08-deployment.md` — akan dibuat menjelang persiapan production
 
 ## Alur aplikasi
 

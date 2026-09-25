@@ -169,6 +169,8 @@ class CreateDigitalPrintingTables extends Migration
             'bahan_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // null untuk produk tanpa bahan
             'kategori'    => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Internal (antrean cetak & potong stok), 1:Eksternal, 2:Jasa/Layanan
             'nama'        => ['type' => 'varchar', 'constraint' => 100, 'unique' => true],
+            'lebar'       => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
+            'panjang'     => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
             'rumus'       => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Perkalian luas, 1:Perkalian qty
             'hpp'         => ['type' => 'int', 'constraint' => 11, 'default' => 0],
             'harga'       => ['type' => 'int', 'constraint' => 11, 'default' => 0],
@@ -228,8 +230,8 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addField([
             'id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'konsumen_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
-            'tgl_nota'       => ['type' => 'date'],
             'no_nota'        => ['type' => 'varchar', 'constraint' => 30, 'unique' => true],
+            'tgl_nota'       => ['type' => 'date'],
             'subtotal'       => ['type' => 'int', 'constraint' => 11, 'default' => 0],
             'diskon_persen'  => ['type' => 'tinyint', 'constraint' => 3, 'default' => 0],
             'diskon_nominal' => ['type' => 'int', 'constraint' => 11, 'default' => 0],
@@ -265,7 +267,9 @@ class CreateDigitalPrintingTables extends Migration
             'qty'          => ['type' => 'smallint', 'constraint' => 6, 'default' => 0],
             'harga'        => ['type' => 'int', 'constraint' => 11, 'default' => 0],
             'jumlah'       => ['type' => 'int', 'constraint' => 11, 'default' => 0],
-            'status'       => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Antrian, 1:Tertunda, 2:Proses, 3:Selesai, 4:Batal | WHERE nota_isi.status IN (0, 1)
+            // Status alur kerja cetak (produksi)
+            // 0: Draft, 1: Antrian, 2: Pending, 3: Proses, 4: Selesai, 5: Batal | WHERE nota_isi.status IN (1, 2)
+            'status'       => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],
             'keterangan'   => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
             'created_at'   => ['type' => 'timestamp', 'null' => true],
             'updated_at'   => ['type' => 'timestamp', 'null' => true],

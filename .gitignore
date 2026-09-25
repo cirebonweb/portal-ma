@@ -127,4 +127,5 @@ _modules/*
 
 # Custom
 !/public/vendor/
-/backup/
+/docs/
+/sql/

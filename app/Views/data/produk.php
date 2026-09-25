@@ -31,13 +31,15 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Kategori</th>
-                                    <th>Tipe</th>
-                                    <th>Bahan</th>
+                                    <th class="min-tablet">Kategori</th>
+                                    <th class="min-tablet">Tipe</th>
+                                    <th class="min-tablet">Bahan</th>
                                     <th>Nama Produk</th>
-                                    <th>HPP Produk</th>
+                                    <th class="min-tablet">Ukuran</th>
+                                    <th class="min-tablet">Rumus</th>
+                                    <th class="min-tablet">HPP Produk</th>
                                     <th>Harga Produk</th>
-                                    <th>Harga Promo</th>
+                                    <th class="min-tablet">Harga Promo</th>
                                     <th class="none">Tgl. Awal Promo</th>
                                     <th class="none">Tgl. Akhir Promo</th>
                                     <th class="none">Produk Unggulan</th>
@@ -90,7 +92,7 @@
                         </div>
 
                         <div class="col-6 mb-4">
-                            <label for="mesin_tipe_id">Filter Tipe Mesin</label>
+                            <label for="mesin_tipe_id">Tipe Mesin</label>
                             <select id="mesin_tipe_id" name="mesin_tipe_id" class="form-control" style="width:100%;">
                                 <option value="">Tanpa Bahan</option>
                                 <?php foreach ($menuMesinTipe as $row): ?>
@@ -100,7 +102,7 @@
                         </div>
 
                         <div class="col-6 mb-4">
-                            <label for="bahan_id">Bahan</label>
+                            <label for="bahan_id">Bahan <span class="text-danger bahan_id">*</span></label>
                             <select id="bahan_id" name="bahan_id" class="form-control select2" style="width:100%;" disabled>
                                 <option value="">-- Pilih --</option>
                             </select>
@@ -112,6 +114,26 @@
                                 <option value="0">Perkalian Luas (Lebar x Panjang x Qty x Harga)</option>
                                 <option value="1">Perkalian Qty (Qty x Harga)</option>
                             </select>
+                        </div>
+
+                        <div class="col-6 col-md-3 mb-4">
+                            <label for="lebar">Lebar</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-center angka" id="lebar" name="lebar" value="1" minlength="1" maxlength="6" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">m</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-3 mb-4">
+                            <label for="panjang">Panjang</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-center angka" id="panjang" name="panjang" value="1" minlength="1" maxlength="6" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">m</span>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-6 mb-4">

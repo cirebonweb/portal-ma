@@ -53,13 +53,28 @@ $routes->group('', ['namespace' => 'App\Controllers\Data'], function ($routes) {
     });
 
     // URL: /nota
-    // $routes->group('nota', function ($routes) {
-    //     $routes->get('', 'Nota::index');
-    //     $routes->match(['GET', 'POST'], 'tabel', 'Nota::tabel');
-    //     $routes->post('getid', 'Nota::getId');
-    //     $routes->post('simpan', 'Nota::simpan');
-    //     $routes->post('hapus', 'Nota::hapus');
-    // });
+    $routes->group('nota', function ($routes) {
+        $routes->get('', 'Nota::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'Nota::tabel');
+        $routes->post('getid', 'Nota::getId');
+        $routes->post('simpan', 'Nota::simpan');
+        $routes->post('hapus', 'Nota::hapus');
+
+        // URL: /nota/isi
+        $routes->get('isi', 'NotaIsi::index');
+        $routes->match(['GET', 'POST'], 'isi/tabel', 'NotaIsi::tabel');
+        $routes->post('isi/getid', 'NotaIsi::getId');
+        $routes->post('isi/loadproduk', 'NotaIsi::loadProduk');
+        $routes->post('isi/simpan', 'NotaIsi::simpan');
+        $routes->post('isi/hapus', 'NotaIsi::hapus');
+
+        // URL: /nota/bayar
+        $routes->get('bayar', 'NotaBayar::index');
+        $routes->match(['GET', 'POST'], 'bayar/tabel', 'NotaBayar::tabel');
+        $routes->post('bayar/getid', 'NotaBayar::getId');
+        $routes->post('bayar/simpan', 'NotaBayar::simpan');
+        $routes->post('bayar/hapus', 'NotaBayar::hapus');
+    });
 
     // URL: /pembayaran (Memanggil Controller Pembayaran)
     // $routes->group('pembayaran', function ($routes) {

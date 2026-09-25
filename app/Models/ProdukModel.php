@@ -16,6 +16,8 @@ class ProdukModel extends Model
         'bahan_id',
         'kategori',
         'nama',
+        'lebar',
+        'panjang',
         'rumus',
         'hpp',
         'harga',
@@ -43,6 +45,14 @@ class ProdukModel extends Model
         'kategori' => [
             'label' => 'Kategori',
             'rules' => 'permit_empty|in_list[0,1,2]'
+        ],
+        'lebar' => [
+            'label' => 'Lebar',
+            'rules' => 'permit_empty|decimal|greater_than_equal_to[0]'
+        ],
+        'panjang' => [
+            'label' => 'Panjang',
+            'rules' => 'permit_empty|decimal|greater_than_equal_to[0]'
         ],
         'rumus' => [
             'label' => 'Rumus',
@@ -87,15 +97,29 @@ class ProdukModel extends Model
     public function tabel()
     {
         return $this->db->table('produk a')
-            ->select('a.id, a.bahan_id, a.kategori, a.nama, a.hpp, a.harga, a.promo, a.promo_awal, a.promo_akhir, a.unggulan, a.status, a.created_at, a.updated_at, b.nama as bahan, c.nama as mesin')
+            ->select('a.id, a.bahan_id, a.kategori, a.nama, a.lebar, a.panjang, a.rumus, a.hpp, a.harga, a.promo, a.promo_awal, a.promo_akhir, a.unggulan, a.status, a.created_at, a.updated_at, b.nama as bahan, c.nama as mesin')
             ->join('bahan b', 'b.id = a.bahan_id', 'left')
             ->join('mesin_tipe c', 'c.id = b.mesin_tipe_id', 'left');
     }
 
-    public function getDropdown()
+    // public function getDropdown()
+    // {
+    //     return $this
+    //         ->select('id, nama, lebar, panjang, rumus, harga')
+    //         ->orderBy('produk.nama', 'ASC')
+    //         ->findAll();
+    // }
+
+    /**
+     * @param mixed $id
+     * Mendapatkan list produk berdasarkan kategori produk
+     * digunakan: /nota/isi?edit=
+     */
+    public function loadProduk($id)
     {
-        return $this->select('produk.id, produk.nama, produk.harga, produk.rumus, bahan.rumus as rumus_bahan, bahan.lebar as bahan_lebar, bahan.panjang as bahan_panjang')
-            ->join('bahan', 'bahan.id = produk.bahan_id', 'left')
+        return $this
+            ->select('id, nama, lebar, panjang, rumus, harga')
+            ->where('kategori', $id)
             ->orderBy('produk.nama', 'ASC')
             ->findAll();
     }

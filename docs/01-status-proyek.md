@@ -10,23 +10,49 @@
 Status ini adalah catatan kerja tingkat tinggi. Detail teknis tetap dicatat pada
 dokumentasi arsitektur, alur aplikasi, dan skema database.
 
-## Tahap proyek
+## Tahap proyek CRUD
 
-- [x] Perancangan awal menu dan database
-- [x] Setup CodeIgniter 4
-- [x] Setup CodeIgniter Shield
-- [ ] Menetapkan dan memverifikasi role serta permission
-- [x] Menyelesaikan CRUD Master
-- [ ] Menyelesaikan POS/nota penjualan
-- [ ] Menyelesaikan manajemen bahan
-- [ ] Menyelesaikan proses cetak
-- [ ] Menyelesaikan pembayaran
-- [ ] Menyelesaikan laporan keuangan
-- [ ] Menyelesaikan statistik dan grafik dashboard
-- [ ] Pengujian terintegrasi
-- [ ] Audit validasi dan hak akses
-- [ ] Persiapan deployment
-- [ ] Deployment production
+- `[x] selesai` — dapat dijadikan referensi saat membuat CRUD karena status sudah selesai.
+- `[p] proses` — sedang dikerjakan saat ini.
+- `[ ] antrian` — belum dikerjakan.
+
+Dashboard
+- [ ] Dashboard CS → Statistik penjualan produk digital printing
+- [ ] Dashboard Printing → Statistik antrian proses cetak
+- [ ] Dashboard Admin → Statistik penerimaan uang masuk harian baik tunai maupun transfer
+
+Data
+- [x] Data Konsumen → /konsumen
+- [x] Data Supplier → /supplier
+- [x] Data Mesin → /mesin
+- [x] Data Produk → /produk
+- [p] Data Nota → /nota
+- [ ] Data Cetak → /cetak
+- [ ] Data Pembayaran → /pembayaran
+- [ ] Data Laporan → /laporan
+
+Bahan
+- [x] Data Bahan → /bahan
+- [x] Order Bahan → /bahan-order
+- [x] Stok Bahan → /bahan-stok
+- [ ] Sisa Bahan → /bahan-sisa
+- [ ] Limbah Bahan → /bahan-limbah
+
+Master
+- [x] Tipe Konsumen → /konsumen-tipe
+- [x] Tipe Mesin → /mesin-tipe
+- [x] Tipe Harga → /harga-tipe
+- [x] Harga Khusus → /harga-khusus
+- [x] Finishing → /finishing
+
+Log
+- [ ] Log Laporan → /laporan-log
+
+Setting
+- [ ] Setting Situs
+- [ ] Setting User
+- [ ] Role User
+- [ ] Profil
 
 ## Modul dan kondisi saat ini
 
@@ -61,12 +87,5 @@ dokumentasi arsitektur, alur aplikasi, dan skema database.
 
 ## Log pekerjaan AI
 
-### 2026-09-24
-
-- Membuat instruksi repository untuk Copilot.
-- Membuat indeks dokumentasi.
-- Membuat status awal proyek.
-- Membuat dokumentasi arsitektur aplikasi awal.
-- Membuat dokumentasi alur aplikasi tingkat tinggi.
-- Menandai seluruh CRUD Master sebagai final berdasarkan konfirmasi pengguna.
-- Membuat kerangka panduan pengguna untuk diisi bertahap setelah pengujian CRUD.
+Log lengkap pekerjaan Copilot dicatat pada
+[05-log-job-ai.md](./05-log-job-ai.md).
