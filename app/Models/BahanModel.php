@@ -104,7 +104,7 @@ class BahanModel extends Model
 
     /**
      * Mendapatkan data bahan berdasarkan filter mesin_tipe_id (lewat bahan_jenis).
-     * Hanya jenis 0 (bahan produksi) yang dibutuhkan operator/purchasing.
+     * Hanya kategori 0 (bahan produksi) yang dibutuhkan operator/purchasing.
      * @param mixed $id
      */
     public function getBahanMesin($id)
@@ -113,20 +113,20 @@ class BahanModel extends Model
             ->select('bahan.id, bahan.kode, bahan.nama, bahan.lebar, bahan.panjang, bahan.isi_paket, bahan.satuan_1, bahan.satuan_2, bahan_jenis.rumus')
             ->join('bahan_jenis', 'bahan_jenis.id = bahan.bahan_jenis_id', 'inner')
             ->where('bahan_jenis.mesin_tipe_id', $id)
-            ->where('bahan_jenis.jenis', 0)
+            ->where('bahan_jenis.kategori', 0)
             ->orderBy('bahan.nama', 'ASC')
             ->findAll();
     }
 
     /**
-     * Mendapatkan seluruh material (bahan_jenis jenis = 1) untuk order bahan.
+     * Mendapatkan seluruh material (bahan_jenis.kategori = 1) untuk order bahan.
      */
     public function getMaterial()
     {
         return $this
             ->select('bahan.id, bahan.kode, bahan.nama, bahan.lebar, bahan.panjang, bahan.isi_paket, bahan.satuan_1, bahan.satuan_2, bahan_jenis.rumus')
             ->join('bahan_jenis', 'bahan_jenis.id = bahan.bahan_jenis_id', 'inner')
-            ->where('bahan_jenis.jenis', 1)
+            ->where('bahan_jenis.kategori', 1)
             ->orderBy('bahan.nama', 'ASC')
             ->findAll();
     }

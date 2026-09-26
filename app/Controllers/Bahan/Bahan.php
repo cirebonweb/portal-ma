@@ -24,15 +24,17 @@ class Bahan extends BaseController
         $this->model = new BahanModel();
         $this->bahanJenisModel = new BahanJenisModel();
         $this->mesinTipeModel = new MesinTipeModel();
+        helper('satuan');
         helper('format');
     }
 
     public function index(): string
     {
         return view('bahan/bahan', [
-            'pageTitle'     => 'Data Bahan',
-            'navigasi'      => '<a href="/bahan">Bahan</a> &nbsp;',
+            'pageTitle'     => 'Bahan Cetak',
+            'navigasi'      => '<a href="/bahan">Bahan Cetak</a> &nbsp;',
             'menuMesinTipe' => $this->mesinTipeModel->getTipeMesin(),
+            'menuSatuan'    => getSatuan()
         ]);
     }
 

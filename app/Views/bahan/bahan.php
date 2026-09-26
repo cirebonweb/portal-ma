@@ -60,7 +60,7 @@
                         <!-- mesin_tipe -->
                         <div class="col-6 mb-4">
                             <label for="mesin_tipe_id">Tipe Mesin <span class="text-danger">*</span></label>
-                            <select id="mesin_tipe_id" class="form-control" style="width:100%;" required>
+                            <select id="mesin_tipe_id" class="form-control" style="width:100%;">
                                 <option value="">-- Pilih ---</option>
                                 <?php foreach ($menuMesinTipe as $row): ?>
                                     <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
@@ -75,15 +75,15 @@
                         </div>
 
                         <!-- bahan_jenis_id -->
-                        <div class="col-6 mb-4">
-                            <label for="bahan_jenis_id">Jenis Bahan <span class="text-danger bahan_id">*</span></label>
+                        <div class="col-md-6 mb-4">
+                            <label for="bahan_jenis_id">Jenis Bahan <span class="text-danger">*</span></label>
                             <select id="bahan_jenis_id" name="bahan_jenis_id" class="form-control select2" style="width:100%;" disabled>
                                 <option value="">-- Pilih --</option>
                             </select>
                         </div>
 
                         <!-- nama -->
-                        <div class="col-12 col-md-6 mb-4">
+                        <div class="col-md-6 mb-4">
                             <label for="nama">Nama Bahan <span class="text-danger">*</span></label>
                             <input type="text" class="form-control capital" id="nama" name="nama" required placeholder="contoh: Flexy 280-3260">
                         </div>
@@ -122,28 +122,25 @@
                         </div>
 
                         <!-- satuan_1 -->
-                        <div class="col-6 mb-4">
+                        <div class="col-6 col-md-3 mb-4">
                             <div class="form-group">
-                                <label for="satuan_1">Satuan isi stok <span class="text-danger">*</span></label>
-                                <select class="form-control" id="satuan_1" name="satuan_1" style="width: 100%;">
-                                    <option value="m²">m²</option>
-                                    <option value="lembar">lembar</option>
-                                    <option value="pcs">pcs</option>
-                                    <option value="unit">unit</option>
+                                <label for="satuan_1">Satuan isi <span class="text-danger">*</span></label>
+                                <select class="form-control select2" id="satuan_1" name="satuan_1" style="width: 100%;">
+                                    <?php foreach ($menuSatuan as $key => $value): ?>
+                                        <option value="<?= $key ?>"> <?= esc($value) ?> </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
 
                         <!-- satuan_2 -->
-                        <div class="col-6 mb-3">
+                        <div class="col-6 col-md-3 mb-3">
                             <div class="form-group">
-                                <label for="satuan_2">Satuan paket pembelian <span class="text-danger">*</span></label>
-                                <select class="form-control" id="satuan_2" name="satuan_2" style="width: 100%;">
-                                    <option value="roll">roll</option>
-                                    <option value="rim">rim</option>
-                                    <option value="dus">dus</option>
-                                    <option value="pack">pack</option>
-                                    <option value="box">box</option>
+                                <label for="satuan_2">Satuan paket <span class="text-danger">*</span></label>
+                                <select class="form-control select2" id="satuan_2" name="satuan_2" style="width: 100%;">
+                                    <?php foreach ($menuSatuan as $key => $value): ?>
+                                        <option value="<?= $key ?>"> <?= esc($value) ?> </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
