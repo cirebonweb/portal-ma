@@ -19,10 +19,11 @@
                                     <th>ID</th>
                                     <th>Konsumen</th>
                                     <th>Produk</th>
-                                    <th>Harga</th>
-                                    <th class="desktop">Tgl. Buat</th>
-                                    <th class="desktop">Tgl. Ubah</th>
+                                    <th>Harga Produk</th>
+                                    <th>Harga Khusus</th>
                                     <th class="no-export">Aksi</th>
+                                    <th class="none">Tgl. Buat</th>
+                                    <th class="none">Tgl. Ubah</th>
                                 </tr>
                             </thead>
                         </table>
@@ -45,7 +46,7 @@
                     <input type="hidden" id="id" name="id">
                     <div class="row">
 
-                        <div class="col-md-12 mb-4">
+                        <div class="col-12 mb-4">
                             <label for="konsumen_id">Konsumen <span class="text-danger">*</span></label>
                             <select id="konsumen_id" name="konsumen_id" class="form-control select2" required style="width:100%;">
                                 <option value="">-- Pilih --</option>
@@ -55,17 +56,27 @@
                             </select>
                         </div>
 
-                        <div class="col-md-12 mb-4">
+                        <div class="col-12 mb-4">
                             <label for="produk_id">Produk <span class="text-danger">*</span></label>
                             <select id="produk_id" name="produk_id" class="form-control select2" required style="width:100%;">
                                 <option value="">-- Pilih --</option>
                                 <?php foreach ($menuProduk as $row): ?>
-                                    <option value="<?= $row->id ?>"><?= esc($row->nama) . ' | ' . formatRupiah($row->harga) ?></option>
+                                    <option value="<?= $row->id ?>" data-harga="<?= $row->harga ?>"><?= esc($row->nama) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-6 mb-4">
+                            <label for="harga_produk">Harga Produk</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </div>
+                                <input type="text" class="form-control text-right rupiah" id="harga_produk" value="0" disabled>
+                            </div>
+                        </div>
+
+                        <div class="col-6 mb-3">
                             <label for="hargaRp">Harga <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -89,7 +100,7 @@
 
 <?= $this->section('js') ?>
 <script>
-    const thisUrl = '<?= site_url('harga-khusus') ?>';
+    const urlThis = '<?= site_url('harga-khusus') ?>';
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="<?= versi('plugin/select2/js/select2.min.js') ?>" defer></script>

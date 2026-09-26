@@ -23,7 +23,7 @@ class Finishing extends BaseController
     {
         return view('master/finishing', [
             'pageTitle' => 'Finishing',
-            'navigasi'  => '<a href="/master">Master</a> &nbsp;',
+            'navigasi'  => '<a href="/master">Master</a> &nbsp;'
         ]);
     }
 

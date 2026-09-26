@@ -17,14 +17,13 @@ class HargaKhusus extends BaseController
     protected KonsumenModel $konsumenModel;
     protected ProdukModel $produkModel;
     protected $searchable = ['b.nama', 'b.perusahaan', 'c.nama'];
-    protected $orderable = ['a.id', 'b.nama', 'b.perusahaan', 'c.nama', 'a.harga', 'a.created_at', 'a.updated_at'];
+    protected $orderable = ['a.id', 'b.nama', 'b.perusahaan', 'c.nama', 'c.harga', 'a.harga'];
 
     public function __construct()
     {
         $this->model = new HargaKhususModel();
         $this->konsumenModel = new KonsumenModel();
         $this->produkModel = new ProdukModel();
-        helper('format');
     }
 
     public function index(): string
@@ -33,7 +32,7 @@ class HargaKhusus extends BaseController
             'pageTitle'    => 'Harga Khusus',
             'navigasi'     => '<a href="/master">Master</a> &nbsp;',
             'menuKonsumen' => $this->konsumenModel->getDropdown(),
-            'menuProduk'   => $this->produkModel->getDropdown(),
+            'menuProduk'   => $this->produkModel->getDropdown()
         ]);
     }
 
@@ -52,11 +51,12 @@ class HargaKhusus extends BaseController
         return [
             $row->id,
             $row->konsumen,
-            $row->produk . ' | ' . formatRupiah($row->harga_produk),
-            formatRupiah($row->harga),
-            $row->created_at,
-            $row->updated_at,
+            $row->produk,
+            $row->harga_produk,
+            $row->harga,
             $aksi,
+            $row->created_at,
+            $row->updated_at
         ];
     }
 

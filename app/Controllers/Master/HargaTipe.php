@@ -17,14 +17,13 @@ class HargaTipe extends BaseController
     protected KonsumenTipeModel $konsumenTipeModel;
     protected ProdukModel $produkModel;
     protected $searchable = ['b.nama', 'c.nama'];
-    protected $orderable = ['a.id', 'b.nama', 'c.nama', 'a.harga', 'a.created_at', 'a.updated_at'];
+    protected $orderable = ['a.id', 'b.nama', 'c.nama', 'c.harga', 'a.harga'];
 
     public function __construct()
     {
         $this->model = new HargaTipeModel();
         $this->konsumenTipeModel = new KonsumenTipeModel();
         $this->produkModel = new ProdukModel();
-        helper('format');
     }
 
     public function index(): string
@@ -33,7 +32,7 @@ class HargaTipe extends BaseController
             'pageTitle'        => 'Tipe Harga',
             'navigasi'         => '<a href="/master">Master</a> &nbsp;',
             'menuKonsumenTipe' => $this->konsumenTipeModel->getDropdown(),
-            'menuProduk'       => $this->produkModel->getDropdown(),
+            'menuProduk'       => $this->produkModel->getDropdown()
         ]);
     }
 
@@ -58,12 +57,13 @@ class HargaTipe extends BaseController
 
         return [
             $row->id,
-            $row->tipe_konsumen,
-            $row->produk . ' | ' . formatRupiah($row->harga_produk),
-            formatRupiah($row->harga),
-            $row->created_at,
-            $row->updated_at,
+            $row->tipe,
+            $row->produk,
+            $row->harga_produk,
+            $row->harga,
             $aksi,
+            $row->created_at,
+            $row->updated_at
         ];
     }
 

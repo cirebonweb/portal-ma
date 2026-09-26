@@ -21,11 +21,10 @@ class MesinTipe extends BaseController
 
     public function index(): string
     {
-        $data = [
+        return view('master/mesin_tipe', [
             'pageTitle' => 'Tipe Mesin',
-            'navigasi'  => '<a href="/master">Master</a> &nbsp;',
-        ];
-        return view('master/mesin_tipe', $data);
+            'navigasi'  => '<a href="/master">Master</a> &nbsp;'
+        ]);
     }
 
     protected function dataTabel(\stdClass $row): array

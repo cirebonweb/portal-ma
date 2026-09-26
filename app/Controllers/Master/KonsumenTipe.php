@@ -21,11 +21,10 @@ class KonsumenTipe extends BaseController
 
     public function index(): string
     {
-        $data = [
+        return view('master/konsumen_tipe', [
             'pageTitle' => 'Tipe Konsumen',
-            'navigasi'  => '<a href="/master">Master</a> &nbsp;',
-        ];
-        return view('master/konsumen_tipe', $data);
+            'navigasi'  => '<a href="/master">Master</a> &nbsp;'
+        ]);
     }
 
     protected function dataTabel(\stdClass $row): array

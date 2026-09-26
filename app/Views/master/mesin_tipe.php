@@ -65,7 +65,7 @@
 
 <?= $this->section('js') ?>
 <script>
-    const thisUrl = '<?= site_url('mesin-tipe') ?>';
+    const urlThis = '<?= site_url('mesin-tipe') ?>';
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="<?= versi('page/mesin_tipe.min.js') ?>" defer></script>

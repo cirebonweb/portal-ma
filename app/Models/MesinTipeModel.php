@@ -28,7 +28,7 @@ class MesinTipeModel extends Model
         ],
         'nama' => [
             'label' => 'Tipe Mesin',
-            'rules' => 'required|string|min_length[3]|max_length[40]|is_unique[mesin_tipe.nama,id,{id}]'
+            'rules' => 'required|string|min_length[3]|max_length[100]|is_unique[mesin_tipe.nama,id,{id}]'
         ]
     ];
     protected $validationMessages = [];
@@ -58,7 +58,7 @@ class MesinTipeModel extends Model
     public function getTipeMesin()
     {
         return $this->select('mesin_tipe.id, mesin_tipe.nama')
-            ->join('bahan', 'bahan.mesin_tipe_id = mesin_tipe.id')
+            ->join('bahan_jenis', 'bahan_jenis.mesin_tipe_id = mesin_tipe.id')
             ->groupBy('mesin_tipe.id')
             ->orderBy('mesin_tipe.nama', 'ASC')
             ->findAll();
