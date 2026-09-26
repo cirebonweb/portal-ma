@@ -14,7 +14,7 @@ class BahanJenisModel extends Model
     protected $protectFields    = true;
     protected $allowedFields = [
         'mesin_tipe_id',
-        'jenis',
+        'kategori',
         'kode',
         'nama',
         'gsm',
@@ -37,8 +37,8 @@ class BahanJenisModel extends Model
             'label' => 'Tipe Mesin',
             'rules' => 'permit_empty|is_natural_no_zero'
         ],
-        'jenis' => [
-            'label' => 'Jenis',
+        'kategori' => [
+            'label' => 'Kategori',
             'rules' => 'required|in_list[0,1]'
         ],
         'kode' => [
@@ -67,12 +67,12 @@ class BahanJenisModel extends Model
     public function tabel()
     {
         return $this->db->table('bahan_jenis a')
-            ->select('a.id, a.mesin_tipe_id, a.jenis, a.kode, a.nama, a.gsm, a.rumus, a.created_at, a.updated_at, b.nama as tipe_mesin')
+            ->select('a.id, a.mesin_tipe_id, a.kategori, a.kode, a.nama, a.gsm, a.rumus, a.created_at, a.updated_at, b.nama as tipe_mesin')
             ->join('mesin_tipe b', 'b.id = a.mesin_tipe_id', 'left');
     }
 
     /**
-     * Mendapatkan daftar jenis bahan/material untuk dropdown menu.
+     * Mendapatkan daftar kategori bahan/material untuk dropdown menu.
      */
     public function getDropdown()
     {
@@ -82,23 +82,23 @@ class BahanJenisModel extends Model
     }
 
     /**
-     * Dropdown bahan produksi saja (jenis = 0), dipakai master produk dan form bahan.
+     * Dropdown bahan produksi saja (kategori = 0), dipakai master produk dan form bahan.
      */
     public function getBahanProduksi()
     {
         return $this->select('id, kode, nama, gsm, rumus')
-            ->where('jenis', 0)
+            ->where('kategori', 0)
             ->orderBy('nama', 'ASC')
             ->findAll();
     }
 
     /**
-     * Dropdown material saja (jenis = 1), dipakai master produk (paket harga).
+     * Dropdown material saja (kategori = 1), dipakai master produk (paket harga).
      */
     public function getMaterial()
     {
         return $this->select('id, kode, nama')
-            ->where('jenis', 1)
+            ->where('kategori', 1)
             ->orderBy('nama', 'ASC')
             ->findAll();
     }
@@ -113,7 +113,7 @@ class BahanJenisModel extends Model
         return $this
             ->select('id, kode, nama, gsm, rumus')
             ->where('mesin_tipe_id', $id)
-            ->where('jenis', 0)
+            ->where('kategori', 0)
             ->orderBy('nama', 'ASC')
             ->findAll();
     }

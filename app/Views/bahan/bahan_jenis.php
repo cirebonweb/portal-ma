@@ -12,14 +12,14 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <select id="filter_jenis" class="form-control form-control-sm d-inline-block w-auto mx-1">
-                            <option value=""># Jenis</option>
+                        <select id="filter_kategori" class="form-control form-control-sm d-inline-block w-auto mx-1">
+                            <option value=""># Kategori</option>
                             <option value="0">Bahan</option>
                             <option value="1">Material</option>
                         </select>
 
                         <select id="filter_tipe" class="form-control form-control-sm d-inline-block w-auto mx-1">
-                            <option value=""># Tipe</option>
+                            <option value=""># Tipe Mesin</option>
                             <?php foreach ($menuMesinTipe as $row): ?>
                                 <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
                             <?php endforeach; ?>
@@ -29,10 +29,10 @@
                             <thead>
                                 <tr>
                                     <th>ID</th> <!-- 0 -->
-                                    <th>Jenis</th>
+                                    <th>Kategori</th>
+                                    <th>Tipe Mesin</th>
                                     <th>Kode</th>
-                                    <th>Tipe</th>
-                                    <th>Nama</th>
+                                    <th>Nama Jenis Bahan</th>
                                     <th>Gramasi</th> <!-- 5 -->
                                     <th>Rumus</th>
                                     <th class="min-tablet-l no-export">Aksi</th>
@@ -61,10 +61,10 @@
                     <input type="hidden" id="id" name="id">
                     <div class="row">
 
-                        <!-- jenis -->
+                        <!-- kategori -->
                         <div class="col-6 mb-4">
-                            <label for="jenis">Jenis <span class="text-danger">*</span></label>
-                            <select id="jenis" name="jenis" class="form-control" required>
+                            <label for="kategori">Kategori <span class="text-danger">*</span></label>
+                            <select id="kategori" name="kategori" class="form-control" required>
                                 <option value="0">Bahan (diproses mesin)</option>
                                 <option value="1">Material (pendukung)</option>
                             </select>
@@ -79,7 +79,7 @@
                         <!-- nama -->
                         <div class="col-12 mb-4">
                             <label for="nama">Nama <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control upper" id="nama" name="nama" placeholder="contoh: Flexy 260" required>
+                            <input type="text" class="form-control capital" id="nama" name="nama" placeholder="contoh: Flexy 260" required>
                         </div>
 
                         <!-- mesin_tipe_id -->

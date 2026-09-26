@@ -16,7 +16,7 @@ class BahanJenis extends BaseController
     protected MesinTipeModel $mesinTipeModel;
 
     protected $searchable = ['a.kode', 'a.nama', 'b.nama'];
-    protected $orderable  = ['a.id', 'a.jenis', 'a.kode', 'b.nama', 'a.nama', 'a.gsm', 'a.rumus'];
+    protected $orderable  = ['a.id', 'a.kategori', 'a.kode', 'b.nama', 'a.nama', 'a.gsm', 'a.rumus'];
 
     public function __construct()
     {
@@ -37,9 +37,9 @@ class BahanJenis extends BaseController
     {
         $builder = $this->model->tabel();
 
-        $filterJenis = $this->request->getPost('filter_jenis');
-        if ($filterJenis !== null && $filterJenis !== '') {
-            $builder->where('a.jenis', $filterJenis);
+        $filterKategori = $this->request->getPost('filter_kategori');
+        if ($filterKategori !== null && $filterKategori !== '') {
+            $builder->where('a.kategori', $filterKategori);
         }
 
         $filterTipe = $this->request->getPost('filter_tipe');
@@ -59,9 +59,9 @@ class BahanJenis extends BaseController
 
         return [
             $row->id,
-            (int) $row->jenis ? 'Material' : 'Bahan',
-            $row->kode,
+            (int) $row->kategori ? 'Material' : 'Bahan',
             $row->tipe_mesin ?: '-',
+            $row->kode,
             $row->nama,
             (int) $row->gsm > 0 ? $row->gsm . ' gsm' : '-',
             (int) $row->rumus ? 'Perkalian Qty' : 'Perkalian Luas',
@@ -73,12 +73,12 @@ class BahanJenis extends BaseController
 
     protected function dataSimpan(): array
     {
-        $jenis = (int) ($this->request->getPost('jenis') ?? 0);
+        $kategori = (int) ($this->request->getPost('kategori') ?? 0);
 
         return [
             'id'            => $this->request->getPost('id'),
-            'mesin_tipe_id' => $jenis === 1 ? null : $this->request->getPost('mesin_tipe_id'),
-            'jenis'         => $jenis,
+            'mesin_tipe_id' => $kategori === 1 ? null : $this->request->getPost('mesin_tipe_id'),
+            'kategori'      => $kategori,
             'kode'          => $this->request->getPost('kode'),
             'nama'          => $this->request->getPost('nama'),
             'gsm'           => $this->request->getPost('gsm') ?: 0,
