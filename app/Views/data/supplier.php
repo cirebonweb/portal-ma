@@ -100,7 +100,7 @@
 
 <?= $this->section('js') ?>
 <script>
-    const thisUrl = '<?= site_url('supplier') ?>';
+    const urlThis = '<?= site_url('supplier') ?>';
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="<?= base_url('page/supplier.min.js') ?>" defer></script>

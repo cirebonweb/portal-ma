@@ -21,11 +21,10 @@ class Supplier extends BaseController
 
     public function index(): string
     {
-        $data = [
+        return view('data/supplier', [
             'pageTitle' => 'Data Supplier',
             'navigasi'  => '<a href="/data">Data</a> &nbsp;'
-        ];
-        return view('data/supplier', $data);
+        ]);
     }
 
     protected function dataTabel(\stdClass $row): array
