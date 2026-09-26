@@ -25,12 +25,11 @@ class Konsumen extends BaseController
 
     public function index(): string
     {
-        $data = [
+        return view('data/konsumen', [
             'pageTitle' => 'Data Konsumen',
             'navigasi'  => '<a href="/data">Data</a> &nbsp;',
             'menuTipe'  => $this->konsumenTipeModel->getDropdown()
-        ];
-        return view('data/konsumen', $data);
+        ]);
     }
 
     protected function filterTabel(BaseBuilder $builder): BaseBuilder
@@ -38,7 +37,6 @@ class Konsumen extends BaseController
         $builder = $this->model->tabel();
 
         $filterTipe = $this->request->getPost('filter_tipe');
-
         if (!empty($filterTipe)) {
             $builder->where('a.konsumen_tipe_id', $filterTipe);
         }

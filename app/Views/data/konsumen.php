@@ -76,15 +76,15 @@
                         </div>
 
                         <!-- perusahaan -->
-                        <div class="col-6 mb-4">
+                        <div class="col-7 mb-4">
                             <label for="perusahaan">Perusahaan</label>
                             <input type="text" class="form-control upper" id="perusahaan" name="perusahaan">
                         </div>
 
                         <!-- whatsapp -->
-                        <div class="col-6 mb-4">
+                        <div class="col-5 mb-4">
                             <label for="whatsapp">Whatsapp</label>
-                            <input type="text" class="form-control angka" id="whatsapp" name="whatsapp">
+                            <input type="text" class="form-control text-right angka" id="whatsapp" name="whatsapp">
                         </div>
 
                         <!-- alamat -->
@@ -121,7 +121,7 @@
 
 <?= $this->section('js') ?>
 <script>
-    const thisUrl = '<?= site_url('konsumen') ?>';
+    const urlThis = '<?= site_url('konsumen') ?>';
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="<?= base_url('page/konsumen.min.js') ?>" defer></script>
