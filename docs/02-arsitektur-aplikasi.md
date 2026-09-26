@@ -48,9 +48,26 @@ response, tampilan, validasi, dan data tetap konsisten.
 Area menu dan folder controller/view yang sudah dirancang:
 
 - `Master` — tipe konsumen, tipe mesin, tipe harga, harga khusus, dan finishing.
-- `Bahan` — bahan, order bahan, stok, sisa, dan limbah.
+- `Bahan` — bahan jenis, bahan, order bahan, stok bahan, stok material, sisa, dan limbah.
 - `Data` — konsumen, supplier, mesin, produk, nota, cetak, pembayaran, dan laporan.
 - `Log` — log laporan.
+
+### Pemisahan data bahan dan material
+
+Bahan dan material memakai layer yang sama, dibedakan oleh `bahan_jenis.jenis`:
+
+```text
+bahan_jenis  -> karakter bahan/material (kode, nama, gsm, rumus, jenis, mesin_tipe)
+  +-- bahan  -> detail paket fisik (kode, nama, lebar, panjang, isi_paket, satuan)
+        +-- jenis 0 (Bahan)    -> bahan_stok per roll -> cetak -> bahan_sisa / bahan_limbah
+        +-- jenis 1 (Material) -> material_stok agregat -> dipotong saat nota_isi selesai
+```
+
+- Produk menautkan `bahan_jenis_id` (bahan cetak) dan opsional `material_jenis_id` (material)
+  untuk produk paket dengan satu harga.
+- Material tidak menambah tabel master baru; hanya stoknya yang dipisah karena perilakunya
+  berbeda (agregat dan statis, tanpa sisa maupun limbah).
+- Detail lengkap: [Skema Bahan dan Material](./06-skema-bahan.md).
 
 ## Role pengguna
 
@@ -76,6 +93,19 @@ Proyek memiliki helper dan trait internal, antara lain:
 
 Gunakan komponen tersebut sebelum menambahkan implementasi baru yang memiliki
 tanggung jawab sama.
+
+## Aturan tabel DataTables
+
+Pencarian, filter, dan pengurutan hanya dipakai untuk tabel yang datanya banyak.
+
+- **Tabel banyak data** — kotak pencarian, filter kolom, dan pengurutan aktif
+  (contoh: Data Nota, Data Bahan, Order Bahan, Stok Bahan, Produk).
+- **Tabel sedikit data** — tanpa kotak pencarian, tanpa filter, dan tanpa pengurutan; urutan baris
+  ditetapkan dari sisi server agar tetap konsisten
+  (contoh: Rincian Nota pada `/nota/isi`, Pembayaran Nota pada `/nota/isi` dan `/nota/bayar`).
+
+Konsekuensinya, pada tabel sedikit data controller menyediakan `orderBy` sendiri dan tidak
+menyediakan filter kolom, karena DataTables tidak lagi mengirim parameter pencarian maupun urutan.
 
 ## Aturan perubahan
 

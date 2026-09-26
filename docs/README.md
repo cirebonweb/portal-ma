@@ -10,7 +10,7 @@ dan proses deployment Portal MA.
 - [Alur Aplikasi](./03-alur-aplikasi.md)
 - [Panduan Pengguna](./04-panduan-pengguna.md) — diisi bertahap setelah CRUD diuji
 - [Log Pekerjaan AI](./05-log-job-ai.md)
-- `06-skema-database.md` — akan dibuat setelah struktur database diverifikasi
+- [X] [Skema Bahan dan Material](./06-skema-bahan.md) — pemisahan `bahan_jenis`/`bahan`, stok bahan vs material
 - `07-modul-dan-fitur.md` — akan dibuat bertahap
 - `08-deployment.md` — akan dibuat menjelang persiapan production
 
