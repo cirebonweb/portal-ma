@@ -10,19 +10,17 @@ class BahanModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = false; // bahan_order_isi, bahan_stok, bahan_sisa, bahan_limbah
     protected $protectFields    = true;
     protected $allowedFields = [
-        'mesin_tipe_id',
-        'nama',
+        'bahan_jenis_id',
         'kode',
-        'gsm',
+        'nama',
         'lebar',
         'panjang',
         'isi_paket',
         'satuan_1',
-        'satuan_2',
-        'rumus'
+        'satuan_2'
     ];
 
     // Timestamps
@@ -37,21 +35,17 @@ class BahanModel extends Model
             'label' => 'ID',
             'rules' => 'permit_empty|is_natural_no_zero'
         ],
-        'mesin_tipe_id' => [
-            'label' => 'Tipe Mesin',
+        'bahan_jenis_id' => [
+            'label' => 'Jenis Bahan',
             'rules' => 'required|is_natural_no_zero'
-        ],
-        'nama' => [
-            'label' => 'Nama Bahan',
-            'rules' => 'required|string|min_length[3]|max_length[30]|is_unique[bahan.nama,id,{id}]'
         ],
         'kode' => [
             'label' => 'Kode Bahan',
-            'rules' => 'required|string|min_length[2]|max_length[5]'
+            'rules' => 'required|string|min_length[2]|max_length[30]'
         ],
-        'gsm' => [
-            'label' => 'Gramasi',
-            'rules' => 'permit_empty|integer|max_length[3]'
+        'nama' => [
+            'label' => 'Nama Bahan',
+            'rules' => 'required|string|min_length[3]|max_length[100]|is_unique[bahan.nama,id,{id}]'
         ],
         'lebar' => [
             'label' => 'Lebar',
@@ -72,10 +66,6 @@ class BahanModel extends Model
         'satuan_2' => [
             'label' => 'Satuan Besar',
             'rules' => 'permit_empty|string|max_length[10]'
-        ],
-        'rumus' => [
-            'label' => 'Rumus',
-            'rules' => 'permit_empty|in_list[0,1]'
         ]
     ];
     protected $validationMessages = [];
@@ -87,8 +77,21 @@ class BahanModel extends Model
     public function tabel()
     {
         return $this->db->table('bahan a')
-            ->select('a.id, a.nama as nama_bahan, a.kode, a.gsm, a.lebar, a.panjang, a.isi_paket, a.satuan_1, a.satuan_2, a.rumus, a.created_at, a.updated_at, b.nama as tipe_mesin')
-            ->join('mesin_tipe b', 'b.id = a.mesin_tipe_id', 'left');
+            ->select('a.id, a.kode, a.nama as nama_bahan, a.lebar, a.panjang, a.isi_paket, a.satuan_1, a.satuan_2, a.created_at, a.updated_at, b.gsm, b.rumus, c.nama as tipe_mesin')
+            ->join('bahan_jenis b', 'b.id = a.bahan_jenis_id', 'left')
+            ->join('mesin_tipe c', 'c.id = b.mesin_tipe_id', 'left');
+    }
+
+    /**
+     * Custom getId untuk mendapatkan mesin_tipe_id.
+     * @param mixed $id
+     */
+    public function getId($id)
+    {
+        return $this
+            ->select('bahan.*, bahan_jenis.mesin_tipe_id')
+            ->join('bahan_jenis', 'bahan_jenis.id = bahan.bahan_jenis_id', 'left')
+            ->find($id);
     }
 
     /**
@@ -100,15 +103,31 @@ class BahanModel extends Model
     }
 
     /**
-     * Mendapatkan data bahan berdasarkan filter mesin_tipe_id.
+     * Mendapatkan data bahan berdasarkan filter mesin_tipe_id (lewat bahan_jenis).
+     * Hanya jenis 0 (bahan produksi) yang dibutuhkan operator/purchasing.
      * @param mixed $id
      */
     public function getBahanMesin($id)
     {
         return $this
-        ->select('id, nama, kode, gsm, lebar, panjang, isi_paket, satuan_1, satuan_2, rumus')
-        ->where('mesin_tipe_id', $id)
-        ->orderBy('nama', 'ASC')
-        ->findAll();
+            ->select('bahan.id, bahan.kode, bahan.nama, bahan.lebar, bahan.panjang, bahan.isi_paket, bahan.satuan_1, bahan.satuan_2, bahan_jenis.rumus')
+            ->join('bahan_jenis', 'bahan_jenis.id = bahan.bahan_jenis_id', 'inner')
+            ->where('bahan_jenis.mesin_tipe_id', $id)
+            ->where('bahan_jenis.jenis', 0)
+            ->orderBy('bahan.nama', 'ASC')
+            ->findAll();
+    }
+
+    /**
+     * Mendapatkan seluruh material (bahan_jenis jenis = 1) untuk order bahan.
+     */
+    public function getMaterial()
+    {
+        return $this
+            ->select('bahan.id, bahan.kode, bahan.nama, bahan.lebar, bahan.panjang, bahan.isi_paket, bahan.satuan_1, bahan.satuan_2, bahan_jenis.rumus')
+            ->join('bahan_jenis', 'bahan_jenis.id = bahan.bahan_jenis_id', 'inner')
+            ->where('bahan_jenis.jenis', 1)
+            ->orderBy('bahan.nama', 'ASC')
+            ->findAll();
     }
 }

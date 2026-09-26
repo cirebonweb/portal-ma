@@ -14,15 +14,13 @@
                     <div class="card-body">
 
                         <select id="filter_tipe" class="form-control form-control-sm d-inline-block w-auto mx-1">
-                            <option value=""># Tipe</option>
-                            <?php foreach ($menuTipe as $row): ?>
-                                <option value="<?= $row->id ?>">
-                                    <?= $row->nama ?>
-                                </option>
+                            <option value=""># Tipe Mesin</option>
+                            <?php foreach ($menuMesinTipe as $row): ?>
+                                <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
                             <?php endforeach; ?>
                         </select>
 
-                        <table id="tabelData" class="table table-bordered table-hover dataTable dtr-inline">
+                        <table id="tabelData" class="table table-striped table-bordered table-hover dataTable dtr-inline">
                             <thead>
                                 <tr>
                                     <th>ID</th> <!-- 0 -->
@@ -30,13 +28,12 @@
                                     <th>Kode</th>
                                     <th>Nama Bahan</th>
                                     <th>Gramasi</th>
-                                    <th>Lebar</th> <!-- 5 -->
-                                    <th>Panjang</th>
+                                    <th>Ukuran</th> <!-- 5 -->
                                     <th>Isi Paket</th>
                                     <th>Rumus</th>
+                                    <th class="no-export">Aksi</th>
                                     <th class="none">Tgl. Buat</th>
                                     <th class="none">Tgl. Ubah</th> <!-- 10 -->
-                                    <th class="min-tablet-l no-export">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -60,44 +57,35 @@
                     <input type="hidden" id="id" name="id">
                     <div class="row">
 
-                        <!-- mesin_tipe_id -->
-                        <div class="col-8 mb-4">
+                        <!-- mesin_tipe -->
+                        <div class="col-6 mb-4">
                             <label for="mesin_tipe_id">Tipe Mesin <span class="text-danger">*</span></label>
-                            <select id="mesin_tipe_id" name="mesin_tipe_id" class="form-control" required>
+                            <select id="mesin_tipe_id" class="form-control" style="width:100%;" required>
                                 <option value="">-- Pilih ---</option>
-                                <?php foreach ($menuTipe as $row): ?>
-                                    <option value="<?= $row->id ?>">
-                                        <?= $row->nama ?>
-                                    </option>
+                                <?php foreach ($menuMesinTipe as $row): ?>
+                                    <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
 
                         <!-- kode -->
-                        <div class="col-4 mb-4">
+                        <div class="col-6 mb-4">
                             <label for="kode">Kode Bahan <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control upper" id="kode" name="kode" required>
+                            <input type="text" class="form-control" id="kode" name="kode" placeholder="FLX260-3260" required>
+                        </div>
+
+                        <!-- bahan_jenis_id -->
+                        <div class="col-6 mb-4">
+                            <label for="bahan_jenis_id">Jenis Bahan <span class="text-danger bahan_id">*</span></label>
+                            <select id="bahan_jenis_id" name="bahan_jenis_id" class="form-control select2" style="width:100%;" disabled>
+                                <option value="">-- Pilih --</option>
+                            </select>
                         </div>
 
                         <!-- nama -->
-                        <div class="col-8 mb-4">
+                        <div class="col-12 col-md-6 mb-4">
                             <label for="nama">Nama Bahan <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control upper" id="nama" name="nama" required placeholder="Contoh: Flexy 280-3270">
-                        </div>
-
-                        <!-- gsm -->
-                        <div class="col-4 mb-4">
-                            <label for="gsm">Gramasi (gsm)</label>
-                            <input type="text" class="form-control text-center angka" id="gsm" name="gsm" value="0">
-                        </div>
-
-                        <!-- rumus -->
-                        <div class="col-md-12 mb-4">
-                            <label for="rumus">Metode Hitung (Rumus) <span class="text-danger">*</span></label>
-                            <select class="form-control" id="rumus" name="rumus">
-                                <option value="0">Perkalian Luas (Lebar x Panjang x Qty x Harga)</option>
-                                <option value="1">Perkalian Qty (Quantity x Harga)</option>
-                            </select>
+                            <input type="text" class="form-control capital" id="nama" name="nama" required placeholder="contoh: Flexy 280-3260">
                         </div>
 
                         <!-- lebar -->
@@ -124,7 +112,7 @@
 
                         <!-- isi_paket -->
                         <div class="col-12 col-md-6 mb-4">
-                            <label for="isi_paket" class="satuan2">1 roll = 0 m²</label>
+                            <label for="isi_paket">Isi paket: <span class="satuan2">1 roll = 0 m²</span></label>
                             <div class="input-group">
                                 <input type="text" class="form-control text-center angka" id="isi_paket" name="isi_paket" value="0">
                                 <div class="input-group-append">
@@ -134,10 +122,10 @@
                         </div>
 
                         <!-- satuan_1 -->
-                        <div class="col-6 col-md-6 mb-3">
+                        <div class="col-6 mb-4">
                             <div class="form-group">
                                 <label for="satuan_1">Satuan isi stok <span class="text-danger">*</span></label>
-                                <select class="form-control select2" id="satuan_1" name="satuan_1" style="width: 100%;">
+                                <select class="form-control" id="satuan_1" name="satuan_1" style="width: 100%;">
                                     <option value="m²">m²</option>
                                     <option value="lembar">lembar</option>
                                     <option value="pcs">pcs</option>
@@ -147,10 +135,10 @@
                         </div>
 
                         <!-- satuan_2 -->
-                        <div class="col-6 col-md-6 mb-3">
+                        <div class="col-6 mb-3">
                             <div class="form-group">
                                 <label for="satuan_2">Satuan paket pembelian <span class="text-danger">*</span></label>
-                                <select class="form-control select2" id="satuan_2" name="satuan_2" style="width: 100%;">
+                                <select class="form-control" id="satuan_2" name="satuan_2" style="width: 100%;">
                                     <option value="roll">roll</option>
                                     <option value="rim">rim</option>
                                     <option value="dus">dus</option>
@@ -175,7 +163,7 @@
 
 <?= $this->section('js') ?>
 <script>
-    const thisUrl = '<?= site_url('bahan') ?>';
+    const urlThis = '<?= site_url('bahan') ?>';
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="<?= versi('plugin/select2/js/select2.min.js') ?>" defer></script>
