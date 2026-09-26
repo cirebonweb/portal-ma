@@ -32,9 +32,9 @@
                                     <th>Min. Lebar</th>
                                     <th>Max. Lebar</th> <!-- 5 -->
                                     <th>Min. Panjang</th>
-                                    <th>Tgl. Buat</th>
-                                    <th>Tgl. Ubah</th>
-                                    <th class="min-tablet-l no-export">Aksi</th>
+                                    <th class="no-export">Aksi</th>
+                                    <th class="none">Tgl. Buat</th>
+                                    <th class="none">Tgl. Ubah</th>
                                 </tr>
                             </thead>
                         </table>
@@ -133,7 +133,7 @@
 
 <?= $this->section('js') ?>
 <script>
-    const thisUrl = '<?= site_url('mesin') ?>';
+    const urlThis = '<?= site_url('mesin') ?>';
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js" defer></script>

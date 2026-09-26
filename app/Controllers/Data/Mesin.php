@@ -15,7 +15,7 @@ class Mesin extends BaseController
     protected MesinModel $model;
     protected MesinTipeModel $mesinTipeModel;
     protected $searchable = ['a.nama'];
-    protected $orderable  = ['a.id', 'b.nama', 'a.nama', 'created_at', 'updated_at'];
+    protected $orderable  = ['a.id', 'b.nama', 'a.nama'];
 
     public function __construct()
     {
@@ -26,12 +26,11 @@ class Mesin extends BaseController
 
     public function index(): string
     {
-        $data = [
+        return view('data/mesin', [
             'pageTitle' => 'Data Mesin',
             'navigasi'  => '<a href="/data">Data</a> &nbsp;',
             'menuTipe'  => $this->mesinTipeModel->getDropdown()
-        ];
-        return view('data/mesin', $data);
+        ]);
     }
 
     protected function filterTabel(BaseBuilder $builder): BaseBuilder
@@ -61,9 +60,9 @@ class Mesin extends BaseController
             (formatDesimal($row->min_lebar) ?? 0) . ' m',
             (formatDesimal($row->max_lebar) ?? 0) . ' m',
             (formatDesimal($row->min_panjang) ?? 0) . ' m',
+            $aksi,
             $row->created_at,
-            $row->updated_at,
-            $aksi
+            $row->updated_at
         ];
     }
 
