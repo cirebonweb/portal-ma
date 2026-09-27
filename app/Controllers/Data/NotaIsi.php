@@ -17,6 +17,7 @@ class NotaIsi extends BaseController
     use CrudTrait;
 
     protected NotaIsiModel $model;
+    private int $noUrut = 0;
     protected NotaModel $notaModel;
     protected ProdukModel $produkModel;
     protected BahanModel $bahanModel;
@@ -55,9 +56,8 @@ class NotaIsi extends BaseController
             'navigasi'      => '<a href="/data">Data</a> &nbsp; / &nbsp; <a href="/nota">Nota</a> &nbsp;',
             'id'            => (int) $id,
             'dataNota'      => $dataNota,
-            // 'menuTipeMesin' => $this->mesinTipeModel->getTipeMesin(),
-            // 'menuProduk'    => $this->produkModel->getDropdown(),
             'menuFinishing' => $this->finishingModel->getDropdown(),
+            'jumlahDraft'   => (int) $this->model->where('nota_id', (int) $id)->where('status', 0)->countAllResults(),
         ]);
     }
 
@@ -65,13 +65,15 @@ class NotaIsi extends BaseController
     {
         $notaId = $this->request->getPost('nota_id') ?: $this->request->getGet('edit');
 
+        // Nomor urut mengikuti posisi baris pada halaman DataTables
+        $this->noUrut = (int) $this->request->getPost('start');
+
         return $this->model->tabel()
             ->where('a.nota_id', (int) $notaId);
     }
 
     protected function dataTabel(\stdClass $row): array
     {
-        $noUrut = 1;
         $status = ['Draft', 'Antrian', 'Pending', 'Proses', 'Selesai', 'Batal'];
         $aksi = '<div class="btn-group" role="group">';
         $aksi .= '<button class="btn btn-sm btn-dark" type="button" onclick="simpan(' . $row->id . ')">edit</button>';
@@ -79,7 +81,7 @@ class NotaIsi extends BaseController
         $aksi .= '</div>';
 
         return [
-            $noUrut++,
+            ++$this->noUrut,
             $row->tema,
             $row->lebar . ' x ' . $row->panjang . ' m',
             $row->qty,
@@ -185,5 +187,57 @@ class NotaIsi extends BaseController
             'status'       => $this->request->getPost('status') ?: 0,
             'keterangan'   => $this->request->getPost('keterangan'),
         ];
+    }
+
+    /**
+     * Memindahkan item nota dari Draft ke alur produksi.
+     * Kategori 0 yang memakai bahan produksi -> 1 (Antrian cetak).
+     * Eksternal, jasa, dan internal tanpa bahan produksi -> 3 (Proses).
+     */
+    public function produksi()
+    {
+        if ($res = $this->ajax()) {
+            return $res;
+        }
+
+        $notaId = $this->request->getPost('nota_id');
+        if (!$notaId || !is_numeric($notaId)) {
+            return $this->json(false, 'ID nota tidak valid', null, 400);
+        }
+
+        $db = db_connect();
+
+        try {
+            $db->transBegin();
+
+            $db->query(
+                'UPDATE nota_isi a
+                 JOIN produk p ON p.id = a.produk_id
+                 JOIN bahan_jenis bj ON bj.id = p.bahan_jenis_id
+                 SET a.status = 1, a.updated_at = CURRENT_TIMESTAMP
+                 WHERE a.nota_id = ? AND a.status = 0 AND p.kategori = 0 AND bj.jenis = 0',
+                [(int) $notaId]
+            );
+
+            $db->query(
+                'UPDATE nota_isi a
+                 JOIN produk p ON p.id = a.produk_id
+                 SET a.status = 3, a.updated_at = CURRENT_TIMESTAMP
+                 WHERE a.nota_id = ? AND a.status = 0',
+                [(int) $notaId]
+            );
+
+            if ($db->transStatus() === false) {
+                throw new \RuntimeException('Transaksi database gagal.');
+            }
+
+            $db->transCommit();
+
+            return $this->json(true, 'Status produksi berhasil diperbarui.');
+        } catch (\Throwable $e) {
+            $db->transRollback();
+            log_message('critical', __METHOD__ . ': ' . $e->getMessage());
+            return $this->json(false, 'Gagal memperbarui status produksi. Silakan periksa log aplikasi.');
+        }
     }
 }

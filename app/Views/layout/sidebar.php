@@ -10,56 +10,56 @@
         <li class="nav-item">
             <a href="<?= url_to('konsumen') ?>" class="nav-link<?= (current_url() == base_url('konsumen')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
-                <p>Data Konsumen</p>
+                <p>Konsumen</p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="<?= url_to('supplier') ?>" class="nav-link<?= (current_url() == base_url('supplier')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
-                <p>Data Supplier</p>
+                <p>Supplier</p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="<?= url_to('mesin') ?>" class="nav-link<?= (current_url() == base_url('mesin')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
-                <p>Data Mesin</p>
+                <p>Mesin</p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="<?= url_to('produk') ?>" class="nav-link<?= (current_url() == base_url('produk')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
-                <p>Data Produk</p>
+                <p>Produk</p>
             </a>
         </li>
 
         <li class="nav-item">
             <a href="<?= url_to('nota') ?>" class="nav-link<?= (current_url() == base_url('nota')) || (current_url() == base_url('nota/isi')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
-                <p>Data Nota</p>
+                <p>Nota Penjualan</p>
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="<?= url_to('produk') ?>" class="nav-link<?= (current_url() == base_url('produk')) ? ' active' : '' ?>">
+            <a href="<?= url_to('cetak') ?>" class="nav-link<?= (current_url() == base_url('cetak')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
-                <p>Data Cetak</p>
+                <p>Cetak Produksi</p>
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="<?= url_to('produk') ?>" class="nav-link<?= (current_url() == base_url('produk')) ? ' active' : '' ?>">
+            <a href="<?= site_url('nota/bayar') ?>" class="nav-link<?= (current_url() == base_url('nota/bayar')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
-                <p>Data Pembayaran</p>
+                <p>Pembayaran Nota</p>
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="<?= url_to('produk') ?>" class="nav-link<?= (current_url() == base_url('produk')) ? ' active' : '' ?>">
+            <a href="<?= url_to('laporan') ?>" class="nav-link<?= (current_url() == base_url('laporan')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
-                <p>Data Laporan</p>
+                <p>Laporan Harian</p>
             </a>
         </li>
     </ul>
@@ -74,9 +74,16 @@
 
     <ul class="nav nav-treeview">
         <li class="nav-item">
+            <a href="<?= url_to('bahan-jenis') ?>" class="nav-link<?= (current_url() == base_url('bahan-jenis')) ? ' active' : '' ?>">
+                <i class="nav-icon bi bi-circle"></i>
+                <p>Jenis Bahan</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a href="<?= url_to('bahan') ?>" class="nav-link<?= (current_url() == base_url('bahan')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
-                <p>Data Bahan</p>
+                <p>Bahan & Material</p>
             </a>
         </li>
 
@@ -95,14 +102,21 @@
         </li>
 
         <li class="nav-item">
-            <a href="<?= url_to('bahan-stok') ?>" class="nav-link<?= (current_url() == base_url('bahan-stok')) ? ' active' : '' ?>">
+            <a href="<?= url_to('material-stok') ?>" class="nav-link<?= (current_url() == base_url('material-stok')) ? ' active' : '' ?>">
+                <i class="nav-icon bi bi-circle"></i>
+                <p>Stok Material</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="<?= url_to('bahan-sisa') ?>" class="nav-link<?= (current_url() == base_url('bahan-sisa')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
                 <p>Sisa Bahan</p>
             </a>
         </li>
 
         <li class="nav-item">
-            <a href="<?= url_to('bahan-stok') ?>" class="nav-link<?= (current_url() == base_url('bahan-stok')) ? ' active' : '' ?>">
+            <a href="<?= url_to('bahan-limbah') ?>" class="nav-link<?= (current_url() == base_url('bahan-limbah')) ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
                 <p>Limbah Bahan</p>
             </a>
@@ -152,5 +166,30 @@
                 <p>Finishing</p>
             </a>
         </li>
+    </ul>
+</li>
+
+<!-- Menu Log -->
+<li class="nav-item">
+    <a href="#" class="nav-link">
+        <i class="nav-icon bi bi-layers"></i>
+        <p>Log<i class="right bi bi-chevron-right"></i></p>
+    </a>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="<?= url_to('log-pembayaran') ?>" class="nav-link<?= (current_url() == base_url('log-pembayaran')) ? ' active' : '' ?>">
+                <i class="nav-icon bi bi-circle"></i>
+                <p>Riwayat Pembayaran</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="<?= url_to('log-laporan') ?>" class="nav-link<?= (current_url() == base_url('log-laporan')) ? ' active' : '' ?>">
+                <i class="nav-icon bi bi-circle"></i>
+                <p>Riwayat Laporan</p>
+            </a>
+        </li>
+
     </ul>
 </li>

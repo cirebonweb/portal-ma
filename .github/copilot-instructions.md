@@ -10,6 +10,13 @@
 ## Cara bekerja
 
 - Baca struktur dan kode terkait sebelum mengubah file.
+- Sebelum setiap permintaan membuat atau merevisi kode, periksa dokumentasi proyek yang relevan.
+- Jika permintaan bertentangan dengan dokumentasi, jangan langsung memilih source code atau asumsi
+  sendiri: jelaskan aturan dokumentasi dan risiko perubahan, lalu minta konfirmasi pengguna sebelum
+  mengubah kode.
+- Jika dokumentasi belum menjelaskan kebutuhan dan tujuan atau alurnya masih memiliki lebih dari
+  satu interpretasi yang berdampak pada desain/perilaku, tanyakan kepada pengguna sebelum
+  implementasi. Jangan menebak alur bisnis yang belum disepakati.
 - Gunakan helper, trait, komponen, dan pola yang sudah tersedia jika masih sesuai.
 - Cari implementasi serupa terlebih dahulu sebelum membuat logika baru.
 - Jangan mengubah file yang tidak berkaitan dengan pekerjaan.

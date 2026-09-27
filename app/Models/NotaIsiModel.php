@@ -96,6 +96,7 @@ class NotaIsiModel extends Model
             ->select('a.id, a.tema, a.lebar, a.panjang, qty, a.harga, a.jumlah, a.status, a.keterangan, a.created_at, a.updated_at, c.nama as produk, d.nama as finishing')
             ->join('nota b', 'b.id = a.nota_id', 'left')
             ->join('produk c', 'c.id = a.produk_id', 'left')
-            ->join('finishing d', 'd.id = a.finishing_id', 'left');
+            ->join('finishing d', 'd.id = a.finishing_id', 'left')
+            ->orderBy('a.id', 'ASC'); // tabel sedikit data: urutan dari server
     }
 }

@@ -57,7 +57,7 @@ class CreateDigitalPrintingTables extends Migration
         // mesin_tipe → (Master) Tipe Mesin | mengelompokkan nama 'mesin' dan 'bahan'
         $this->forge->addField([
             'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'nama'       => ['type' => 'varchar', 'constraint' => 40, 'unique' => true], // Outdoor, Indoor, Printing (Outdoor, Indoor), Cutting, Press Mug, Sablon Kaos
+            'nama'       => ['type' => 'varchar', 'constraint' => 100, 'unique' => true], // Outdoor, Indoor, Printing (Outdoor, Indoor), Cutting, Press Mug, Sablon Kaos
             'created_at' => ['type' => 'timestamp', 'null' => true],
             'updated_at' => ['type' => 'timestamp', 'null' => true],
         ]);
@@ -80,24 +80,38 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addForeignKey('mesin_tipe_id', 'mesin_tipe', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('mesin');
 
-        // bahan → (Bahan) Data Bahan
+        // bahan_jenis → (Master) Jenis Bahan | layer karakter yang dipakai CS dan master produk
         $this->forge->addField([
             'id'            => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'mesin_tipe_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
-            'nama'          => ['type' => 'varchar', 'constraint' => 30],
-            'kode'          => ['type' => 'varchar', 'constraint' => 5], // input manual, misal: FLX untuk Flexy, OWY untuk One Way
+            'mesin_tipe_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // null untuk material
+            'kategori'      => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Bahan (diproses mesin), 1:Material (pendukung statis)
+            'kode'          => ['type' => 'varchar', 'constraint' => 20], // input manual, misal: FLX280 untuk Flexy 280 gsm
+            'nama'          => ['type' => 'varchar', 'constraint' => 100], // misal: Flexy 280 gsm
             'gsm'           => ['type' => 'smallint', 'constraint' => 6, 'default' => 0],
-            'lebar'         => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
-            'panjang'       => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
-            'isi_paket'     => ['type' => 'decimal', 'constraint' => '5,2', 'null' => true],   // jumlah satuan_1 dalam satu paket; otomatis dari lebar × panjang atau input manual
-            'satuan_1'      => ['type' => 'varchar', 'constraint' => 10, 'default' => 'm²'],   // satuan isi stok (kecil)
-            'satuan_2'      => ['type' => 'varchar', 'constraint' => 10, 'default' => 'roll'], // satuan paket pembelian (besar)
-            'rumus'         => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],       // 0:Perkalian luas, 1:Perkalian qty
+            'rumus'         => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Perkalian luas, 1:Perkalian qty
             'created_at'    => ['type' => 'timestamp', 'null' => true],
             'updated_at'    => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('mesin_tipe_id', 'mesin_tipe', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->createTable('bahan_jenis');
+
+        // bahan → (Bahan) Detail Paket Fisik | dipakai purchasing dan operator mesin
+        $this->forge->addField([
+            'id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'bahan_jenis_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'kode'           => ['type' => 'varchar', 'constraint' => 30], // input manual, misal: FLX280-3260
+            'nama'           => ['type' => 'varchar', 'constraint' => 100], // misal: Flexy 280 gsm (3.2 x 60m)
+            'lebar'          => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
+            'panjang'        => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
+            'isi_paket'      => ['type' => 'decimal', 'constraint' => '5,2', 'null' => true],   // jumlah satuan_1 dalam satu paket; otomatis dari lebar × panjang atau input manual
+            'satuan_1'       => ['type' => 'varchar', 'constraint' => 10, 'default' => 'm²'],   // satuan isi stok (kecil)
+            'satuan_2'       => ['type' => 'varchar', 'constraint' => 10, 'default' => 'roll'], // satuan paket pembelian (besar)
+            'created_at'     => ['type' => 'timestamp', 'null' => true],
+            'updated_at'     => ['type' => 'timestamp', 'null' => true],
+        ]);
+        $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('bahan_jenis_id', 'bahan_jenis', 'id', 'CASCADE', 'RESTRICT');
         $this->forge->createTable('bahan');
 
         // bahan_order → (Bahan) Order Bahan | pembelian bahan baku yang digunakan langsung mesin
@@ -148,7 +162,7 @@ class CreateDigitalPrintingTables extends Migration
             'id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
             'bahan_id'       => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
             'bahan_order_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
-            'kode_bahan'     => ['type' => 'varchar', 'constraint' => 20, 'null' => true, 'unique' => true],
+            'kode_bahan'     => ['type' => 'varchar', 'constraint' => 50, 'null' => true, 'unique' => true],
             'stok_masuk'     => ['type' => 'decimal', 'constraint' => '7,2', 'default' => 0.00], // isi satu paket dalam satuan_1
             'stok_pakai'     => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00], // stok_pakai = stok_pakai + cetak.luas
             'stok_sisa'      => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00], // stok_sisa = stok_masuk - stok_pakai
@@ -163,27 +177,48 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->addForeignKey('bahan_order_id', 'bahan_order', 'id', 'RESTRICT', 'RESTRICT');
         $this->forge->createTable('bahan_stok');
 
-        // produk → (Data) Produk
+        // material_stok → (Material) Stok Material | agregat satu baris per bahan_jenis material
         $this->forge->addField([
-            'id'          => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'bahan_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // null untuk produk tanpa bahan
-            'kategori'    => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Internal (antrean cetak & potong stok), 1:Eksternal, 2:Jasa/Layanan
-            'nama'        => ['type' => 'varchar', 'constraint' => 100, 'unique' => true],
-            'lebar'       => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
-            'panjang'     => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
-            'rumus'       => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Perkalian luas, 1:Perkalian qty
-            'hpp'         => ['type' => 'int', 'constraint' => 11, 'default' => 0],
-            'harga'       => ['type' => 'int', 'constraint' => 11, 'default' => 0],
-            'promo'       => ['type' => 'int', 'constraint' => 11, 'null' => true],
-            'promo_awal'  => ['type' => 'date', 'null' => true],
-            'promo_akhir' => ['type' => 'date', 'null' => true],
-            'unggulan'    => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],
-            'status'      => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
-            'created_at'  => ['type' => 'timestamp', 'null' => true],
-            'updated_at'  => ['type' => 'timestamp', 'null' => true],
+            'id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'bahan_jenis_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'stok_masuk'     => ['type' => 'decimal', 'constraint' => '9,2', 'default' => 0.00], // akumulasi qty pembelian
+            'stok_pakai'     => ['type' => 'decimal', 'constraint' => '9,2', 'default' => 0.00], // akumulasi pemakaian
+            'stok_sisa'      => ['type' => 'decimal', 'constraint' => '9,2', 'default' => 0.00], // stok_masuk - stok_pakai
+            'harga_satuan'   => ['type' => 'int', 'constraint' => 11, 'default' => 0],           // harga beli terakhir
+            'kondisi'        => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Baik, 1:Rusak, 2:Cacat
+            'status'         => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Aktif, 1:Nonaktif, 2:Habis
+            'keterangan'     => ['type' => 'varchar', 'constraint' => 100, 'null' => true],
+            'created_at'     => ['type' => 'timestamp', 'null' => true],
+            'updated_at'     => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('bahan_id', 'bahan', 'id', 'CASCADE', 'SET NULL');
+        $this->forge->addForeignKey('bahan_jenis_id', 'bahan_jenis', 'id', 'CASCADE', 'RESTRICT');
+        $this->forge->addUniqueKey('bahan_jenis_id'); // 1 spesifikasi material = 1 baris stok
+        $this->forge->createTable('material_stok');
+
+        // produk → (Data) Produk
+        $this->forge->addField([
+            'id'                => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'bahan_jenis_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // null untuk produk tanpa bahan
+            'material_jenis_id' => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // material pendukung (paket harga)
+            'kategori'          => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Internal (antrean cetak & potong stok), 1:Eksternal, 2:Jasa/Layanan
+            'nama'              => ['type' => 'varchar', 'constraint' => 100, 'unique' => true],
+            'lebar'             => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
+            'panjang'           => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
+            'rumus'             => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // 0:Perkalian luas, 1:Perkalian qty
+            'hpp'               => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'harga'             => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'promo'             => ['type' => 'int', 'constraint' => 11, 'null' => true],
+            'promo_awal'        => ['type' => 'date', 'null' => true],
+            'promo_akhir'       => ['type' => 'date', 'null' => true],
+            'unggulan'          => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],
+            'status'            => ['type' => 'tinyint', 'constraint' => 1, 'default' => 1], // 0:Nonaktif, 1:Aktif
+            'created_at'        => ['type' => 'timestamp', 'null' => true],
+            'updated_at'        => ['type' => 'timestamp', 'null' => true],
+        ]);
+        $this->forge->addKey('id', true);
+        $this->forge->addForeignKey('bahan_jenis_id', 'bahan_jenis', 'id', 'CASCADE', 'SET NULL');
+        $this->forge->addForeignKey('material_jenis_id', 'bahan_jenis', 'id', 'CASCADE', 'SET NULL');
         $this->forge->createTable('produk');
 
         // harga_tipe → (Master) Tipe Harga
@@ -457,13 +492,15 @@ class CreateDigitalPrintingTables extends Migration
         $this->db->query("DROP TRIGGER IF EXISTS trg_bahan_order_isi_after_update");
         $this->db->query("DROP TRIGGER IF EXISTS trg_bahan_order_isi_after_delete");
 
-        // 23 Tabel → 18 Menu
+        // 24 Tabel → 19 Menu
         $this->forge->dropTable('laporan_log', true);
         $this->forge->dropTable('laporan_isi', true);
         $this->forge->dropTable('laporan', true);
-        $this->db->query('ALTER TABLE cetak DROP FOREIGN KEY fk_cetak_bahan_sisa');
-        $this->forge->dropTable('bahan_limbah');
-        $this->forge->dropTable('bahan_sisa');
+        if ($this->db->tableExists('cetak')) {
+            $this->db->query('ALTER TABLE cetak DROP FOREIGN KEY fk_cetak_bahan_sisa');
+        }
+        $this->forge->dropTable('bahan_limbah', true);
+        $this->forge->dropTable('bahan_sisa', true);
         $this->forge->dropTable('cetak_isi', true);
         $this->forge->dropTable('cetak', true);
         $this->forge->dropTable('nota_bayar', true);
@@ -475,10 +512,12 @@ class CreateDigitalPrintingTables extends Migration
         $this->forge->dropTable('produk', true);
         $this->forge->dropTable('bahan_order_isi', true);
         $this->forge->dropTable('bahan_order', true);
+        $this->forge->dropTable('material_stok', true);
         $this->forge->dropTable('bahan_stok', true);
         $this->forge->dropTable('bahan', true);
-        $this->forge->dropTable('mesin');
-        $this->forge->dropTable('mesin_tipe');
+        $this->forge->dropTable('bahan_jenis', true);
+        $this->forge->dropTable('mesin', true);
+        $this->forge->dropTable('mesin_tipe', true);
         $this->forge->dropTable('supplier', true);
         $this->forge->dropTable('konsumen', true);
         $this->forge->dropTable('konsumen_tipe', true);

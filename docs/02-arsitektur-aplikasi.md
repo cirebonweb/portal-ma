@@ -54,13 +54,13 @@ Area menu dan folder controller/view yang sudah dirancang:
 
 ### Pemisahan data bahan dan material
 
-Bahan dan material memakai layer yang sama, dibedakan oleh `bahan_jenis.jenis`:
+Bahan dan material memakai layer yang sama, dibedakan oleh `bahan_jenis.kategori`:
 
 ```text
-bahan_jenis  -> karakter bahan/material (kode, nama, gsm, rumus, jenis, mesin_tipe)
+bahan_jenis  -> karakter bahan/material (kode, nama, gsm, rumus, kategori, mesin_tipe)
   +-- bahan  -> detail paket fisik (kode, nama, lebar, panjang, isi_paket, satuan)
-        +-- jenis 0 (Bahan)    -> bahan_stok per roll -> cetak -> bahan_sisa / bahan_limbah
-        +-- jenis 1 (Material) -> material_stok agregat -> dipotong saat nota_isi selesai
+        +-- kategori 0 (Bahan Cetak) -> bahan_stok per roll -> cetak -> bahan_sisa / bahan_limbah
+        +-- kategori 1 (Material)    -> material_stok agregat -> dipotong saat nota_isi selesai
 ```
 
 - Produk menautkan `bahan_jenis_id` (bahan cetak) dan opsional `material_jenis_id` (material)

@@ -46,14 +46,16 @@
     padding: 7px 10px;
 }
 
-.table-bordered {
+/* .table-bordered {
     border: 1px solid var(--ui-border-light);
-}
+} */
 
 .table-bordered th,
 .table-bordered td {
-    border-color: var(--ui-border-light);
+    /* border-color: var(--ui-border-light); */
+    border: 1px solid #dee2e6;
 }
+
 
 /* ---------------------------------------------------------
    BUTTONS

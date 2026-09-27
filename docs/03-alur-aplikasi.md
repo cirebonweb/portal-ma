@@ -62,7 +62,7 @@ Tabel utama yang sudah dirancang: `konsumen`, `produk`, `harga_tipe`,
 | `2` Jasa/Layanan | tanpa produksi | tidak | tidak | tidak | `0 → 3 → 4` |
 
 - Item kategori `0` baru masuk antrean cetak bila produknya memakai **bahan**
-  (`bahan_jenis.jenis = 0`, diproses mesin).
+  (`bahan_jenis.kategori = 0`, diproses mesin).
 - Kategori `1` dan `2` berhenti pada `3 (Proses)` lalu diselesaikan menjadi `4 (Selesai)`
   tanpa melalui halaman cetak.
 - Biaya vendor dan jasa **diinput manual pada `produk.hpp`**; tidak ada tabel biaya vendor
@@ -80,6 +80,8 @@ Tabel utama yang sudah dirancang: `konsumen`, `produk`, `harga_tipe`,
 - `luas = lebar × panjang`, dibulatkan maksimal 2 angka di belakang koma.
   Contoh: `1,27 × 1,6 = 2,032 → 2,03`; `1,27 × 1,67 = 2,1209 → 2,12`; `0,62 × 0,45 = 0,279 → 0,28`.
 - `jumlah = luas × qty × harga` untuk rumus perkalian luas, atau `qty × harga` untuk perkalian qty.
+- Pada master produk, jika `bahan_jenis_id` dipilih maka `produk.rumus` mengikuti
+  `bahan_jenis.rumus`; jika produk tidak memakai bahan, rumus dipilih langsung pada produk.
 - `jumlah` dibulatkan **ke atas pada kelipatan 500**.
   Contoh: `123.001 → 123.500`; `123.501 → 124.000`; `123.500 → 123.500`.
 - **Harga minimum** (toggle "Harga Minimum" pada form rincian) hanya berlaku untuk rumus perkalian
@@ -110,7 +112,7 @@ Alur dasar:
 
 ```text
 Bahan jenis (karakter)
-  -> Bahan (detail paket fisik)
+  -> Bahan (detail paket fisik untuk bahan cetak atau material)
   -> Supplier
   -> Order bahan
   -> Detail order
@@ -124,7 +126,10 @@ Aturan awal yang sudah dicatat:
 
 - `bahan_jenis` adalah layer karakter yang dipakai CS dan master produk; `bahan` adalah layer
   detail paket fisik yang dipakai purchasing dan operator mesin;
-- `bahan_jenis.jenis` memisahkan bahan (`0`, diproses mesin) dan material (`1`, pendukung statis);
+- `bahan_jenis.kategori` memisahkan bahan cetak (`0`, diproses mesin) dan material (`1`, pendukung statis);
+- Pada `/bahan`, pilih kategori, lalu isi detail paket untuk jenis yang dipilih. Bahan cetak memerlukan
+  tipe mesin; material tidak. Keduanya tersimpan pada tabel `bahan` dengan foreign key
+  `bahan_jenis_id`;
 - order bahan dapat diedit sebelum dimasukkan ke stok;
 - setelah stok dibuat, order dan detailnya perlu dikunci sesuai aturan bisnis;
 - stok memiliki status aktif atau nonaktif;
@@ -142,11 +147,13 @@ Alur order menerima dua jenis item sekaligus:
 
 ```text
 bahan_order_isi.bahan_id
-  -> bahan_jenis.jenis = 0 (Bahan)    -> generate bahan_stok per paket/roll
-  -> bahan_jenis.jenis = 1 (Material) -> akumulasi ke material_stok
+  -> bahan_jenis.kategori = 0 (Bahan Cetak) -> generate bahan_stok per paket/roll
+  -> bahan_jenis.kategori = 1 (Material)    -> akumulasi ke material_stok
 ```
 
 - Material masuk lewat `bahan_order` dan `bahan_order_isi` yang sama; tidak ada tabel order terpisah.
+- Agar material tersedia untuk dipilih pada detail order, buat detail material di `/bahan` dengan
+  memilih kategori Material dan jenis material yang sudah dibuat di `/bahan-jenis`.
 - Saat order ditandai masuk stok, bahan menghasilkan baris `bahan_stok` per paket, sedangkan
   material menambah `stok_masuk` pada satu baris `material_stok`.
 

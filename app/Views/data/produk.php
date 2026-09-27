@@ -27,26 +27,24 @@
                             <option value="0">Nonaktif</option>
                         </select>
 
-                        <table id="tabelData" class="table table-bordered table-hover dataTable dtr-inline">
+                        <table id="tabelData" class="table table-striped table-bordered table-hover dataTable dtr-inline">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th class="min-tablet">Kategori</th>
                                     <th class="min-tablet">Tipe</th>
-                                    <th class="min-tablet">Bahan</th>
                                     <th>Nama Produk</th>
-                                    <th class="min-tablet">Ukuran</th>
-                                    <th class="min-tablet">Rumus</th>
                                     <th class="min-tablet">HPP Produk</th>
-                                    <th>Harga Produk</th>
+                                    <th>Harga Produk</th> <!-- 5 -->
                                     <th class="min-tablet">Harga Promo</th>
                                     <th class="none">Tgl. Awal Promo</th>
                                     <th class="none">Tgl. Akhir Promo</th>
-                                    <th class="none">Produk Unggulan</th>
+                                    <th class="none">Rumus</th>
+                                    <th class="none">Produk Unggulan</th> <!-- 10 -->
                                     <th class="none">Produk Status</th>
                                     <th class="none">Tgl. Buat</th>
                                     <th class="none">Tgl. Ubah</th>
-                                    <th class="none no-export">Aksi</th>
+                                    <th class="min-tablet no-export">Aksi</th> <!-- 14 -->
                                 </tr>
                             </thead>
                         </table>
@@ -88,7 +86,7 @@
 
                         <div class="col-7 col-md-8 mb-4">
                             <label for="nama">Nama Produk <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control upper" id="nama" name="nama" minlength="3" maxlength="100" required>
+                            <input type="text" class="form-control capital" id="nama" name="nama" minlength="3" maxlength="100" required>
                         </div>
 
                         <div class="col-6 mb-4">
@@ -102,9 +100,19 @@
                         </div>
 
                         <div class="col-6 mb-4">
-                            <label for="bahan_id">Bahan <span class="text-danger bahan_id">*</span></label>
-                            <select id="bahan_id" name="bahan_id" class="form-control select2" style="width:100%;" disabled>
+                            <label for="bahan_jenis_id">Bahan <span class="text-danger bahan_id">*</span></label>
+                            <select id="bahan_jenis_id" name="bahan_jenis_id" class="form-control select2" style="width:100%;" disabled>
                                 <option value="">-- Pilih --</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label for="material_jenis_id">Material (Paket)</label>
+                            <select id="material_jenis_id" name="material_jenis_id" class="form-control select2" style="width:100%;">
+                                <option value="">Tanpa Material</option>
+                                <?php foreach ($menuMaterial as $row): ?>
+                                    <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
 
@@ -194,7 +202,7 @@
 
 <?= $this->section('js') ?>
 <script>
-    const thisUrl = '<?= site_url('produk') ?>';
+    const urlThis = '<?= site_url('produk') ?>';
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="<?= versi('plugin/select2/js/select2.min.js') ?>" defer></script>

@@ -13,7 +13,8 @@ class ProdukModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields = [
-        'bahan_id',
+        'bahan_jenis_id',
+        'material_jenis_id',
         'kategori',
         'nama',
         'lebar',
@@ -38,8 +39,12 @@ class ProdukModel extends Model
             'label' => 'ID',
             'rules' => 'permit_empty|is_natural_no_zero'
         ],
-        'bahan_id' => [
+        'bahan_jenis_id' => [
             'label' => 'Bahan',
+            'rules' => 'permit_empty|is_natural_no_zero'
+        ],
+        'material_jenis_id' => [
+            'label' => 'Material',
             'rules' => 'permit_empty|is_natural_no_zero'
         ],
         'kategori' => [
@@ -97,18 +102,34 @@ class ProdukModel extends Model
     public function tabel()
     {
         return $this->db->table('produk a')
-            ->select('a.id, a.bahan_id, a.kategori, a.nama, a.lebar, a.panjang, a.rumus, a.hpp, a.harga, a.promo, a.promo_awal, a.promo_akhir, a.unggulan, a.status, a.created_at, a.updated_at, b.nama as bahan, c.nama as mesin')
-            ->join('bahan b', 'b.id = a.bahan_id', 'left')
+            ->select('a.id, a.bahan_jenis_id, a.material_jenis_id, a.kategori, a.nama, a.lebar, a.panjang, a.rumus, a.hpp, a.harga, a.promo, a.promo_awal, a.promo_akhir, a.unggulan, a.status, a.created_at, a.updated_at, b.nama as bahan, d.nama as material, c.nama as mesin')
+            ->join('bahan_jenis b', 'b.id = a.bahan_jenis_id', 'left')
+            ->join('bahan_jenis d', 'd.id = a.material_jenis_id', 'left')
             ->join('mesin_tipe c', 'c.id = b.mesin_tipe_id', 'left');
     }
 
-    // public function getDropdown()
-    // {
-    //     return $this
-    //         ->select('id, nama, lebar, panjang, rumus, harga')
-    //         ->orderBy('produk.nama', 'ASC')
-    //         ->findAll();
-    // }
+    /**
+     * Custom getId untuk mendapatkan mesin_tipe_id.
+     * @param mixed $id
+     */
+    public function getId($id)
+    {
+        return $this
+            ->select('produk.*, bahan_jenis.mesin_tipe_id')
+            ->join('bahan_jenis', 'bahan_jenis.id = produk.bahan_jenis_id', 'left')
+            ->find($id);
+    }
+
+    /**
+     * Mendapatkan daftar produk untuk dropdown menu.
+     */
+    public function getDropdown()
+    {
+        return $this
+            ->select('id, nama, lebar, panjang, rumus, harga')
+            ->orderBy('produk.nama', 'ASC')
+            ->findAll();
+    }
 
     /**
      * @param mixed $id

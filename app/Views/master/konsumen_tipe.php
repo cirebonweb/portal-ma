@@ -46,7 +46,7 @@
                         <!-- nama -->
                         <div class="col-md-12 mb-4">
                             <label for="nama">Tipe Konsumen <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control upper" id="nama" name="nama" required>
+                            <input type="text" class="form-control capital" id="nama" name="nama" required>
                         </div>
 
                     </div> <!-- .row -->

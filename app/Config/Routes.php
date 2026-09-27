@@ -47,7 +47,7 @@ $routes->group('', ['namespace' => 'App\Controllers\Data'], function ($routes) {
         $routes->get('', 'Produk::index');
         $routes->match(['GET', 'POST'], 'tabel', 'Produk::tabel');
         $routes->post('getid', 'Produk::getId');
-        $routes->post('getbahanmesin', 'Produk::getBahanMesin');
+        $routes->post('getbahanjenis', 'Produk::getBahanJenis');
         $routes->post('simpan', 'Produk::simpan');
         $routes->post('hapus', 'Produk::hapus');
     });
@@ -67,6 +67,7 @@ $routes->group('', ['namespace' => 'App\Controllers\Data'], function ($routes) {
         $routes->post('isi/loadproduk', 'NotaIsi::loadProduk');
         $routes->post('isi/simpan', 'NotaIsi::simpan');
         $routes->post('isi/hapus', 'NotaIsi::hapus');
+        $routes->post('isi/produksi', 'NotaIsi::produksi');
 
         // URL: /nota/bayar
         $routes->get('bayar', 'NotaBayar::index');
@@ -77,42 +78,31 @@ $routes->group('', ['namespace' => 'App\Controllers\Data'], function ($routes) {
     });
 
     // URL: /pembayaran (Memanggil Controller Pembayaran)
-    // $routes->group('pembayaran', function ($routes) {
-    //     $routes->get('', 'Pembayaran::index');
-    //     $routes->match(['GET', 'POST'], 'tabel', 'Pembayaran::tabel');
-    //     $routes->post('getid', 'Pembayaran::getId');
-    //     $routes->post('simpan', 'Pembayaran::simpan');
-    //     $routes->post('hapus', 'Pembayaran::hapus');
-    // });
+    $routes->group('pembayaran', function ($routes) {
+        $routes->get('', 'Pembayaran::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'Pembayaran::tabel');
+        $routes->post('getid', 'Pembayaran::getId');
+        $routes->post('simpan', 'Pembayaran::simpan');
+        $routes->post('hapus', 'Pembayaran::hapus');
+    });
 
     // URL: /laporan
-    // $routes->group('laporan', function ($routes) {
-    //     $routes->get('', 'Laporan::index');
-    //     $routes->match(['GET', 'POST'], 'tabel', 'Laporan::tabel');
-    //     $routes->post('getid', 'Laporan::getId');
-    //     $routes->post('simpan', 'Laporan::simpan');
-    //     $routes->post('hapus', 'Laporan::hapus');
-    // });
-
-    // URL: /finishing
-    // $routes->group('finishing', function ($routes) {
-    //     $routes->get('', 'Finishing::index');
-    //     $routes->match(['GET', 'POST'], 'tabel', 'Finishing::tabel');
-    //     $routes->post('getid', 'Finishing::getId');
-    //     $routes->post('simpan', 'Finishing::simpan');
-    //     $routes->post('hapus', 'Finishing::hapus');
-    // });
-
-
+    $routes->group('laporan', function ($routes) {
+        $routes->get('', 'Laporan::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'Laporan::tabel');
+        $routes->post('getid', 'Laporan::getId');
+        $routes->post('simpan', 'Laporan::simpan');
+        $routes->post('hapus', 'Laporan::hapus');
+    });
 
     // URL: /cetak
-    // $routes->group('cetak', function ($routes) {
-    //     $routes->get('', 'Cetak::index');
-    //     $routes->match(['GET', 'POST'], 'tabel', 'Cetak::tabel');
-    //     $routes->post('getid', 'Cetak::getId');
-    //     $routes->post('simpan', 'Cetak::simpan');
-    //     $routes->post('hapus', 'Cetak::hapus');
-    // });
+    $routes->group('cetak', function ($routes) {
+        $routes->get('', 'Cetak::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'Cetak::tabel');
+        $routes->post('getid', 'Cetak::getId');
+        $routes->post('simpan', 'Cetak::simpan');
+        $routes->post('hapus', 'Cetak::hapus');
+    });
 });
 
 // ============================================================================
@@ -120,11 +110,21 @@ $routes->group('', ['namespace' => 'App\Controllers\Data'], function ($routes) {
 // ============================================================================
 $routes->group('', ['namespace' => 'App\Controllers\Bahan'], function ($routes) {
 
+    // URL: /bahan-jenis
+    $routes->group('bahan-jenis', function ($routes) {
+        $routes->get('', 'BahanJenis::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'BahanJenis::tabel');
+        $routes->post('getid', 'BahanJenis::getId');
+        $routes->post('simpan', 'BahanJenis::simpan');
+        $routes->post('hapus', 'BahanJenis::hapus');
+    });
+
     // URL: /bahan
     $routes->group('bahan', function ($routes) {
         $routes->get('', 'Bahan::index');
         $routes->match(['GET', 'POST'], 'tabel', 'Bahan::tabel');
         $routes->post('getid', 'Bahan::getId');
+        $routes->post('getbahanjenis', 'Bahan::getBahanJenis');
         $routes->post('simpan', 'Bahan::simpan');
         $routes->post('hapus', 'Bahan::hapus');
     });
@@ -142,7 +142,7 @@ $routes->group('', ['namespace' => 'App\Controllers\Bahan'], function ($routes) 
         $routes->get('isi', 'BahanOrderIsi::index');
         $routes->match(['GET', 'POST'], 'isi/tabel', 'BahanOrderIsi::tabel');
         $routes->post('isi/getid', 'BahanOrderIsi::getId');
-        $routes->post('isi/getbahanmesin', 'BahanOrderIsi::getBahanMesin');
+        $routes->post('isi/getbahan', 'BahanOrderIsi::getBahan');
         $routes->post('isi/simpan', 'BahanOrderIsi::simpan');
         $routes->post('isi/hapus', 'BahanOrderIsi::hapus');
     });
@@ -155,23 +155,31 @@ $routes->group('', ['namespace' => 'App\Controllers\Bahan'], function ($routes) 
         $routes->post('simpan', 'BahanStok::simpan');
     });
 
+    // URL: /material-stok
+    $routes->group('material-stok', function ($routes) {
+        $routes->get('', 'MaterialStok::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'MaterialStok::tabel');
+        $routes->post('getid', 'MaterialStok::getId');
+        $routes->post('simpan', 'MaterialStok::simpan');
+    });
+
     // URL: /bahan-sisa
-    // $routes->group('bahan-sisa', function ($routes) {
-    //     $routes->get('', 'BahanSisa::index');
-    //     $routes->match(['GET', 'POST'], 'tabel', 'BahanSisa::tabel');
-    //     $routes->post('getid', 'BahanSisa::getId');
-    //     $routes->post('simpan', 'BahanSisa::simpan');
-    //     $routes->post('hapus', 'BahanSisa::hapus');
-    // });
+    $routes->group('bahan-sisa', function ($routes) {
+        $routes->get('', 'BahanSisa::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'BahanSisa::tabel');
+        $routes->post('getid', 'BahanSisa::getId');
+        $routes->post('simpan', 'BahanSisa::simpan');
+        $routes->post('hapus', 'BahanSisa::hapus');
+    });
 
     // URL: /bahan-limbah
-    // $routes->group('bahan-limbah', function ($routes) {
-    //     $routes->get('', 'BahanLimbah::index');
-    //     $routes->match(['GET', 'POST'], 'tabel', 'BahanLimbah::tabel');
-    //     $routes->post('getid', 'BahanLimbah::getId');
-    //     $routes->post('simpan', 'BahanLimbah::simpan');
-    //     $routes->post('hapus', 'BahanLimbah::hapus');
-    // });
+    $routes->group('bahan-limbah', function ($routes) {
+        $routes->get('', 'BahanLimbah::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'BahanLimbah::tabel');
+        $routes->post('getid', 'BahanLimbah::getId');
+        $routes->post('simpan', 'BahanLimbah::simpan');
+        $routes->post('hapus', 'BahanLimbah::hapus');
+    });
 });
 
 // ============================================================================
@@ -225,21 +233,29 @@ $routes->group('', ['namespace' => 'App\Controllers\Master'], function ($routes)
     });
 });
 
-
 // ============================================================================
 // KELOMPOK: LOG (Folder: Controllers/Log/)
 // ============================================================================
-// $routes->group('', ['namespace' => 'App\Controllers\Log'], function ($routes) {
+$routes->group('', ['namespace' => 'App\Controllers\Log'], function ($routes) {
 
-//     // URL: /laporan-log
-//     $routes->group('laporan-log', function ($routes) {
-//         $routes->get('', 'LaporanLog::index');
-//         $routes->match(['GET', 'POST'], 'tabel', 'LaporanLog::tabel');
-//         $routes->post('getid', 'LaporanLog::getId');
-//         $routes->post('simpan', 'LaporanLog::simpan');
-//         $routes->post('hapus', 'LaporanLog::hapus');
-//     });
-// });
+    // URL: /log-pembayaran
+    $routes->group('log-pembayaran', function ($routes) {
+        $routes->get('', 'LogPembayaran::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'LogPembayaran::tabel');
+        $routes->post('getid', 'LogPembayaran::getId');
+        $routes->post('simpan', 'LogPembayaran::simpan');
+        $routes->post('hapus', 'LogPembayaran::hapus');
+    });
+
+    // URL: /log-laporan
+    $routes->group('log-laporan', function ($routes) {
+        $routes->get('', 'LogLaporan::index');
+        $routes->match(['GET', 'POST'], 'tabel', 'LogLaporan::tabel');
+        $routes->post('getid', 'LogLaporan::getId');
+        $routes->post('simpan', 'LogLaporan::simpan');
+        $routes->post('hapus', 'LogLaporan::hapus');
+    });
+});
 
 
 service('auth')->routes($routes);

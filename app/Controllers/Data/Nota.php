@@ -14,8 +14,8 @@ class Nota extends BaseController
 
     protected NotaModel $model;
     protected KonsumenModel $konsumenModel;
-    protected $searchable = ['nama'];
-    protected $orderable  = ['id', 'nama', 'created_at', 'updated_at'];
+    protected $searchable = ['a.no_nota', 'b.nama', 'a.keterangan'];
+    protected $orderable  = ['a.id', 'a.no_nota', 'a.tgl_nota', 'b.nama', 'a.subtotal', 'a.diskon_persen', 'a.diskon_nominal', 'a.nettotal', 'a.bayar', 'a.sisa', 'a.status_nota', 'a.status_barang', 'a.tgl_ambil', 'a.created_at', 'a.updated_at'];
 
     public function __construct()
     {

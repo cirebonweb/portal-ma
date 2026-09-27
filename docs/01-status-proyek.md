@@ -23,21 +23,21 @@ Dashboard
 - [ ] Dashboard Admin → Statistik penerimaan uang masuk harian baik tunai maupun transfer
 
 Data
-- [r] Konsumen → /konsumen
-- [r] Supplier → /supplier
-- [r] Mesin → /mesin
-- [r] Produk → /produk
+- [x] Konsumen → /konsumen
+- [x] Supplier → /supplier
+- [x] Mesin → /mesin
+- [p] Produk → /produk
 - [p] Nota Penjualan → /nota → /nota/isi?edit={nota.id} → /nota/bayar?edit={nota.id}
 - [ ] Cetak Produksi → /cetak — internal masuk antrean cetak, eksternal & jasa cukup ubah status
 - [ ] Pembayaran → /pembayaran
 - [ ] Laporan → /laporan
 
 Bahan
-- [r] Data Bahan → /bahan
-- [r] Jenis Bahan → /bahan-jenis
-- [r] Order Bahan → /bahan-order
-- [r] Stok Bahan → /bahan-stok
-- [r] Stok Material → /material-stok
+- [x] Jenis Bahan → /bahan-jenis
+- [x] Bahan Cetak → /bahan
+- [x] Order Bahan → /bahan-order
+- [x] Stok Bahan → /bahan-stok
+- [x] Stok Material → /material-stok
 - [ ] Sisa Bahan → /bahan-sisa
 - [ ] Limbah Bahan → /bahan-limbah
 

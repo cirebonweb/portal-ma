@@ -51,25 +51,25 @@
                         <!-- supplier -->
                         <div class="col-7 mb-4">
                             <label for="nama">Nama Supplier <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control upper" id="nama" name="nama" required>
+                            <input type="text" class="form-control capital" id="nama" name="nama" required>
                         </div>
 
                         <!-- perusahaan -->
                         <div class="col-5 mb-4">
                             <label for="perusahaan">Perusahaan</label>
-                            <input type="text" class="form-control upper" id="perusahaan" name="perusahaan">
+                            <input type="text" class="form-control capital" id="perusahaan" name="perusahaan">
                         </div>
 
                         <!-- alamat -->
                         <div class="col-7 mb-4">
                             <label for="alamat">Alamat</label>
-                            <input type="text" class="form-control upper" id="alamat" name="alamat">
+                            <input type="text" class="form-control capital" id="alamat" name="alamat">
                         </div>
 
                         <!-- kota -->
                         <div class="col-5 mb-4">
                             <label for="kota">Kota/Kabupaten <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control upper" id="kota" name="kota" required>
+                            <input type="text" class="form-control capital" id="kota" name="kota" required>
                         </div>
 
                         <!-- kontak -->

@@ -46,7 +46,7 @@
                         <!-- nama -->
                         <div class="col-md-12 mb-2">
                             <label for="nama">Nama Finishing <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control upper" id="nama" name="nama" required>
+                            <input type="text" class="form-control capital" id="nama" name="nama" required>
                         </div>
 
                     </div> <!-- .row -->
@@ -65,7 +65,7 @@
 
 <?= $this->section('js') ?>
 <script>
-    const thisUrl = '<?= site_url('finishing') ?>';
+    const urlThis = '<?= site_url('finishing') ?>';
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="<?= versi('page/finishing.min.js') ?>" defer></script>
