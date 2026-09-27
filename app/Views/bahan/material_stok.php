@@ -29,19 +29,17 @@
                         <table id="tabelData" class="table table-bordered table-hover dataTable dtr-inline">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>ID</th> <!-- 0 -->
                                     <th>Kode</th>
-                                    <th>Bahan</th>
-                                    <th>GSM</th>
-                                    <th>Ukuran</th>
+                                    <th>Material</th>
                                     <th>Stok Masuk</th>
                                     <th>Stok Pakai</th>
-                                    <th>Stok Sisa</th>
+                                    <th>Stok Sisa</th> <!-- 5 -->
+                                    <th>Harga Satuan</th>
                                     <th>Kondisi</th>
                                     <th>Status</th>
-                                    <th class="none">Supplier</th>
                                     <th class="none">Keterangan</th>
-                                    <th class="none">Tgl. Buat</th>
+                                    <th class="none">Tgl. Buat</th> <!-- 10 -->
                                     <th class="none">Tgl. Ubah</th>
                                     <th class="none no-export">Aksi</th>
                                 </tr>
@@ -66,18 +64,28 @@
                     <div class="row">
 
                         <div class="col-md-6 mb-4">
-                            <label for="kode_bahan">Kode Bahan</label>
-                            <input type="text" class="form-control capital" id="kode_bahan" name="kode_bahan" required>
+                            <label for="kode">Kode Material</label>
+                            <input type="text" class="form-control" id="kode" disabled>
                         </div>
 
                         <div class="col-md-6 mb-4">
-                            <label for="nama_bahan">Nama Bahan</label>
-                            <input type="text" class="form-control" id="nama_bahan" disabled>
+                            <label for="nama">Nama Material</label>
+                            <input type="text" class="form-control" id="nama" disabled>
                         </div>
 
-                        <div class="col-md-6 mb-4">
-                            <label for="nama_supplier">Nama Supplier</label>
-                            <input type="text" class="form-control" id="nama_supplier" disabled>
+                        <div class="col-4 mb-4">
+                            <label for="stok_masuk">Stok Masuk</label>
+                            <input type="text" class="form-control text-right" id="stok_masuk" disabled>
+                        </div>
+
+                        <div class="col-4 mb-4">
+                            <label for="stok_pakai">Stok Pakai</label>
+                            <input type="text" class="form-control text-right" id="stok_pakai" disabled>
+                        </div>
+
+                        <div class="col-4 mb-4">
+                            <label for="stok_sisa">Stok Sisa</label>
+                            <input type="text" class="form-control text-right" id="stok_sisa" disabled>
                         </div>
 
                         <div class="col-6 col-md-3 mb-4">
@@ -103,7 +111,6 @@
                             <textarea class="form-control" id="keterangan" name="keterangan" rows="3" maxlength="100"></textarea>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -117,8 +124,8 @@
 
 <?= $this->section('js') ?>
 <script>
-    const urlThis = '<?= site_url('bahan-stok') ?>';
+    const urlThis = '<?= site_url('material-stok') ?>';
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
-<script src="<?= versi('page/bahan_stok.min.js') ?>" defer></script>
+<script src="<?= versi('page/material_stok.min.js') ?>" defer></script>
 <?= $this->endSection() ?>

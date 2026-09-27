@@ -44,7 +44,7 @@
                         <table id="tabelData" class="table table-bordered table-hover dataTable dtr-inline">
                             <thead>
                                 <tr>
-                                    <th>ID</th> <!-- 0 -->
+                                    <th>No.</th> <!-- 0 -->
                                     <th>Nama Bahan</th>
                                     <th>Harga Satuan</th>
                                     <th>Harga Paket</th>
@@ -123,10 +123,19 @@
                     <input type="hidden" id="bahan_order_id" name="bahan_order_id">
                     <div class="row">
 
-                        <!-- mesin_tipe_id -->
+                        <!-- kategori -->
                         <div class="col-md-6 mb-4">
+                            <label for="kategori">Kategori <span class="text-danger">*</span></label>
+                            <select id="kategori" class="form-control">
+                                <option value="0">Bahan (diproses mesin)</option>
+                                <option value="1">Material (pendukung)</option>
+                            </select>
+                        </div>
+
+                        <!-- mesin_tipe_id -->
+                        <div class="col-md-6 mb-4 group-mesin">
                             <label for="mesin_tipe_id">Tipe Mesin <span class="text-danger">*</span></label>
-                            <select id="mesin_tipe_id" class="form-control" style="width:100%;" required>
+                            <select id="mesin_tipe_id" class="form-control" style="width:100%;">
                                 <option value="">-- Pilih --</option>
                                 <?php foreach ($menuTipeMesin as $row): ?>
                                     <option value="<?= $row->id ?>"><?= $row->nama ?></option>
@@ -135,7 +144,7 @@
                         </div>
 
                         <!-- bahan_id -->
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-8 mb-4">
                             <label for="bahan_id">Nama Bahan <span class="text-danger">*</span></label>
                             <select id="bahan_id" name="bahan_id" class="form-control select2" style="width:100%;" required disabled>
                                 <option value="">-- Pilih --</option>
@@ -143,19 +152,19 @@
                         </div>
 
                         <!-- ukuran_bahan -->
-                        <div class="col-6 mb-4">
+                        <div class="col-6 col-md-4 mb-4">
                             <label for="harga_satuan">Ukuran Bahan</label>
                             <input type="text" class="form-control text-center ukuran_bahan" value="null" disabled>
                         </div>
 
                         <!-- isi_paket -->
-                        <div class="col-6 mb-4">
+                        <div class="col-6 col-md-4 mb-4">
                             <label for="harga_satuan">Isi Paket</label>
                             <input type="text" class="form-control text-center isi_paket" value="null" disabled>
                         </div>
 
                         <!-- harga_satuan -->
-                        <div class="col-6 mb-4">
+                        <div class="col-6 col-md-4 mb-4">
                             <label for="harga_satuan">Harga Satuan <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input type="text" id="harga_satuan" name="harga_satuan" class="form-control text-right rupiah" value="0" minlength="3" maxlength="14" required readonly>
@@ -166,7 +175,7 @@
                         </div>
 
                         <!-- harga_paket -->
-                        <div class="col-6 mb-4">
+                        <div class="col-6 col-md-4 mb-4">
                             <label for="harga_paket">Harga Paket <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input type="text" id="harga_paket" name="harga_paket" class="form-control text-right rupiah" value="0" minlength="3" maxlength="14" required readonly>
@@ -177,7 +186,7 @@
                         </div>
 
                         <!-- qty -->
-                        <div class="col-5 mb-4">
+                        <div class="col-5 col-md-4 mb-4">
                             <label for="qty">Qty Paket <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input type="number" id="qty" name="qty" class="form-control text-center" value="1" min="1" maxlength="6" required readonly>
@@ -188,7 +197,7 @@
                         </div>
 
                         <!-- jumlah -->
-                        <div class="col-7 mb-4">
+                        <div class="col-7 col-md8 mb-4">
                             <label for="jumlah">Jumlah <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -217,9 +226,9 @@
 
 <?= $this->section('js') ?>
 <script>
-    const thisUrl = '<?= site_url('bahan-order/isi') ?>';
+    const urlThis = '<?= site_url('bahan-order/isi') ?>';
     const statusStok = <?= (int) $dataOrder->status_stok ?>;
-    const idOrder = <?= (int) $dataOrder->id ?>;
+    const bahanOrderId = <?= (int) $dataOrder->id ?>;
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="<?= versi('plugin/select2/js/select2.min.js') ?>" defer></script>

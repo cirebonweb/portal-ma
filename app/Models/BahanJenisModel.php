@@ -117,4 +117,26 @@ class BahanJenisModel extends Model
             ->orderBy('nama', 'ASC')
             ->findAll();
     }
+
+    /**
+     * Mendapatkan jenis bahan cetak berdasarkan tipe mesin atau seluruh jenis material.
+     */
+    public function getForBahan(int $kategori, ?int $mesinTipeId = null): array
+    {
+        if (!in_array($kategori, [0, 1], true) || ($kategori === 0 && $mesinTipeId === null)) {
+            return [];
+        }
+
+        $builder = $this
+            ->select('id, kode, nama, rumus')
+            ->where('kategori', $kategori);
+
+        if ($kategori === 0) {
+            $builder->where('mesin_tipe_id', $mesinTipeId);
+        } else {
+            $builder->where('mesin_tipe_id', null);
+        }
+
+        return $builder->orderBy('nama', 'ASC')->findAll();
+    }
 }

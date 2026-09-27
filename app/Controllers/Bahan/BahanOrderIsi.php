@@ -14,6 +14,7 @@ use CodeIgniter\Database\BaseBuilder;
 class BahanOrderIsi extends BaseController
 {
     use CrudTrait;
+    private int $noUrut = 0;
 
     protected BahanOrderIsiModel $model;
     protected BahanOrderModel $bahanOrderModel;
@@ -64,9 +65,14 @@ class BahanOrderIsi extends BaseController
         return view('bahan/bahan_order_isi', $data);
     }
 
-    protected function filterTabel(): BaseBuilder
+    protected function filterTabel(BaseBuilder $builder): BaseBuilder
     {
-        return $this->model->tabel();
+        $bahanOrderId = $this->request->getPost('bahanOrderId') ?: $this->request->getGet('edit');
+
+        // Nomor urut mengikuti posisi baris pada halaman DataTables
+        $this->noUrut = (int) $this->request->getPost('start');
+
+        return $this->model->tabel()->where('a.bahan_order_id', (int) $bahanOrderId);
     }
 
     /**
@@ -80,7 +86,7 @@ class BahanOrderIsi extends BaseController
         $aksi .= '</div>';
 
         return [
-            $row->id,
+            ++$this->noUrut,
             $row->nama_bahan,
             'Rp ' . number_format($row->harga_satuan, 0, ',', '.') . ' /' . $row->satuan_1,
             'Rp ' . number_format($row->harga_paket, 0, ',', '.') . ' /' . $row->satuan_2,
@@ -93,11 +99,22 @@ class BahanOrderIsi extends BaseController
         ];
     }
 
-    public function getBahanMesin()
+    /**
+     * Mengambil daftar bahan (kategori = 0) berdasarkan tipe mesin,
+     * atau seluruh material (kategori = 1) bila kategori = 1 dipilih.
+     */
+    public function getBahan()
     {
-        $id = $this->request->getPost('mesin_id');
-        $data = $this->bahanModel->getBahanMesin($id);
-        return $this->response->setJSON($data);
+        if ((int) $this->request->getPost('kategori') === 1) {
+            return $this->response->setJSON($this->bahanModel->getMaterial());
+        }
+
+        $mesinTipeId = $this->request->getPost('mesin_tipe_id');
+        if (empty($mesinTipeId) || !is_numeric($mesinTipeId)) {
+            return $this->response->setJSON([]);
+        }
+
+        return $this->response->setJSON($this->bahanModel->getBahanMesin((int) $mesinTipeId));
     }
 
     public function getId()

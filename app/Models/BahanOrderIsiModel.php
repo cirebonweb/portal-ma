@@ -83,9 +83,10 @@ class BahanOrderIsiModel extends Model
     public function getId($id)
     {
         return $this->db->table('bahan_order_isi a')
-            ->select('a.id, a.bahan_id, a.harga_satuan, a.harga_paket, a.qty, a.jumlah, c.id as id_tipe_mesin')
+            ->select('a.id, a.bahan_id, a.harga_satuan, a.harga_paket, a.qty, a.jumlah, c.kategori, c.rumus, d.id as id_tipe_mesin')
             ->join('bahan b', 'b.id = a.bahan_id', 'left')
-            ->join('mesin_tipe c', 'c.id = b.mesin_tipe_id', 'left')
+            ->join('bahan_jenis c', 'c.id = b.bahan_jenis_id', 'left')
+            ->join('mesin_tipe d', 'd.id = c.mesin_tipe_id', 'left')
             ->where('a.id', $id)
             ->get()->getRow();
     }
@@ -96,8 +97,9 @@ class BahanOrderIsiModel extends Model
     public function getForStok(int $orderId): array
     {
         return $this->db->table('bahan_order_isi a')
-            ->select('a.id, a.bahan_id, a.qty, b.kode, b.lebar, b.panjang, b.isi_paket, b.rumus')
+            ->select('a.id, a.bahan_id, a.harga_satuan, a.qty, b.kode, b.lebar, b.panjang, b.isi_paket, c.id as bahan_jenis_id, c.kategori, c.rumus')
             ->join('bahan b', 'b.id = a.bahan_id', 'inner')
+            ->join('bahan_jenis c', 'c.id = b.bahan_jenis_id', 'inner')
             ->where('a.bahan_order_id', $orderId)
             ->orderBy('a.id', 'ASC')
             ->get()->getResult();

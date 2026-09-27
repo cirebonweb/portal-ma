@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Controllers\Traits\CrudTrait;
 use App\Models\BahanOrderIsiModel;
 use App\Models\BahanStokModel;
+use App\Models\MaterialStokModel;
 use App\Models\BahanOrderModel;
 use App\Models\SupplierModel;
 use CodeIgniter\Database\BaseBuilder;
@@ -17,6 +18,7 @@ class BahanOrder extends BaseController
     protected BahanOrderModel $model;
     protected BahanOrderIsiModel $bahanOrderIsiModel;
     protected BahanStokModel $bahanStokModel;
+    protected MaterialStokModel $materialStokModel;
     protected SupplierModel $supplierModel;
 
     protected $searchable = ['a.tgl_order', 'a.no_order', 'b.nama'];
@@ -27,17 +29,17 @@ class BahanOrder extends BaseController
         $this->model = new BahanOrderModel();
         $this->bahanOrderIsiModel = new BahanOrderIsiModel();
         $this->bahanStokModel = new BahanStokModel();
+        $this->materialStokModel = new MaterialStokModel();
         $this->supplierModel = new SupplierModel();
     }
 
     public function index(): string
     {
-        $data = [
+        return view('bahan/bahan_order', [
             'pageTitle'    => 'Order Bahan',
             'navigasi'     => '<a href="/bahan">Bahan</a> &nbsp;',
             'menuSupplier' => $this->supplierModel->getDropdown(),
-        ];
-        return view('bahan/bahan_order', $data);
+        ]);
     }
 
     protected function filterTabel(BaseBuilder $builder): BaseBuilder
@@ -112,10 +114,7 @@ class BahanOrder extends BaseController
         try {
             $db->transBegin();
 
-            $order = $db->query(
-                'SELECT id, status_stok FROM bahan_order WHERE id = ? FOR UPDATE',
-                [(int) $id]
-            )->getRow();
+            $order = $db->query('SELECT id, status_stok FROM bahan_order WHERE id = ? FOR UPDATE', [(int) $id])->getRow();
 
             if (!$order) {
                 $db->transRollback();
@@ -141,6 +140,20 @@ class BahanOrder extends BaseController
                     throw new \RuntimeException('Isi paket atau qty item order tidak valid.');
                 }
 
+                // Material (kategori = 1): stok agregat per bahan_jenis, tanpa baris per paket
+                if ((int) $item->kategori === 1) {
+                    if (!$this->materialStokModel->tambahMasuk(
+                        $item->bahan_jenis_id,
+                        round($stokPerPaket * (int) $item->qty, 2),
+                        (int) $item->harga_satuan
+                    )) {
+                        throw new \RuntimeException(implode('; ', $this->materialStokModel->errors()));
+                    }
+
+                    continue;
+                }
+
+                // Bahan (kategori = 0): satu baris bahan_stok per paket/roll
                 for ($paket = 0; $paket < (int) $item->qty; $paket++) {
                     do {
                         $kode = $item->kode . '-' . $item->id . '-' . str_pad((string) $sequence++, 3, '0', STR_PAD_LEFT);

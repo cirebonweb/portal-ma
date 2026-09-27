@@ -78,8 +78,9 @@ class BahanStokModel extends Model
     public function tabel()
     {
         return $this->db->table('bahan_stok a')
-            ->select('a.id, a.bahan_id, a.bahan_order_id, a.kode_bahan, a.stok_masuk, a.stok_pakai, a.stok_sisa, a.kondisi, a.status, a.keterangan, a.created_at, a.updated_at, b.nama as nama_bahan, b.gsm, b.lebar, b.panjang, b.satuan_1, c.nama as nama_supplier')
+            ->select('a.id, a.bahan_id, a.bahan_order_id, a.kode_bahan, a.stok_masuk, a.stok_pakai, a.stok_sisa, a.kondisi, a.status, a.keterangan, a.created_at, a.updated_at, b.nama as nama_bahan, b.lebar, b.panjang, b.satuan_1, e.gsm, e.nama as nama_jenis, c.nama as nama_supplier')
             ->join('bahan b', 'b.id = a.bahan_id', 'left')
+            ->join('bahan_jenis e', 'e.id = b.bahan_jenis_id', 'left')
             ->join('bahan_order d', 'd.id = a.bahan_order_id', 'left')
             ->join('supplier c', 'c.id = d.supplier_id', 'left');
     }
@@ -91,8 +92,9 @@ class BahanStokModel extends Model
     public function getId($id)
     {
         return $this->db->table('bahan_stok a')
-            ->select('a.id, a.kode_bahan, a.kondisi, a.status, a.keterangan, b.nama as nama_bahan, b.gsm, c.nama as nama_supplier')
+            ->select('a.id, a.kode_bahan, a.kondisi, a.status, a.keterangan, b.nama as nama_bahan, e.gsm, e.nama as nama_jenis, c.nama as nama_supplier')
             ->join('bahan b', 'b.id = a.bahan_id', 'left')
+            ->join('bahan_jenis e', 'e.id = b.bahan_jenis_id', 'left')
             ->join('bahan_order d', 'd.id = a.bahan_order_id', 'left')
             ->join('supplier c', 'c.id = d.supplier_id', 'left')
             ->where('a.id', $id)

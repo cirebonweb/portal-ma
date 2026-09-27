@@ -79,7 +79,7 @@
 
                         <div class="col-8 mb-4">
                             <label for="no_order">Nomor Order</label>
-                            <input type="text" class="form-control upper" id="no_order" name="no_order" placeholder="Contoh: PO-2026-001">
+                            <input type="text" class="form-control capital" id="no_order" name="no_order" placeholder="Contoh: PO-2026-001">
                         </div>
 
                         <div class="col-6 mb-4">
@@ -142,7 +142,7 @@
 
 <?= $this->section('js') ?>
 <script>
-    const thisUrl = '<?= site_url('bahan-order') ?>';
+    const urlThis = '<?= site_url('bahan-order') ?>';
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="<?= versi('plugin/select2/js/select2.min.js') ?>" defer></script>
