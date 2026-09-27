@@ -20,20 +20,27 @@
                             <?php endforeach; ?>
                         </select>
 
+                        <select id="filter_kategori" class="form-control form-control-sm d-inline-block w-auto mx-1">
+                            <option value=""># Kategori</option>
+                            <option value="0">Bahan</option>
+                            <option value="1">Material</option>
+                        </select>
+
                         <table id="tabelData" class="table table-striped table-bordered table-hover dataTable dtr-inline">
                             <thead>
                                 <tr>
                                     <th>ID</th> <!-- 0 -->
                                     <th>Tipe Mesin</th>
+                                    <th>Kategori</th>
                                     <th>Kode</th>
                                     <th>Nama Bahan</th>
-                                    <th>Gramasi</th>
-                                    <th>Ukuran</th> <!-- 5 -->
+                                    <th>Gramasi</th> <!-- 5 -->
+                                    <th>Ukuran</th>
                                     <th>Isi Paket</th>
                                     <th>Rumus</th>
                                     <th class="no-export">Aksi</th>
-                                    <th class="none">Tgl. Buat</th>
-                                    <th class="none">Tgl. Ubah</th> <!-- 10 -->
+                                    <th class="none">Tgl. Buat</th> <!-- 10 -->
+                                    <th class="none">Tgl. Ubah</th>
                                 </tr>
                             </thead>
                         </table>
@@ -57,10 +64,20 @@
                     <input type="hidden" id="id" name="id">
                     <div class="row">
 
-                        <!-- mesin_tipe -->
+                        <!-- kategori -->
                         <div class="col-6 mb-4">
+                            <label for="kategori">Kategori <span class="text-danger">*</span></label>
+                            <select id="kategori" name="kategori" class="form-control" required>
+                                <option value="">-- Pilih Kategori --</option>
+                                <option value="0">Bahan Cetak</option>
+                                <option value="1">Material Produksi</option>
+                            </select>
+                        </div>
+
+                        <!-- mesin_tipe -->
+                        <div class="col-6 mb-4 group-mesin">
                             <label for="mesin_tipe_id">Tipe Mesin <span class="text-danger">*</span></label>
-                            <select id="mesin_tipe_id" class="form-control" style="width:100%;">
+                            <select id="mesin_tipe_id" name="mesin_tipe_id" class="form-control" style="width:100%;">
                                 <option value="">-- Pilih ---</option>
                                 <?php foreach ($menuMesinTipe as $row): ?>
                                     <option value="<?= $row->id ?>"><?= esc($row->nama) ?></option>
@@ -71,7 +88,7 @@
                         <!-- kode -->
                         <div class="col-6 mb-4">
                             <label for="kode">Kode Bahan <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="kode" name="kode" placeholder="FLX260-3260" required>
+                            <input type="text" class="form-control upper" id="kode" name="kode" placeholder="FLX260-3260" required>
                         </div>
 
                         <!-- bahan_jenis_id -->
@@ -110,38 +127,38 @@
                             </div>
                         </div>
 
-                        <!-- isi_paket -->
-                        <div class="col-12 col-md-6 mb-4">
-                            <label for="isi_paket">Isi paket: <span class="satuan2">1 roll = 0 m²</span></label>
-                            <div class="input-group">
-                                <input type="text" class="form-control text-center angka" id="isi_paket" name="isi_paket" value="0">
-                                <div class="input-group-append">
-                                    <span class="input-group-text satuan1">m²</span>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- satuan_1 -->
                         <div class="col-6 col-md-3 mb-4">
                             <div class="form-group">
                                 <label for="satuan_1">Satuan isi <span class="text-danger">*</span></label>
                                 <select class="form-control select2" id="satuan_1" name="satuan_1" style="width: 100%;">
                                     <?php foreach ($menuSatuan as $key => $value): ?>
-                                        <option value="<?= $key ?>"> <?= esc($value) ?> </option>
+                                        <option value="<?= $key; ?>" <?= ($key == 'm²') ? 'selected' : ''; ?>><?= esc($value) ?> </option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
 
                         <!-- satuan_2 -->
-                        <div class="col-6 col-md-3 mb-3">
+                        <div class="col-6 col-md-3 mb-4">
                             <div class="form-group">
                                 <label for="satuan_2">Satuan paket <span class="text-danger">*</span></label>
                                 <select class="form-control select2" id="satuan_2" name="satuan_2" style="width: 100%;">
                                     <?php foreach ($menuSatuan as $key => $value): ?>
-                                        <option value="<?= $key ?>"> <?= esc($value) ?> </option>
+                                        <option value="<?= $key; ?>" <?= ($key == 'roll') ? 'selected' : ''; ?>><?= esc($value) ?> </option>
                                     <?php endforeach; ?>
                                 </select>
+                            </div>
+                        </div>
+
+                        <!-- isi_paket -->
+                        <div class="col-12 col-md-6 mb-3">
+                            <label for="isi_paket">Isi paket: <span class="satuan2">1 roll = 0 m²</span></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control text-center angka" id="isi_paket" name="isi_paket" value="0">
+                                <div class="input-group-append">
+                                    <span class="input-group-text satuan1">m²</span>
+                                </div>
                             </div>
                         </div>
 
@@ -161,6 +178,8 @@
 <?= $this->section('js') ?>
 <script>
     const urlThis = '<?= site_url('bahan') ?>';
+    const categoryBahanCetak = 0;
+    const categoryMaterial = 1;
 </script>
 <?= $this->include('plugin/js_tabel_form') ?>
 <script src="<?= versi('plugin/select2/js/select2.min.js') ?>" defer></script>

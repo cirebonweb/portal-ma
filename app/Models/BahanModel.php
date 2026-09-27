@@ -77,7 +77,7 @@ class BahanModel extends Model
     public function tabel()
     {
         return $this->db->table('bahan a')
-            ->select('a.id, a.kode, a.nama as nama_bahan, a.lebar, a.panjang, a.isi_paket, a.satuan_1, a.satuan_2, a.created_at, a.updated_at, b.gsm, b.rumus, c.nama as tipe_mesin')
+            ->select('a.id, a.kode, a.nama as nama_bahan, a.lebar, a.panjang, a.isi_paket, a.satuan_1, a.satuan_2, a.created_at, a.updated_at, b.kategori, b.gsm, b.rumus, c.nama as tipe_mesin')
             ->join('bahan_jenis b', 'b.id = a.bahan_jenis_id', 'left')
             ->join('mesin_tipe c', 'c.id = b.mesin_tipe_id', 'left');
     }
@@ -89,7 +89,7 @@ class BahanModel extends Model
     public function getId($id)
     {
         return $this
-            ->select('bahan.*, bahan_jenis.mesin_tipe_id')
+            ->select('bahan.*, bahan_jenis.mesin_tipe_id, bahan_jenis.kategori, bahan_jenis.rumus')
             ->join('bahan_jenis', 'bahan_jenis.id = bahan.bahan_jenis_id', 'left')
             ->find($id);
     }

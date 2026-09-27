@@ -11,13 +11,15 @@ use CodeIgniter\Database\BaseBuilder;
 
 class Bahan extends BaseController
 {
-    use CrudTrait;
+    use CrudTrait {
+        simpan as private simpanCrud;
+    }
 
     protected BahanModel $model;
     protected BahanJenisModel $bahanJenisModel;
     protected MesinTipeModel $mesinTipeModel;
     protected $searchable = ['a.kode', 'a.nama'];
-    protected $orderable  = ['a.id', 'c.nama', 'a.kode', 'a.nama'];
+    protected $orderable  = ['a.id', 'c.nama', 'b.kategori', 'a.kode', 'a.nama'];
 
     public function __construct()
     {
@@ -31,8 +33,8 @@ class Bahan extends BaseController
     public function index(): string
     {
         return view('bahan/bahan', [
-            'pageTitle'     => 'Bahan Cetak',
-            'navigasi'      => '<a href="/bahan">Bahan Cetak</a> &nbsp;',
+            'pageTitle'     => 'Bahan Cetak & Material Produksi',
+            'navigasi'      => '<a href="/bahan">Bahan</a> &nbsp;',
             'menuMesinTipe' => $this->mesinTipeModel->getTipeMesin(),
             'menuSatuan'    => getSatuan()
         ]);
@@ -45,6 +47,11 @@ class Bahan extends BaseController
         $filterTipe = $this->request->getPost('filter_tipe');
         if (!empty($filterTipe)) {
             $builder->where('b.mesin_tipe_id', $filterTipe);
+        }
+
+        $filterKategori = $this->request->getPost('filter_kategori');
+        if (!empty($filterKategori)) {
+            $builder->where('b.kategori', $filterKategori);
         }
 
         return $builder;
@@ -60,6 +67,7 @@ class Bahan extends BaseController
         return [
             $row->id,
             $row->tipe_mesin,
+            $row->kategori ? 'Material' : 'Bahan',
             $row->kode,
             $row->nama_bahan,
             (int) $row->gsm > 0 ? $row->gsm . ' gsm' : '-',
@@ -93,12 +101,55 @@ class Bahan extends BaseController
 
     public function getBahanJenis()
     {
-        $id = $this->request->getPost('mesinTipeId');
-        if (!$id || !is_numeric($id)) {
+        $kategori = $this->request->getPost('kategori');
+        if (!is_numeric($kategori) || !in_array((int) $kategori, [0, 1], true)) {
             return $this->response->setJSON([]);
         }
 
-        return $this->response->setJSON($this->bahanJenisModel->getBahanMesin((int) $id));
+        $mesinTipeId = null;
+        if ((int) $kategori === 0) {
+            $mesinTipeId = $this->request->getPost('mesinTipeId');
+            if (!$mesinTipeId || !is_numeric($mesinTipeId)) {
+                return $this->response->setJSON([]);
+            }
+            $mesinTipeId = (int) $mesinTipeId;
+        }
+
+        return $this->response->setJSON(
+            $this->bahanJenisModel->getForBahan((int) $kategori, $mesinTipeId)
+        );
+    }
+
+    public function simpan()
+    {
+        if ($res = $this->ajax()) {
+            return $res;
+        }
+
+        $kategori = $this->request->getPost('kategori');
+        $bahanJenisId = $this->request->getPost('bahan_jenis_id');
+
+        if (!in_array($kategori, ['0', '1'], true)
+            || !ctype_digit((string) $bahanJenisId) || (int) $bahanJenisId < 1) {
+            return $this->json(false, 'Kategori dan jenis bahan wajib dipilih.');
+        }
+
+        $bahanJenis = $this->bahanJenisModel->find((int) $bahanJenisId);
+        if (!$bahanJenis || (int) $bahanJenis->kategori !== (int) $kategori) {
+            return $this->json(false, 'Jenis bahan tidak sesuai dengan kategori yang dipilih.');
+        }
+
+        $mesinTipeId = $this->request->getPost('mesin_tipe_id');
+        if ((int) $kategori === 0
+            && (!ctype_digit((string) $mesinTipeId) || (int) $bahanJenis->mesin_tipe_id !== (int) $mesinTipeId)) {
+            return $this->json(false, 'Jenis bahan tidak sesuai dengan tipe mesin yang dipilih.');
+        }
+
+        if ((int) $kategori === 1 && $bahanJenis->mesin_tipe_id !== null) {
+            return $this->json(false, 'Jenis material tidak boleh terikat pada tipe mesin.');
+        }
+
+        return $this->simpanCrud();
     }
 
     protected function dataSimpan(): array
