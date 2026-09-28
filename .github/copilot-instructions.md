@@ -77,12 +77,19 @@ utama pada stabilitas server:
 - Periksa diff agar perubahan tidak meluas ke area yang tidak diminta.
 - Perbarui dokumentasi yang berkaitan langsung dengan perubahan.
 - Catat asumsi atau pekerjaan yang belum diverifikasi jika diperlukan.
-- Setelah setiap pekerjaan selesai, selalu catat ringkasannya pada
-  `docs/05-log-job-ai.md`.
-- Catatan log minimal memuat tanggal, ringkasan pekerjaan, file atau area yang
-  berubah, dan hasil validasi jika ada.
-- Gunakan catatan yang lebih lengkap jika perubahan besar, keputusan desain,
-  atau pekerjaan yang belum selesai perlu dijelaskan.
+- Gunakan `docs/05-log-job-ai.md` sebagai indeks pemetaan CRUD/domain ke
+  dokumentasi rujukan, bukan sebagai jurnal kronologis setiap pekerjaan.
+- Sebelum mengubah modul, ikuti pemetaan di indeks dan baca dokumen rujukan
+  modul serta bagian lintas-modul yang ditautkan. Jangan membaca arsip riwayat
+  secara rutin; buka hanya bila konteks historis memang diperlukan.
+- Perbarui dokumentasi rujukan modul agar menjelaskan kondisi dan aturan yang
+  berlaku saat ini. Catat keputusan penting, asumsi, dan hal yang belum
+  diverifikasi di bagian yang relevan; hindari menyalin ulang riwayat pekerjaan.
+- Perbarui `docs/05-log-job-ai.md` hanya bila cakupan CRUD berubah atau pemetaan
+  rujukan perlu diperbarui. Kelompokkan dokumen berdasarkan domain dan
+  keterkaitan alur, bukan batas jumlah baris.
+- Arsipkan riwayat lama hanya bila perlu mempertahankan konteks historis;
+  tandai arsip sebagai bukan sumber aturan terkini.
 - Perbarui status pada bagian `Tahap proyek CRUD` di
   `docs/01-status-proyek.md` jika pekerjaan mengubah status modul.
 

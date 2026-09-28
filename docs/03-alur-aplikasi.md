@@ -87,8 +87,8 @@ Tabel utama yang sudah dirancang: `konsumen`, `produk`, `harga_tipe`,
 - **Harga minimum** (toggle "Harga Minimum" pada form rincian) hanya berlaku untuk rumus perkalian
   luas: bila diaktifkan, `jumlah` tidak boleh lebih kecil daripada `harga` produk.
   Contoh: harga 20.000 dengan hasil hitung 15.000 → jumlah menjadi 20.000.
-  Toggle selalu mulai dari **Tidak** pada form tambah maupun edit, tidak disimpan di database, dan
-  hanya memengaruhi nilai `jumlah` ketika diklik oleh pengguna.
+  Pilihan toggle disimpan pada `nota_isi.harga_min` dan dipulihkan saat rincian diedit. Nilai awal
+  untuk item baru adalah **Tidak**; pada rumus selain perkalian luas toggle tidak berlaku.
 - Server belum menghitung ulang `luas` dan `jumlah`; nilai dari form dipakai apa adanya
   (`NotaIsi::dataSimpan()`), sehingga aturan di atas masih bergantung pada JavaScript.
 

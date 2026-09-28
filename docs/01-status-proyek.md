@@ -34,7 +34,7 @@ Data
 
 Bahan
 - [x] Jenis Bahan → /bahan-jenis
-- [x] Bahan Cetak → /bahan
+- [x] Bahan & Material → /bahan
 - [x] Order Bahan → /bahan-order
 - [x] Stok Bahan → /bahan-stok
 - [x] Stok Material → /material-stok
@@ -102,8 +102,8 @@ Setting
   `/nota/isi?edit=`. Pembayaran satu nota memakai controller `Data\NotaBayar` pada halaman nota.
 - Aturan perhitungan rincian nota (luas maksimal 2 desimal, jumlah dibulatkan ke atas kelipatan 500,
   dan toggle harga minimum) dicatat pada `docs/03-alur-aplikasi.md` §1.2.
-- Toggle "Harga Minimum" pada form rincian nota tidak memiliki kolom di database dan selalu mulai
-  dari Tidak pada form tambah maupun edit.
+- Toggle "Harga Minimum" disimpan pada `nota_isi.harga_min` dan dipulihkan saat rincian nota diedit;
+  item baru tetap mulai dari Tidak.
 - Alur per kategori produk dicatat pada `docs/03-alur-aplikasi.md` §1.1: internal berurutan
   (`0 → 1 → 3 → 4`), eksternal & jasa langsung `0 → 3 → 4` tanpa potong stok bahan.
 - Biaya vendor dan jasa diinput manual pada `produk.hpp`; tidak ada tabel biaya vendor terpisah.

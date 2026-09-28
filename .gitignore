@@ -127,5 +127,6 @@ _modules/*
 
 # Custom
 !/public/vendor/
-/docs/
+
+# Project documentation is versioned with the repository.
 /sql/
