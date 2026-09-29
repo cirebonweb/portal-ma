@@ -14,7 +14,7 @@ class NotaBayar extends BaseController
     protected NotaBayarModel $model;
 
     protected $searchable = ['b.no_nota'];
-    protected $orderable  = ['a.id', 'a.tanggal', 'a.metode', 'a.diterima', 'a.jumlah', 'a.kembalian', 'a.created_at', 'a.updated_at'];
+    protected $orderable  = ['a.id', 'a.metode_bayar', 'a.tgl_bayar', 'a.uang_terima', 'a.uang_bayar', 'a.uang_kembali', 'a.created_at', 'a.updated_at'];
 
     public function __construct()
     {
@@ -24,14 +24,14 @@ class NotaBayar extends BaseController
 
     /**
      * Halaman daftar seluruh pembayaran.
-     * Pembayaran per nota berada pada halaman detail nota (/nota/isi?edit=).
+     * Pembayaran per nota berada pada halaman detail nota (/nota/detail/{id}).
      */
     public function index()
     {
         $id = $this->request->getGet('edit');
 
         if ($id !== null && $id !== '' && is_numeric($id)) {
-            return redirect()->to('/nota/isi?edit=' . (int) $id);
+            return redirect()->to('/nota/detail/' . (int) $id);
         }
 
         return view('data/nota_bayar', [
@@ -53,7 +53,7 @@ class NotaBayar extends BaseController
         }
 
         // Tabel sedikit data: urutan ditetapkan server, bukan dari DataTables
-        return $builder->orderBy('a.tanggal', 'DESC')->orderBy('a.id', 'DESC');
+        return $builder->orderBy('a.tgl_bayar', 'DESC')->orderBy('a.id', 'DESC');
     }
 
     protected function dataTabel(\stdClass $row): array
@@ -67,10 +67,10 @@ class NotaBayar extends BaseController
 
         return [
             $row->id,
+            $metode[(int) $row->metode_bayar] ?? '-',
             $row->no_nota ?: '-',
-            $row->tanggal,
-            $metode[(int) $row->metode] ?? '-',
-            $row->diterima,
+            $row->tgl_bayar,
+            $row->uang_terima,
             $row->jumlah,
             $row->kembalian,
             $row->user_nama ?: '-',
@@ -83,17 +83,15 @@ class NotaBayar extends BaseController
     protected function dataSimpan(): array
     {
         $id       = $this->request->getPost('id');
-        $diterima = (int) ($this->request->getPost('diterima') ?: 0);
-        $jumlah   = (int) ($this->request->getPost('jumlah') ?: 0);
 
         $data = [
-            'id'        => $id,
-            'nota_id'   => $this->request->getPost('nota_id'),
-            'tanggal'   => $this->request->getPost('tanggal'),
-            'metode'    => $this->request->getPost('metode') ?: 0,
-            'diterima'  => $diterima,
-            'jumlah'    => $jumlah,
-            'kembalian' => max(0, $diterima - $jumlah),
+            'id'           => $id,
+            'nota_id'      => $this->request->getPost('nota_id'),
+            'metode_bayar' => $this->request->getPost('metode_bayar') ?: 0,
+            'tgl_bayar'    => $this->request->getPost('tgl_bayar'),
+            'uang_terima'  => $this->request->getPost('uang_terima'),
+            'uang_bayar'   => $this->request->getPost('uang_bayar'),
+            'uang_kembali' => $this->request->getPost('uang_kembali'),
         ];
 
         // user_id hanya dicatat saat pembayaran pertama dibuat

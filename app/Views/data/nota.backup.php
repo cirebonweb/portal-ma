@@ -96,7 +96,7 @@
                             <input type="text" class="form-control" id="konsumen_tipe" value="Retail" disabled>
                         </div>
 
-                        <!-- <div class="col-6 col-md-4 mb-4">
+                        <div class="col-6 col-md-4 mb-4">
                             <label for="nettotal">Nettotal</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -104,9 +104,9 @@
                                 </div>
                                 <input type="text" class="form-control text-right" id="nettotal" name="nettotal" value="0" disabled>
                             </div>
-                        </div> -->
+                        </div>
 
-                        <!-- <div class="col-6 col-md-4 mb-4">
+                        <div class="col-6 col-md-4 mb-4">
                             <label for="bayar">Bayar</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -114,9 +114,9 @@
                                 </div>
                                 <input type="text" class="form-control text-right" id="bayar" name="bayar" value="0" disabled>
                             </div>
-                        </div> -->
+                        </div>
 
-                        <!-- <div class="col-6 col-md-4 mb-4">
+                        <div class="col-6 col-md-4 mb-4">
                             <label for="sisa">Sisa</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -124,7 +124,7 @@
                                 </div>
                                 <input type="text" class="form-control text-right" id="sisa" name="sisa" value="0" disabled>
                             </div>
-                        </div> -->
+                        </div>
 
                         <div class="col-6 col-md-4 mb-4">
                             <label for="status_nota">Status Nota</label>

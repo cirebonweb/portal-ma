@@ -32,6 +32,13 @@ Dokumen alur terpisah dapat ditambahkan di folder `alur/` apabila penjelasan sal
 satu proses membutuhkan aturan bisnis yang mendetail. Rujukan domain disimpan di
 `modul/` dan dapat menautkan bagian alur terkait.
 
+## Bahan konsep proyek baru
+
+- [Paket konsep Digital Printing](./digital-printing/README.md) — dokumentasi
+  mandiri untuk audit fitur, frontend, alur operasional, dan keputusan sebelum
+  rancangan database proyek baru. Paket ini bukan spesifikasi Portal MA dan
+  dapat dipindahkan utuh ke proyek `digital-printing`.
+
 ## Aturan pemeliharaan dokumentasi
 
 - Jangan menghapus dokumen lama tanpa memastikan informasinya sudah dipindahkan atau

@@ -134,7 +134,7 @@ class ProdukModel extends Model
     /**
      * @param mixed $id
      * Mendapatkan list produk berdasarkan kategori produk
-     * digunakan: /nota/isi?edit=
+     * digunakan pada halaman /nota/detail/{id}
      */
     public function loadProduk($id)
     {

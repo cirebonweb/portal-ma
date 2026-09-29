@@ -301,6 +301,7 @@ class CreateDigitalPrintingTables extends Migration
             'luas'         => ['type' => 'decimal', 'constraint' => '5,2', 'default' => 0.00],
             'qty'          => ['type' => 'smallint', 'constraint' => 6, 'default' => 0],
             'harga'        => ['type' => 'int', 'constraint' => 11, 'default' => 0],
+            'harga_min'    => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0], // Harga minimum saat nilai `jumlah` dibawah `harga`
             'jumlah'       => ['type' => 'int', 'constraint' => 11, 'default' => 0],
             // Status alur kerja cetak (produksi)
             // 0: Draft, 1: Antrian, 2: Pending, 3: Proses, 4: Selesai, 5: Batal | WHERE nota_isi.status IN (1, 2)
@@ -317,17 +318,17 @@ class CreateDigitalPrintingTables extends Migration
 
         // nota_bayar → (Data) Pembayaran
         $this->forge->addField([
-            'id'         => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
-            'nota_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
-            'tanggal'    => ['type' => 'date'],
-            'metode'     => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],   // 0:Tunai, 1:Transfer
-            'file'       => ['type' => 'varchar', 'constraint' => 255, 'null' => true], // Simpan lokasi dan upload file bukti transfer
-            'diterima'   => ['type' => 'int', 'constraint' => 11, 'default' => 0], // uang yang diberikan konsumen (input)
-            'jumlah'     => ['type' => 'int', 'constraint' => 11, 'default' => 0], // nominal yang dicatat sebagai pembayaran: nota.bayar (kunci)
-            'kembalian'  => ['type' => 'int', 'constraint' => 11, 'default' => 0], // diterima - jumlah (kalkulasi)
-            'user_id'    => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // User input pembayaran
-            'created_at' => ['type' => 'timestamp', 'null' => true],
-            'updated_at' => ['type' => 'timestamp', 'null' => true],
+            'id'             => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'auto_increment' => true],
+            'nota_id'        => ['type' => 'int', 'constraint' => 11, 'unsigned' => true],
+            'metode_bayar'   => ['type' => 'tinyint', 'constraint' => 1, 'default' => 0],   // 0:Tunai, 1:Transfer
+            'tgl_bayar'      => ['type' => 'date'],
+            'uang_terima'    => ['type' => 'int', 'constraint' => 11, 'default' => 0], // uang yang diberikan konsumen (input)
+            'uang_bayar'     => ['type' => 'int', 'constraint' => 11, 'default' => 0], // nominal yang dicatat sebagai pembayaran: nota.bayar (kunci)
+            'uang_kembali'   => ['type' => 'int', 'constraint' => 11, 'default' => 0], // diterima - jumlah (kalkulasi)
+            'bukti_transfer' => ['type' => 'varchar', 'constraint' => 255, 'null' => true], // Simpan lokasi dan upload file bukti transfer
+            'user_id'        => ['type' => 'int', 'constraint' => 11, 'unsigned' => true, 'null' => true], // User input pembayaran
+            'created_at'     => ['type' => 'timestamp', 'null' => true],
+            'updated_at'     => ['type' => 'timestamp', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('nota_id', 'nota', 'id', 'CASCADE', 'RESTRICT');

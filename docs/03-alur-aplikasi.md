@@ -70,7 +70,7 @@ Tabel utama yang sudah dirancang: `konsumen`, `produk`, `harga_tipe`,
   20.000; jasa desain HPP 5.000 (boleh 0) dengan harga 15.000.
 - Halaman cetak memakai nama menu **Data Produksi** dengan URL tetap `/cetak`
   (judul "Rincian Data Produksi") agar dapat menampung kategori lain tanpa mengubah URL.
-- Tombol pemindah item dari `0 (Draft)` pada `/nota/isi?edit=` bersifat otomatis per kategori:
+- Tombol pemindah item dari `0 (Draft)` pada `/nota/detail/{id}` bersifat otomatis per kategori:
   kategori `0` berbahan menjadi `1 (Antrian)`, sedangkan kategori lain menjadi `3 (Proses)`.
 - Khusus jasa, urutan kerja fleksibel: jasa boleh diselesaikan lebih dulu baru dibuat nota,
   atau nota dibuat lebih dulu baru jasa dikerjakan.

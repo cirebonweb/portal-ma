@@ -60,8 +60,10 @@ $routes->group('', ['namespace' => 'App\Controllers\Data'], function ($routes) {
         $routes->post('simpan', 'Nota::simpan');
         $routes->post('hapus', 'Nota::hapus');
 
-        // URL: /nota/isi
-        $routes->get('isi', 'NotaIsi::index');
+        // URL halaman detail: /nota/detail/{id}
+        $routes->get('detail/(:num)', 'NotaDetail::index/$1');
+
+        // Endpoint CRUD nota_isi
         $routes->match(['GET', 'POST'], 'isi/tabel', 'NotaIsi::tabel');
         $routes->post('isi/getid', 'NotaIsi::getId');
         $routes->post('isi/loadproduk', 'NotaIsi::loadProduk');
@@ -69,7 +71,7 @@ $routes->group('', ['namespace' => 'App\Controllers\Data'], function ($routes) {
         $routes->post('isi/hapus', 'NotaIsi::hapus');
         $routes->post('isi/produksi', 'NotaIsi::produksi');
 
-        // URL: /nota/bayar
+        // Halaman daftar dan endpoint CRUD nota_bayar
         $routes->get('bayar', 'NotaBayar::index');
         $routes->match(['GET', 'POST'], 'bayar/tabel', 'NotaBayar::tabel');
         $routes->post('bayar/getid', 'NotaBayar::getId');

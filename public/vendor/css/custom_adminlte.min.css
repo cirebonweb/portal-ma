@@ -720,7 +720,7 @@ tbody tr td select:focus {
     transition: none !important;
 }
 
-/* .loadingSpinner {
+.loadingSpinner {
     display: none;
     position: absolute;
     top: 50%;
@@ -735,7 +735,7 @@ tbody tr td select:focus {
     border: 1px solid var(--ui-border-light);
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(15, 23, 42, .12);
-} */
+}
 
 /* ---------------------------------------------------------
    UTILITY
@@ -789,20 +789,20 @@ tbody tr td select:focus {
    --------------------------------------------------------- */
 
 .bg-hijau {
-    background-color: #23953d;
+    background-color: #1b8333;
 }
 
 .bg-merah {
-    background-color: #b91c1c;
+    background-color: #9c1414;
 }
 
-.bg-birumuda {
-    background-color: #3b82f6;
+.bg-biru {
+    background-color: #133d81;
 }
 
 .bg-hijau,
 .bg-merah,
-.bg-birumuda {
+.bg-biru {
     color: var(--ui-putih);
 }
 

@@ -27,7 +27,7 @@ Data
 - [x] Supplier → /supplier
 - [x] Mesin → /mesin
 - [p] Produk → /produk
-- [p] Nota Penjualan → /nota → /nota/isi?edit={nota.id} → /nota/bayar?edit={nota.id}
+- [p] Nota Penjualan → /nota → /nota/detail/{nota.id}
 - [ ] Cetak Produksi → /cetak — internal masuk antrean cetak, eksternal & jasa cukup ubah status
 - [ ] Pembayaran → /pembayaran
 - [ ] Laporan → /laporan
@@ -65,7 +65,7 @@ Setting
 | CRUD Master | Final | Seluruh CRUD pada folder Master selesai; menunggu pengujian pengguna |
 | Konsumen | Berjalan | CRUD dan integrasi terkait masih perlu diverifikasi |
 | Produk dan harga | Berjalan | Produk, tipe harga, dan harga khusus sedang dikembangkan |
-| Nota penjualan/POS | Berjalan | Nota, tempat kerja detail nota (`/nota/isi`), dan pembayaran selesai; sisa bukti transfer, tombol print, dan pengujian pengguna |
+| Nota penjualan/POS | Berjalan | Daftar `/nota`, detail `/nota/detail/{id}`, rincian, dan pembayaran berada dalam satu alur nota; sisa bukti transfer, tombol print, dan pengujian pengguna |
 | Manajemen bahan | Berjalan | Skema, migrasi, seeder, dan CRUD selesai; sisa pemotongan stok material saat nota selesai. Menunggu pengujian pengguna |
 | Proses cetak | Belum selesai | Menunggu alur nota dan pemakaian bahan lebih jelas |
 | Pembayaran | Belum selesai | Bergantung pada alur nota |
@@ -98,8 +98,9 @@ Setting
 - Kalkulasi trigger membiarkan nilai negatif: `nettotal` menjadi negatif bila `diskon_nominal`
   diisi sebelum nota memiliki item, dan `sisa` menjadi negatif saat nota dibayar melebihi
   `nettotal` (berfungsi sebagai kelebihan bayar). Belum ada keputusan pembulatan/validasi.
-- Route `/nota/bayar*` kini hanya daftar seluruh pembayaran; `?edit=` dialihkan ke
-  `/nota/isi?edit=`. Pembayaran satu nota memakai controller `Data\NotaBayar` pada halaman nota.
+- `/nota/bayar` menampilkan daftar seluruh pembayaran; `?edit=` dialihkan ke
+  `/nota/detail/{id}`. Pembayaran satu nota memakai controller `Data\NotaBayar`
+  pada halaman detail nota.
 - Aturan perhitungan rincian nota (luas maksimal 2 desimal, jumlah dibulatkan ke atas kelipatan 500,
   dan toggle harga minimum) dicatat pada `docs/03-alur-aplikasi.md` §1.2.
 - Toggle "Harga Minimum" disimpan pada `nota_isi.harga_min` dan dipulihkan saat rincian nota diedit;
@@ -107,10 +108,10 @@ Setting
 - Alur per kategori produk dicatat pada `docs/03-alur-aplikasi.md` §1.1: internal berurutan
   (`0 → 1 → 3 → 4`), eksternal & jasa langsung `0 → 3 → 4` tanpa potong stok bahan.
 - Biaya vendor dan jasa diinput manual pada `produk.hpp`; tidak ada tabel biaya vendor terpisah.
-- Halaman `/nota/isi?edit=` sudah menjadi tempat kerja nota: data header nota, ringkasan nilai,
+- Halaman `/nota/detail/{id}` menjadi tempat kerja nota: data header nota, ringkasan nilai,
   tombol pemindah status produksi, dan pembayaran nota (dipindah dari `/nota/bayar?edit=`).
   `/nota/bayar` kini hanya menampilkan daftar seluruh pembayaran.
-- Tombol "Mulai Produksi" pada `/nota/isi` memindahkan item `0 (Draft)` menjadi `1 (Antrian)` untuk
+- Tombol "Mulai Produksi" pada halaman detail nota memindahkan item `0 (Draft)` menjadi `1 (Antrian)` untuk
   kategori internal berbahan, dan `3 (Proses)` untuk kategori lain.
 - Tombol print nota (format invoice) belum dibuat.
 - Aturan tabel DataTables (pencarian, filter, dan pengurutan hanya untuk tabel banyak data) dicatat
@@ -130,5 +131,5 @@ Setting
 
 ## Log pekerjaan AI
 
-Log lengkap pekerjaan Copilot dicatat pada
+Log lengkap pekerjaan AI dicatat pada
 [05-log-job-ai.md](./05-log-job-ai.md).

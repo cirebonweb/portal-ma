@@ -18,9 +18,15 @@ pembayaran: tabel `nota`, `nota_isi`, `nota_bayar` serta alur kerja POS terkait.
 
 - Daftar nota berada pada `/nota`.
 - Detail nota menjadi tempat kerja untuk header, rincian, status produksi, dan
-  pembayaran satu nota pada `/nota/isi?edit=<id>`.
+  pembayaran satu nota pada `/nota/detail/<id>`.
 - `/nota/bayar` menampilkan daftar seluruh pembayaran; pembayaran untuk nota
   tertentu dimulai dari halaman kerja nota.
+- Halaman detail ditangani oleh `NotaDetail`; operasi header, rincian, dan
+  pembayaran tetap menjadi tanggung jawab `Nota`, `NotaIsi`, dan `NotaBayar`.
+  Endpoint rincian dan pembayaran berada di bawah `/nota/isi/*` dan
+  `/nota/bayar/*`; keduanya bukan URL halaman detail.
+- Header nota dapat diedit langsung dari halaman detail; penyimpanan tetap
+  menggunakan endpoint `Nota` (`/nota/getid` dan `/nota/simpan`).
 
 Aturan perhitungan, transisi status, dan kategori produk harus mengikuti alur
 kanonis di atas. Perbarui bagian tersebut ketika perilaku berubah; jangan

@@ -14,12 +14,12 @@ class NotaBayarModel extends Model
     protected $protectFields    = true;
     protected $allowedFields = [
         'nota_id',
-        'tanggal',
-        'metode',
-        'file',
-        'diterima',
-        'jumlah',
-        'kembalian',
+        'metode_bayar',
+        'tgl_bayar',
+        'uang_terima',
+        'uang_bayar',
+        'uang_kembali',
+        'bukti_transfer',
         'user_id'
     ];
 
@@ -37,29 +37,29 @@ class NotaBayarModel extends Model
             'label' => 'Nota',
             'rules' => 'required|is_natural_no_zero'
         ],
-        'tanggal' => [
-            'label' => 'Tanggal',
-            'rules' => 'required|valid_date'
-        ],
-        'metode' => [
-            'label' => 'Metode',
+        'metode_bayar' => [
+            'label' => 'Metode Bayar',
             'rules' => 'permit_empty|in_list[0,1]'
         ],
-        'file' => [
-            'label' => 'File',
-            'rules' => 'permit_empty|string|max_length[255]'
+        'tgl_bayar' => [
+            'label' => 'Tanggal Bayar',
+            'rules' => 'required|valid_date'
         ],
-        'diterima' => [
-            'label' => 'Diterima',
+        'uang_terima' => [
+            'label' => 'Uang Terima',
             'rules' => 'permit_empty|integer|greater_than_equal_to[0]'
         ],
-        'jumlah' => [
-            'label' => 'Jumlah',
+        'uang_bayar' => [
+            'label' => 'Uang Bayar',
             'rules' => 'permit_empty|integer|greater_than_equal_to[0]'
         ],
         'kembalian' => [
-            'label' => 'Kembalian',
+            'label' => 'Uang Kembali',
             'rules' => 'permit_empty|integer|greater_than_equal_to[0]'
+        ],
+        'bukti_transfer' => [
+            'label' => 'Bukti Transfer',
+            'rules' => 'permit_empty|string|max_length[255]'
         ],
         'user_id' => [
             'label' => 'User',
@@ -72,7 +72,7 @@ class NotaBayarModel extends Model
     public function tabel()
     {
         return $this->db->table('nota_bayar a')
-            ->select('a.id, a.nota_id, a.tanggal, a.metode, a.file, a.diterima, a.jumlah, a.kembalian, a.user_id, a.created_at, a.updated_at, b.no_nota, c.username as user_nama')
+            ->select('a.id, a.metode_bayar, a.tgl_bayar, a.uang_terima, a.uang_bayar, a.uang_kembali, a.bukti_transfer, a.created_at, a.updated_at, b.no_nota, c.username as user_nama')
             ->join('nota b', 'b.id = a.nota_id', 'left')
             ->join('users c', 'c.id = a.user_id', 'left');
     }

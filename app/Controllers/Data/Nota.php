@@ -55,7 +55,7 @@ class Nota extends BaseController
 
         $aksi = '<div class="btn-group" role="group">';
         $aksi .= '<button class="btn btn-sm btn-dark" type="button" onclick="simpan(' . $row->id . ')">edit</button>';
-        $aksi .= '<a href="/nota/isi?edit=' . $row->id . '" class="btn btn-sm btn-primary">detail</a>';
+        $aksi .= '<a href="/nota/detail/' . $row->id . '" class="btn btn-sm btn-primary">detail</a>';
         $aksi .= '</div>';
 
         return [
@@ -78,6 +78,23 @@ class Nota extends BaseController
             $aksi
         ];
     }
+
+    // public function getId()
+    // {
+    //     if ($res = $this->ajax()) return $res;
+
+    //     $id = $this->request->getPost('id');
+    //     if (!$id || !is_numeric($id)) {
+    //         return $this->json(false, 'ID tidak valid', null, 400);
+    //     }
+
+    //     $data = $this->model->getId($id);
+    //     if (!$data) {
+    //         return $this->json(false, 'Data tidak ditemukan', null, 404);
+    //     }
+
+    //     return $this->json(true, null, $data);
+    // }
 
     protected function dataSimpan(): array
     {

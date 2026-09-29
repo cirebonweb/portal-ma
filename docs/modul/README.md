@@ -21,3 +21,4 @@ untuk menemukan dokumen yang relevan.
   keterkaitan materi dan kemudahan menemukan aturan.
 - Arsip historis bukan sumber kebenaran implementasi saat ini. Aturan yang masih
   berlaku harus tercatat pada dokumen domain atau dokumentasi kanonis lainnya.
+- Pembuatan dokumentasi dibuat setelah kode dinyatakan berfungsi dengan baik.

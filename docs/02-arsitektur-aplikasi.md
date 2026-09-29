@@ -85,11 +85,14 @@ dengan implementasi CodeIgniter Shield.
 
 Proyek memiliki helper dan trait internal, antara lain:
 
-- `CrudTrait`
-- `helper_form.min.js`
-- `helper_format.min.js`
-- helper upload
-- CSS custom AdminLTE, sidebar, dan tabel
+- `app\Controllers\Traits\CrudTrait.php`
+- `public\vendor\js\helper_form.min.js`
+- `public\vendor\js\helper_format.min.js`
+- `public\vendor\js\helper_upload_multi.min.min.js`
+- `public\vendor\js\helper_upload_multi.min.min.js`
+- `public\vendor\css\custom_adminlte.min.css`
+- `public\vendor\css\custom_sidebar.min.css`
+- `public\vendor\css\custom_tabel.min.css`
 
 Gunakan komponen tersebut sebelum menambahkan implementasi baru yang memiliki
 tanggung jawab sama.
@@ -102,7 +105,8 @@ Pencarian, filter, dan pengurutan hanya dipakai untuk tabel yang datanya banyak.
   (contoh: Data Nota, Data Bahan, Order Bahan, Stok Bahan, Produk).
 - **Tabel sedikit data** — tanpa kotak pencarian, tanpa filter, dan tanpa pengurutan; urutan baris
   ditetapkan dari sisi server agar tetap konsisten
-  (contoh: Rincian Nota pada `/nota/isi`, Pembayaran Nota pada `/nota/isi` dan `/nota/bayar`).
+  (contoh: Rincian Nota dan Pembayaran Nota pada halaman `/nota/detail/{id}`; endpoint operasinya
+  tetap berada pada `/nota/isi/*` dan `/nota/bayar/*`).
 
 Konsekuensinya, pada tabel sedikit data controller menyediakan `orderBy` sendiri dan tidak
 menyediakan filter kolom, karena DataTables tidak lagi mengirim parameter pencarian maupun urutan.

@@ -36,7 +36,7 @@
         </li>
 
         <li class="nav-item">
-            <a href="<?= url_to('nota') ?>" class="nav-link<?= (current_url() == base_url('nota')) || (current_url() == base_url('nota/isi')) ? ' active' : '' ?>">
+            <a href="<?= url_to('nota') ?>" class="nav-link<?= (current_url() == base_url('nota')) || url_is('nota/detail/*') ? ' active' : '' ?>">
                 <i class="nav-icon bi bi-circle"></i>
                 <p>Nota Penjualan</p>
             </a>

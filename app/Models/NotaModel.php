@@ -112,4 +112,15 @@ class NotaModel extends Model
             ->join('users c', 'c.id = a.user_buat', 'left')
             ->join('users d', 'd.id = a.user_ubah', 'left');
     }
+
+    /**
+     * @param mixed $id
+     */
+    public function getIdCustom($id)
+    {
+        return $this
+            ->select('nota.*, konsumen.nama')
+            ->join('konsumen', 'konsumen.id = nota.konsumen_id', 'left')
+            ->find($id);
+    }
 }

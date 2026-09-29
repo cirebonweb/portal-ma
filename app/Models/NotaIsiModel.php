@@ -22,6 +22,7 @@ class NotaIsiModel extends Model
         'luas',
         'qty',
         'harga',
+        'harga_min',
         'jumlah',
         'status',
         'keterangan'
@@ -73,6 +74,10 @@ class NotaIsiModel extends Model
             'label' => 'Harga',
             'rules' => 'permit_empty|integer|greater_than_equal_to[0]'
         ],
+        'harga_min' => [
+            'label' => 'Harga Minimum',
+            'rules' => 'required|in_list[0,1]'
+        ],
         'jumlah' => [
             'label' => 'Jumlah',
             'rules' => 'permit_empty|integer|greater_than_equal_to[0]'
@@ -93,10 +98,21 @@ class NotaIsiModel extends Model
     public function tabel()
     {
         return $this->db->table('nota_isi a')
-            ->select('a.id, a.tema, a.lebar, a.panjang, qty, a.harga, a.jumlah, a.status, a.keterangan, a.created_at, a.updated_at, c.nama as produk, d.nama as finishing')
+            ->select('a.id, a.tema, a.lebar, a.panjang, a.luas, a.qty, a.harga, a.jumlah, a.status, a.keterangan, a.created_at, a.updated_at, c.nama as produk, d.nama as finishing')
             ->join('nota b', 'b.id = a.nota_id', 'left')
             ->join('produk c', 'c.id = a.produk_id', 'left')
             ->join('finishing d', 'd.id = a.finishing_id', 'left')
             ->orderBy('a.id', 'ASC'); // tabel sedikit data: urutan dari server
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function getIdCustom($id)
+    {
+        return $this
+            ->select('nota_isi.id, nota_isi.produk_id, nota_isi.finishing_id, nota_isi.tema, nota_isi.lebar, nota_isi.panjang, nota_isi.luas, nota_isi.qty, nota_isi.harga, nota_isi.harga_min, nota_isi.jumlah, nota_isi.keterangan, produk.kategori')
+            ->join('produk', 'produk.id = nota_isi.produk_id', 'left')
+            ->find($id);
     }
 }
